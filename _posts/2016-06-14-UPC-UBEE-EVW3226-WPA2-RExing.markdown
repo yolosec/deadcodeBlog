@@ -361,9 +361,10 @@ E.g., "COCK", "COCKS", "COCKY", "ACOCK"
 
 Basically this is the generation routine. You can find all codes we used, profanity database and more in the archive for the article.
 
-So to have a bit more fun, we generated a SQL database for all MAC addresses starting on `0x647c34` -
-vendor prefix, what is 2^24 = 16777216 passwords. This is quite a number so the profanity detection
-was optimized by building AhoCorasick search automaton, initialized with all profanities found
+So to have a bit more fun, we generated a SQL database for all MAC addresses starting on `0x647c34` =
+UBEE vendor prefix, what is 2^24 = 16777216 passwords. This is quite a number so the profanity detection
+was optimized by building [Aho-Corasick](https://en.wikipedia.org/wiki/Aho%E2%80%93Corasick_algorithm)
+search automaton, initialized with all profanities found
 (very rude automaton indeed). If the profanity was detected as a substring, we also generated a new password from non-insulting alphabet.
 
 From 16777216 passwords in total, 32105 contained at least one togprofanity in it, in particular in 0.19% cases.
@@ -374,7 +375,45 @@ From 32105 cases there were:
 
 3 character profanities were just 4, with counts:
 
+<!--
 ```sql
 select profanity, count(profanity) as cx from wifi where profanity is not null and length(profanity)=3 group by profanity order by cx desc;
 ```
+-->
 
+[![Profanity size 3](/static/ubee/profanities_c3.png)](/static/ubee/profanities_c3.png)
+
+4 character distribution (33 distinct):
+
+| Word | Occurences | Word | Occurences | Word | Occurences |
+| ---- |:----------:| ---- |:----------:| ---- |:----------:|
+BUTT   |233         | HOLE |191         | MILF |172
+BLOW   |209         | HATE |190         | CUNT |166
+AIDS   |205         | DUMB |189         | SMUT |166
+DIRT   |205         | SHIT |189         | PORN |165
+SEAM   |203         | FUCK |183         | SUCK |165
+SLUT   |201         | LICK |181         | DOPE |162
+JAIL   |196         | DICK |178         | ANAL |161
+COON   |195         | ABBO |177         | PISS |160
+GIMP   |194         | BALL |177         | HEAD |155
+BOYS   |192         | CRAP |177         | COCK |154
+TITS   |192         | TURD |177         | PIMP |154
+
+[![Profanity size 4](/static/ubee/profanities_c4.png)](/static/ubee/profanities_c4.png)
+
+5 character (including only most popular ones) total 517 distinct:
+
+| Word | Occurences |
+| ---- |:----------:|
+HAETS|19
+TUBAS|19
+BABES|17
+MICHE|17
+WOADS|17
+FECES|16
+NATAL|16
+SKIRT|16
+WINEY|16
+ERECT|15
+
+[![Profanity size 5](/static/ubee/profanities_c5.png)](/static/ubee/profanities_c5.png)
