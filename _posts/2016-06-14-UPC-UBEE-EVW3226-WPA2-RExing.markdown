@@ -72,7 +72,8 @@ if [ ! -e /etc/passwd.1 ]; then
 fi
 ```
 
-This is actually very powerful and convenient attack vector. One comes with USB drive to the router, plugs it in and has a WPA2 password in seconds.
+This is actually very powerful and convenient attack vector. One comes with USB drive to the router,
+plugs it in and has a WPA2 password in seconds (all system configuration).
 
 I’ve created a TAR of the whole filesystem plus raw binary images of the mounted file system.
 With SSH I could start mess around the router firmware.
