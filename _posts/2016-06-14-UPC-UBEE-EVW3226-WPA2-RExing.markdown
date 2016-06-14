@@ -182,7 +182,7 @@ Symbols were not removed, which makes analysis substantially easier (child play 
 So `sub_17CF0` could be some kind of factory reset / apply settings routine. Which indeed is, as function
 inspection shown. I recommend going through the whole routine to get impression how that works in detail.
 Basically, it sets MAC addresses, generate SSIDs, passwords, sets up the firewall and parental control,
-some settings are stored to ``/nvram/*`.
+some settings are stored to `/nvram/*`.
 
 [![sub_17CF0 intro](/static/ubee/sub17CF0Intro.png)](/static/ubee/sub17CF0Intro.png)
 
@@ -212,7 +212,7 @@ The intro looked like this:
 [![Intro](/static/ubee/genIntro.png)](/static/ubee/genIntro.png)
 
 The function does some initialization in the beginning, local variable setting and so on.
-Few instructions later, it reads a file ``/nvram/1/1`.
+Few instructions later, it reads a file `/nvram/1/1`.
 
 [![NVRAM read](/static/ubee/nvramRead.png)](/static/ubee/nvramRead.png)
 
