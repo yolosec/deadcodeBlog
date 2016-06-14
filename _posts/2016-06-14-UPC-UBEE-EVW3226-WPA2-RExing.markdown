@@ -228,7 +228,10 @@ generate the exact password, without need to guess the candidate ones (as Blasty
 The MAC address is then plug to the weird looking magic string. It does:
 
 ```c
-sprintf((char*)buff1, "%2X%2X%2X%2X%2X%2X555043444541554C5450415353504852415345", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+sprintf(buff1, "%2X%2X%2X%2X%2X%2X555043444541554C5450415353504852415345",
+  mac[0], mac[1],
+  mac[2], mac[3],
+  mac[4], mac[5]);
 ```
 
 It seems like there is a MAC used to derive multiple different outputs (SSID, PASSPHRASE) in the code, so
@@ -245,7 +248,10 @@ Just in case the hashed string had too much entropy, guys decided to do another 
 but cutting it down using 3 bytes of entropy at maximum (buff2 contains the MD5 hash):
 
 ```c
-sprintf((char*)buff3, "%.02X%.02X%.02X%.02X%.02X%.02X", buff2[0]&0xF, buff2[1]&0xF, buff2[2]&0xF, buff2[3]&0xF, buff2[4]&0xF, buff2[5]&0xF);
+sprintf(buff3, "%.02X%.02X%.02X%.02X%.02X%.02X",
+  buff2[0]&0xF, buff2[1]&0xF,
+  buff2[2]&0xF, buff2[3]&0xF,
+  buff2[4]&0xF, buff2[5]&0xF);
 ```
 
 [![sprintf01](/static/ubee/sprintf01.png)](/static/ubee/sprintf01.png)
@@ -256,20 +262,48 @@ As a good crypto guy you know what to do next, hash it again, so it is really se
 
 Later things got interesting as well, the following function is doing modulo 0x1a = 26. What is the length of english
 alphabet. Somebody is trying to beat `[A-Z]{8}` string out of it - which is good for us as UPC password is exactly of
-this format. What is interesting is a way the projection to 26 character alphabet is made:
+this format.
+
+So far the WPA2 default password derivation function is basically like this:
 
 ```c
-sprintf((char*)passwd, "%c%c%c%c%c%c%c%c",
-       0x41u + ((hash_buff[0]+hash_buff[8]) % 0x1Au),
-       0x41u + ((hash_buff[1]+hash_buff[9]) % 0x1Au),
-       0x41u + ((hash_buff[2]+hash_buff[10]) % 0x1Au),
-       0x41u + ((hash_buff[3]+hash_buff[11]) % 0x1Au),
-       0x41u + ((hash_buff[4]+hash_buff[12]) % 0x1Au),
-       0x41u + ((hash_buff[5]+hash_buff[13]) % 0x1Au),
-       0x41u + ((hash_buff[6]+hash_buff[14]) % 0x1Au),
-       0x41u + ((hash_buff[7]+hash_buff[15]) % 0x1Au));
+
+// 1. MAC + hex(UPCDEAULTPASSPHRASE)
+sprintf(buff1, "%2X%2X%2X%2X%2X%2X555043444541554C5450415353504852415345",
+  mac[0], mac[1],
+  mac[2], mac[3],
+  mac[4], mac[5]);
+
+// 2.
+MD5_Init(&ctx);
+MD5_Update(&ctx, buff1, strlen((char*)buff1)+1);
+MD5_Final(buff2, &ctx);
+
+// 3.
+sprintf(buff3, "%.02X%.02X%.02X%.02X%.02X%.02X",
+  buff2[0]&0xF, buff2[1]&0xF,
+  buff2[2]&0xF, buff2[3]&0xF,
+  buff2[4]&0xF, buff2[5]&0xF);
+
+// 4.
+MD5_Init(&ctx);
+MD5_Update(&ctx, buff3, strlen((char*)buff3)+1);
+MD5_Final(hash_buff, &ctx);
+
+sprintf(passwd, "%c%c%c%c%c%c%c%c",
+        0x41u + ((hash_buff[0]+hash_buff[8]) % 0x1Au),
+        0x41u + ((hash_buff[1]+hash_buff[9]) % 0x1Au),
+        0x41u + ((hash_buff[2]+hash_buff[10]) % 0x1Au),
+        0x41u + ((hash_buff[3]+hash_buff[11]) % 0x1Au),
+        0x41u + ((hash_buff[4]+hash_buff[12]) % 0x1Au),
+        0x41u + ((hash_buff[5]+hash_buff[13]) % 0x1Au),
+        0x41u + ((hash_buff[6]+hash_buff[14]) % 0x1Au),
+        0x41u + ((hash_buff[7]+hash_buff[15]) % 0x1Au));
 ```
 
+## Statistical analysis
+
+What is interesting is a way the projection to 26 character alphabet ( last `sprintf` ).
 Programmer does byte addition here, modulo 26. On the first reading this might seem weird, why he just not did
 
 ```c
@@ -290,12 +324,18 @@ Compared to naive approaches I mentioned, which seemingly gives non-uniform dist
 [![A xor B mod 26](/static/ubee/distribAxBmod26.png)](/static/ubee/distribAxBmod26.png)
 
 
+## Reversing part 2
+
 So I went through the analysis and the next thing completely blew my mind:
 
 [![Profanity check](/static/ubee/profanities02.png)](/static/ubee/profanities02.png)
 
 You cannot miss the “cocks” right in front of you. So there is a profanities_ptr which points to the database of
-rude words… From curiosity I went through the database. Here is the small sample:
+rude words…
+
+# Profanity analysis
+
+From curiosity I went through the database. Here is the small sample:
 
 [![Profanity hex sample](/static/ubee/profanityHexSample.png)](/static/ubee/profanityHexSample.png)
 
