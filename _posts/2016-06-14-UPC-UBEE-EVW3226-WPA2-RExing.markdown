@@ -376,7 +376,7 @@ With hypothesis testing framework we can say whether this bias is statistically 
 The null hypothesis we are going to test against is \\( H_0: \\) the distribution of characters from the alphabet is
 uniform over characters. The alternative hypothesis is the distribution is not uniform. If our test rejects
 null hypothesis we know there is a bias. If we cannot reject the null hypothesis, we assume it still holds, but it does
-not mean the hypothesis holds.
+not mean the hypothesis is proven.
 
 Without loss of generality, consider the first character of the password. We want to test whether character `A`
 has expected probability of appearance. Expected probability is \\( {1}/{26} \\). We have \\( 2^{24} \\) samples
