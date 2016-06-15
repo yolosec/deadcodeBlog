@@ -304,7 +304,7 @@ sprintf(passwd, "%c%c%c%c%c%c%c%c",
 
 ## Statistical analysis
 
-What is interesting is a way the projection to 26 character alphabet ( last `sprintf` ).
+A way the projection to 26 character alphabet ( last `sprintf` ) is made is interesting, let's stop here a bit.
 Programmer does byte addition here, modulo 26. On the first reading this might seem weird, why he just not did
 
 ```c
@@ -317,8 +317,11 @@ or
 0x41u + ((hash_buff[0]^hash_buff[8]) % 0x1Au)
 ```
 
-Actually now the choice of addition is very clever because the output distribution on the alphabet is almost uniform.
-Compared to naive approaches I mentioned, which seemingly gives non-uniform distribution for
+Technical note: input bytes come from MD5 cryptographic hash function so basically we can assume the distribution
+on these bytes is uniform.
+
+The choice of addition is very clever because the output distribution on the alphabet is almost uniform.
+The naive approaches of projection I mentioned seemingly give non-uniform distribution for
 \\( \\{22, 23, 24, 25 \\} \\) as \\( 255 \; \% \; 26 = 21 \\)
 
 [![A plus B mod 26](/static/ubee/distribApBmod26.png)](/static/ubee/distribApBmod26.png)
@@ -568,10 +571,12 @@ search automaton, initialized with all profanities found
 (very rude automaton indeed). If the profanity was detected as a substring, we also generated a new password from non-insulting alphabet.
 
 From 16777216 passwords in total, 32105 contained at least one togprofanity in it, in particular in 0.19% cases.
-From 32105 cases there were:
-3 character profanities: 23090
-4 character profanities: 6014
-5 character profanities: 3001
+
+| # of characters |  Profanity occurrences |
+| :-------------: | :--------------------: |
+| 3               |  23090                 |
+| 4               |  6014                  |
+| 5               |  3001                  |
 
 3 character profanities were just 4, with counts:
 
