@@ -527,6 +527,8 @@ Z|-|-|-|-|-|-|-|-|-
 
 We see this function has better statistical properties.
 
+TODO: skip second hashing, results?
+
 ## Reversing part 2
 
 So I went through the analysis and the next thing completely blew my mind:
