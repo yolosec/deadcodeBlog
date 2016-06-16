@@ -232,6 +232,10 @@ We later discovered the MAC address used as function input is not exactly the BS
 For 2.4GHz network it is numerically smaller by 3. So if BSSID of WiFi ends on 0xf9, the MAC used for 
 computation is 0xf6 for 2.4GHz network.
 
+Actually when you do `hexdump -C nvram/1/1` 
+You can spot something that resembles MAC address on positions _0x20_ and  _0x32_ . Actually the first 3-5
+ bytes are same as MACs printed on the label on the router.
+
 [![Increase MAC](/static/ubee/modIncreaseMac.png)](/static/ubee/modIncreaseMac.png)
 
 *MAC input*
