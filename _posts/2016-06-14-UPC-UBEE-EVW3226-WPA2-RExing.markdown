@@ -387,7 +387,8 @@ Assuming \\( H_0 \\) holds the distribution follows [Binomial Distribution](http
 where number of trials \\(n = 2^{24} \\), probability of success \\( p = 1/26 \\). We define a success if the given
 characters is `A`. The expected number of success events is then \\( np = 2^{24} / 26 = 645277.54 \\). Moreover,
 from the [Central Limit Theorem](https://en.wikipedia.org/wiki/Central_limit_theorem) this distribution
-can be approximated with [Normal distribution](https://en.wikipedia.org/wiki/Normal_distribution).
+can be approximated with [Normal distribution](https://en.wikipedia.org/wiki/Normal_distribution) as the number of 
+samples is big enough, thus it is a good approximation.
 
 Basic of hypothesis testing is very well explained in this [article](http://20bits.com/article/hypothesis-testing-the-basics).
 We define \\( \alpha = 0.01 \\) so the level of confidence the null hypothesis is false is 99%.
@@ -397,11 +398,13 @@ with given mean. With 99% confidence level we can reject the null hypothesis if 
 of the area of the normal curve, it approximately corresponds to distance 2.58 standard deviations from mean:
 
 [![Normal curve](/static/ubee/normal-curve-small.png)](/static/ubee/normal-curve-small.png)
+*Normal curve*
 
-The distance from the mean in terms of standard deviations is called Z-score.
+Note: The distance from the mean in terms of standard deviations is called Z-score.
 
-We performed the hypothesis testing for each character on each position + overall statistics.
-Hypothesis about uniformity on given character is rejected on fields with `x` character with 99% confidence level.
+We performed the hypothesis testing for each character on each position and on overall statistics.
+Hypothesis about uniformity on given character on given password position 
+is rejected with 99% confidence level if the corresponding field contains `x` character in the following table:.
 
 | Char |  1 pos |  2 pos |  3 pos |  4 pos |  5 pos |  6 pos |  7 pos |  8 pos |  total |
 | ---- | -----: | -----: | -----: | -----: | -----: | -----: | -----: | -----: | -----: |
