@@ -531,8 +531,43 @@ Z|-|-|-|-|-|-|-|-|-
 {:.mbtablestyle2}
 
 We see this function has better statistical properties.
+The last we analyze function that completely skips step 3 & 4, so it performs only one
+MD5 hashing.
 
-TODO: skip second hashing, results?
+| Char |  1 pos |  2 pos |  3 pos |  4 pos |  5 pos |  6 pos |  7 pos |  8 pos |  total |
+| ---- | -----: | -----: | -----: | -----: | -----: | -----: | -----: | -----: | -----: |
+A|-|-|-|-|-|-|-|-|-
+B|-|-|-|-|-|-|-|-|-
+C|-|-|-|-|-|-|-|-|-
+D|-|-|-|-|-|-|-|-|-
+E|-|-|-|-|-|-|-|-|-
+F|-|-|-|-|-|-|-|-|-
+G|-|-|-|-|-|-|-|-|-
+H|-|-|-|x|-|-|-|-|-
+I|-|-|-|-|-|-|-|-|-
+J|-|-|-|-|-|-|-|-|-
+K|-|-|-|-|-|-|-|-|-
+L|-|-|-|-|-|-|-|-|-
+M|-|-|-|-|-|-|-|-|-
+N|-|-|-|-|-|-|-|-|-
+O|-|-|-|-|-|-|-|-|-
+P|-|-|-|-|-|-|-|-|-
+Q|-|-|-|-|-|-|-|-|-
+R|-|-|-|-|-|-|-|-|-
+S|-|-|-|-|-|-|-|-|-
+T|-|-|-|-|-|-|-|-|-
+U|-|-|-|-|-|-|-|-|-
+V|-|-|-|-|-|-|-|-|-
+W|-|-|-|-|-|-|-|-|-
+X|-|-|-|-|-|-|-|-|-
+Y|-|-|-|-|-|-|-|-|-
+Z|-|-|-|-|-|-|-|-|-
+{:.mbtablestyle2}
+
+From results we conclude that from mathematical/statistical point of view the simpler function has 
+significantly better statistical properties compared to function with some "obfuscation" steps.
+MD5 itself is quite good crypto hash function thus I cannot see any benefit 
+from step 3, 4 in the original password function.
 
 ## Reversing part 2
 
