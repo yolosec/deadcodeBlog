@@ -650,7 +650,10 @@ was optimized by building [Aho-Corasick](https://en.wikipedia.org/wiki/Aho%E2%80
 search automaton, initialized with all profanities found
 (very rude automaton indeed). If the profanity was detected as a substring, we also generated a new password from non-insulting alphabet.
 
-From 16777216 passwords in total, 32105 contained at least one profanity in it, in particular in 0.19% cases.
+From 16777216 passwords in total, 32105 contained at least one profanity in it, in particular in happened 0.19% cases.
+Thus in 1000 generated password there are almost 2 containing a profanity. It is more than I intuitively expected. 
+
+Table of profanity occurrences with respect to length: 
 
 | # of characters |  Profanity occurrences |
 | :-------------: | :--------------------: |
@@ -659,7 +662,7 @@ From 16777216 passwords in total, 32105 contained at least one profanity in it, 
 | 5               |  3001                  |
 {:.mbtablestyle2}
 
-There were just 4 distincs 3 character profanities. The histogram:
+There were just 4 distinct 3 character profanities. The histogram:
 
 <!--
 ```sql
