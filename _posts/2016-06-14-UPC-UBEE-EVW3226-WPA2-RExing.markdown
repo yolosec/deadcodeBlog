@@ -421,6 +421,7 @@ with given mean. With 99% confidence level we can reject the null hypothesis if 
 of the area of the normal curve, it approximately corresponds to distance 2.58 standard deviations from mean:
 
 [![Normal curve](/static/ubee/normal-curve-small.png)](/static/ubee/normal-curve-small.png)
+
 *Normal curve*
 
 Note: The distance from the mean in terms of standard deviations is called Z-score.
