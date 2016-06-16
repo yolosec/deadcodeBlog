@@ -274,23 +274,23 @@ sprintf(buff1, "%2X%2X%2X%2X%2X%2X555043444541554C5450415353504852415345",
   mac[2], mac[3],
   mac[4], mac[5]);
 
-// 2.
+// 2. MD5 hash the string
 MD5_Init(&ctx);
 MD5_Update(&ctx, buff1, strlen((char*)buff1)+1);
 MD5_Final(buff2, &ctx);
 
-// 3.
+// 3. Take 3B of the result, build a new string
 sprintf(buff3, "%.02X%.02X%.02X%.02X%.02X%.02X",
   buff2[0]&0xF, buff2[1]&0xF,
   buff2[2]&0xF, buff2[3]&0xF,
   buff2[4]&0xF, buff2[5]&0xF);
 
-// 4.
+// 4. MD5 hash the string
 MD5_Init(&ctx);
 MD5_Update(&ctx, buff3, strlen((char*)buff3)+1);
 MD5_Final(hash_buff, &ctx);
 
-// 5.
+// 5. Projection to 26char alphabet
 sprintf(passwd, "%c%c%c%c%c%c%c%c",
         0x41u + ((hash_buff[0]+hash_buff[8]) % 0x1Au),
         0x41u + ((hash_buff[1]+hash_buff[9]) % 0x1Au),
@@ -308,20 +308,20 @@ A way the projection to 26 character alphabet ( last `sprintf` ) is made is inte
 Programmer does byte addition here, modulo 26. On the first reading this might seem weird, why he just not did
 
 ```c
-0x41u + (hash_buff[0] % 0x1Au)
+0x41u + (hash_buff[0] % 0x1Au) // PAlt1
 ```
 
 or
 
 ```c
-0x41u + ((hash_buff[0]^hash_buff[8]) % 0x1Au)
+0x41u + ((hash_buff[0]^hash_buff[8]) % 0x1Au) // PAlt2
 ```
 
 Technical note: input bytes come from MD5 cryptographic hash function so basically we can assume the distribution
 on these bytes is uniform.
 
 The choice of addition is very clever because the output distribution on the alphabet is almost uniform.
-The naive approaches of projection I mentioned seemingly give non-uniform distribution for
+The naive approaches of projections `PAlt1`, `PAlt2` mentioned seemingly give non-uniform distribution for
 \\( \\{22, 23, 24, 25 \\} \\) as \\( 255 \; \% \; 26 = 21 \\)
 
 [![A plus B mod 26](/static/ubee/distribApBmod26.png)](/static/ubee/distribApBmod26.png)
