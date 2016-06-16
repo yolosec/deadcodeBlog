@@ -437,8 +437,8 @@ From the table above we see there are biases on both particular positions and in
 character `W` is biased on positions password positions 4 and 5 and in overall statistics (pos 1-8). On contrary
 we cannot reject null hypothesis for character `A`.
 
-It would not be fair to test uniformity hypothesis as the output transformation on the password (last sprintf)
-has a slight bias.
+It would not be fair to test uniformity hypothesis as the output transformation on the password (last `sprintf`, step 5)
+has a slight bias. Example:
 
 | Char | Uniform distribution | Real distribution |
 | ---- | --------------------:| -----------------:|
@@ -479,8 +479,9 @@ Y|-|-|-|-|-|-|-|-|-
 Z|-|-|-|-|-|-|x|-|-
 {:.mbtablestyle2}
 
-When taking biases into account we see that null hypothesis cannot be rejected for `V`, `W`.
-The only one character the null hypothesis we can reject for is `O` in overall statistics.
+When taking generator biases into account we now see that null hypothesis cannot be rejected for `V`, `W` while 
+in the previous test we rejected it. 
+The only one character the null hypothesis we can reject for in overall statistics is `O`.
 
 Interestingly, if we would swap second `sprintf` function in step 3 in a slightly more reasonable way:
 
