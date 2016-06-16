@@ -208,14 +208,19 @@ The file `libUtility.so` also has symbols in it. Finding the generation function
 I had quite funny moments when reversing the function so I recommend to go through it.
 I minimize the level of boring details. Attached assembly snippets are just for illustrative purposes, no need to study it in depth...
 
-The intro looked like this:
+# GenUPCDefaultPassPhrase 
+The `GenUPCDefaultPassPhrase` function intro looks like this:
 
 [![Intro](/static/ubee/genIntro.png)](/static/ubee/genIntro.png)
+
+*Function intro*
 
 The function does some initialization in the beginning, local variable setting and so on.
 Few instructions later, it reads a file `/nvram/1/1`.
 
 [![NVRAM read](/static/ubee/nvramRead.png)](/static/ubee/nvramRead.png)
+
+*NVRAM read*
 
 Depending on the mode input parameter (2.4 or 5GHz WiFi flag), it reads _6_ bytes,
 either from offset _0x20_ or _0x32_ from the file. 6 bytes suggests it is _MAC_ address of the device.
@@ -223,7 +228,13 @@ You don’t have to be genius to guess that, look at the function `j_increaseMAC
 address by 1. Luckily, this is the only input the function takes to generate WPA2 passwords! It means one can
 generate the exact password, without need to guess the candidate ones (as Blasty found for another model).
 
+We later discovered the MAC address used as function input is not exactly the BSSID of the WiFi interface.
+For 2.4GHz network it is numerically smaller by 3. So if BSSID of WiFi ends on 0xf9, the MAC used for 
+computation is 0xf6 for 2.4GHz network.
+
 [![Increase MAC](/static/ubee/modIncreaseMac.png)](/static/ubee/modIncreaseMac.png)
+
+*MAC input*
 
 The MAC address is then plug to the weird looking magic string. It does:
 
@@ -240,9 +251,13 @@ it says `UPCDEAULTPASSPHRASE`.
 
 [![sprintf Magic string](/static/ubee/sprintfMagicString.png)](/static/ubee/sprintfMagicString.png)
 
+*Sprintf magic string*
+
 This resulting string got MD5 hashed:
 
 [![hashing 01](/static/ubee/hashing01.png)](/static/ubee/hashing01.png)
+
+*MD5 Hashing*
 
 Just in case the hashed string had too much entropy, guys decided to do another `sprintf`,
 but cutting it down using 3 bytes of entropy at maximum (buff2 contains the MD5 hash):
@@ -256,11 +271,15 @@ sprintf(buff3, "%.02X%.02X%.02X%.02X%.02X%.02X",
 
 [![sprintf01](/static/ubee/sprintf01.png)](/static/ubee/sprintf01.png)
 
-As a good crypto guy you know what to do next, hash it again, so it is really secure:
+*Sprintf*
+
+When adding more hashing harmed somebody... So hash it again, so it is really secure:
 
 [![hashing 02](/static/ubee/hashingAgain.png)](/static/ubee/hashingAgain.png)
 
-Later things got interesting as well, the following function is doing modulo 0x1a = 26. What is the length of english
+*MD5 hashing*
+
+Later things got interesting as well. The following function is doing modulo `0x1a = 26`. That is the length of English
 alphabet. Somebody is trying to beat `[A-Z]{8}` string out of it - which is good for us as UPC password is exactly of
 this format.
 
