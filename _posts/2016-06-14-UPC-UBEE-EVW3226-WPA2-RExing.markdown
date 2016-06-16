@@ -434,7 +434,7 @@ Z|-|-|-|-|-|-|x|-|-
 {:.mbtablestyle2}
 
 From the table above we see there are biases on both particular positions and in total. For example,
-character `W` is biased on 4,5 positions and in overall statistics. On contrary
+character `W` is biased on positions password positions 4 and 5 and in overall statistics (pos 1-8). On contrary
 we cannot reject null hypothesis for character `A`.
 
 It would not be fair to test uniformity hypothesis as the output transformation on the password (last sprintf)
