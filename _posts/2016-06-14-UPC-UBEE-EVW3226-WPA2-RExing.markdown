@@ -483,7 +483,7 @@ When taking generator biases into account we now see that null hypothesis cannot
 in the previous test we rejected it. 
 The only one character the null hypothesis we can reject for in overall statistics is `O`.
 
-Interestingly, if we would swap second `sprintf` function in step 3 in a slightly more reasonable way:
+Interestingly, if we would use second `sprintf` function in step 3 in a slightly more reasonable way:
 
 ```c
 // old function - broken, low entropy...
