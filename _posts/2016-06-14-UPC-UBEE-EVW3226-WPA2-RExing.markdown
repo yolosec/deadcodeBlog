@@ -720,4 +720,13 @@ for \\( \pm \\) 10 MAC around BSSID we can then surely find observed SSID in \\(
  WPA2 password.
  
  
+# Responsible disclosure
+
+- _27. Jan 2016_: Start of the analysis.
+- _04. Feb 2016_: Official disclosure to Liberty Global.
+- _04. May 2016_: Check with Liberty Global on state of the fix.
+- _20. Jun 2016_: Sending this article for approval to Liberty Global.
+- _xx. Jun 2016_: Publication of this article.
+
+
 
