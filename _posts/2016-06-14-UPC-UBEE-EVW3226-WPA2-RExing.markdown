@@ -318,10 +318,10 @@ or
 ```
 
 Technical note: input bytes come from MD5 cryptographic hash function so basically we can assume the distribution
-on these bytes is uniform.
+on these bytes is uniform if the input is uniform and computed over many inputs.
 
 The choice of addition is very clever because the output distribution on the alphabet is almost uniform.
-The naive approaches of projections `PAlt1`, `PAlt2` mentioned seemingly give non-uniform distribution for
+The naive approaches of mentioned projections `PAlt1`, `PAlt2` seemingly give non-uniform distribution for
 \\( \\{22, 23, 24, 25 \\} \\) as \\( 255 \; \% \; 26 = 21 \\)
 
 [![A plus B mod 26](/static/ubee/distribApBmod26.png)](/static/ubee/distribApBmod26.png)
