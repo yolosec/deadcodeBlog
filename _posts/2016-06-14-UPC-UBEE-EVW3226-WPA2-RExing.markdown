@@ -482,7 +482,7 @@ Z|-|-|-|-|-|-|x|-|-
 When taking biases into account we see that null hypothesis cannot be rejected for `V`, `W`.
 The only one character the null hypothesis we can reject for is `O` in overall statistics.
 
-Interestingly, if we would swap second `sprintf` function in step 3 in a way it should be done:
+Interestingly, if we would swap second `sprintf` function in step 3 in a slightly more reasonable way:
 
 ```c
 // old function - broken, low entropy...
@@ -530,7 +530,9 @@ Y|-|-|-|-|-|-|-|-|-
 Z|-|-|-|-|-|-|-|-|-
 {:.mbtablestyle2}
 
-We see this function has better statistical properties.
+We see this function has better statistical properties. But note it is still
+not optimal as we are throwing out majority of MD5 result. We can do it even better. 
+
 The last we analyze function that completely skips step 3 & 4, so it performs only one
 MD5 hashing.
 
