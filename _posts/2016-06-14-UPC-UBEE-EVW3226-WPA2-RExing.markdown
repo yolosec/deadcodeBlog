@@ -567,7 +567,11 @@ Z|-|-|-|-|-|-|-|-|-
 From results we conclude that from mathematical/statistical point of view the simpler function has 
 significantly better statistical properties compared to function with some "obfuscation" steps.
 MD5 itself is quite good crypto hash function thus I cannot see any benefit 
-from step 3, 4 in the original password function.
+from step 3, 4 in the original password function. Authors maybe tried to 
+make it hard to guess derivation function or relation of MAC address to default password
+ so they added this additional step.
+If this is the case, it is implemented in the wrong way and pretty much without 
+desired effect. Unless authors had some other design goals that we are not aware of.
 
 ## Reversing part 2
 
