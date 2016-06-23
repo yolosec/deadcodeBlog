@@ -398,7 +398,7 @@ Z|646202|644073|643327|644302|646467|645129|647716|645630|5162846
 
 We see that the number of occurrences is pretty much balanced around a mean value 645277.
 There are also values that are more or less distant from this mean. The question is whether this
-balance is just a statistical fluctuation or it is really a bias from the distribution we expect.
+balance is just a statistical fluctuation or it is really a significant bias from the distribution we expect.
 
 With hypothesis testing framework we can say whether this bias is statistically significant or not.
 The null hypothesis we are going to test against is \\( H_0: \\) the distribution of characters from the alphabet is
@@ -409,6 +409,12 @@ not mean the hypothesis is proven.
 Without loss of generality, consider the first character of the password. We want to test whether character `A`
 has expected probability of appearance. Expected probability is \\( {1}/{26} \\). We have \\( 2^{24} \\) samples
 from the distribution on the first character.
+
+There are several ways for testing uniformity of a random number generator. 
+For more complex methods please refer to 
+[\[1\]](http://www.cse.wustl.edu/~jain/cse567-08/ftp/k_27trg.pdf) or 
+[\[2\]](http://www.fi.muni.cz/~xkrhovj/lectures/2005_PA168_Statistical_Testing_slides.pdf). We are going 
+to use a simple method, to demonstrate the approach.
 
 Assuming \\( H_0 \\) holds the distribution follows [Binomial Distribution](https://en.wikipedia.org/wiki/Binomial_distribution)
 where number of trials \\(n = 2^{24} \\), probability of success \\( p = 1/26 \\). We define a success if the given
