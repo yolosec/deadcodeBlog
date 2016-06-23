@@ -725,6 +725,8 @@ Thus if we take WiFi BSSID MAC and compute mapping \\( M = \\{ \\) SSID \\( \rig
 for \\( \pm \\) 10 MAC around BSSID we can then surely find observed SSID in \\( M \\) and corresponding default
  WPA2 password.
  
+# Android apps
+TODO:
  
 # Responsible disclosure
 
