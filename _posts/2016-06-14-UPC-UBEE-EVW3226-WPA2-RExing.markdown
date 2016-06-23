@@ -726,8 +726,19 @@ for \\( \pm \\) 10 MAC around BSSID we can then surely find observed SSID in \\(
  WPA2 password.
  
 # Android apps
-TODO:
- 
+
+**RouterKeygen**
+
+To enable users to test their default UPC WiFi keys from their Android phones, we added support to [RouterKeygen](https://github.com/routerkeygen/routerkeygenAndroid) application for our algorithm (and to Blasty's algorithm as well). RouterKeygen scans nearby WiFi networks, detects any UPC routers and automatically generates and tests candidate keys.
+
+[![RouterKeygen Yolosec](/static/ubee/routerkeygen_screen.jpg)](/static/ubee/routerkeygen_screen.jpg)
+
+**UPC Keygen**
+
+[UPC Keygen](https://github.com/yolosec/upcKeygen) is a lightweight alternative for RouterKeygen that requires no Android permissions. It allows user manually enter UPC SSID and calculate candidate keys using Blasty's original algorithm (our algorithm is not supported).
+
+[![RouterKeygen Yolosec](/static/ubee/upckeygen_screen.jpg)](/static/ubee/upckeygen_screen.jpg)
+
 # Responsible disclosure
 
 - _27. Jan 2016_: Start of the analysis.
