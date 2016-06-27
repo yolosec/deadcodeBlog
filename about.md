@@ -4,12 +4,17 @@ title: About
 permalink: /about/
 ---
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](http://jekyllrb.com/)
+Welcome to our `0xDEADCODE` security blog.
+We are security analysts and enthusiasts poking around interesting stuff. 
 
-You can find the source code for the Jekyll new theme at:
-{% include icon-github.html username="jglovier" %} /
-[jekyll-new](https://github.com/jglovier/jekyll-new)
+# Dušan Klinec (Ph4r05)
+- {% include icon-github.html username="ph4r05" %}
+- {% include icon-twitter.html username="ph4r05" %}
 
-You can find the source code for Jekyll at
-{% include icon-github.html username="jekyll" %} /
-[jekyll](https://github.com/jekyll/jekyll)
+# Miroslav Svítok (Miroc)
+- {% include icon-github.html username="miroc" %}
+- {% include icon-twitter.html username="miroc" %}
+
+<!--You can find the source code for Jekyll at-->
+<!--{% include icon-github.html username="jekyll" %} /-->
+<!--[jekyll](https://github.com/jekyll/jekyll)-->
