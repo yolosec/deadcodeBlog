@@ -645,7 +645,7 @@ chance the password would match this.
 Another optimization would be to remove profanities that are substrings of other profanities.
 E.g., "COCK", "COCKS", "COCKY", "ACOCK"
 
-Basically this is the generation routine. You can find all codes we used, profanity database and more in the archive for the article.
+Basically this is the generation routine. You can find all codes we used, profanity database and more in the repository for the article.
 
 So to have a bit more fun, we generated a SQLite database for all MAC addresses starting on `0x647c34` =
 UBEE vendor prefix, what is \\( 2^{24} \\) = 16777216 passwords. This is quite a number so the profanity detection
