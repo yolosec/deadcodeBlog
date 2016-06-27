@@ -131,14 +131,11 @@ While USB was dumping the firmware I went for the target - WiFi password. In the
 And clearly, there must be a binary/script that generates that configuration when user changes the
 password OR the router is factory reset.
 
-The file `secath0` stores the configuration. All the files are attached in the archive to this
-article. I select only relevant lines. The configuration file stated:
+The file `secath0` stores the current WiFi configuration. I select only relevant lines for simplicity. The configuration file stated:
 
 ```
 interface=ath0
 bridge=rndbr1
-logger_stdout=-1
-logger_stdout_level=2
 dump_file=/tmp/hostapd.dump
 ctrl_interface=/var/run/hostapd
 ssid=UPC2495638
