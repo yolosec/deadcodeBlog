@@ -716,7 +716,7 @@ functions from router UBEE EBW3226.
 
 The only input of the functions is MAC address of the device. This MAC address does not exactly
 match WiFi BSSID MAC, but is slightly shifted. The shift is constant for all routers with this firmware.
-Moreover the shift depends on `mode` which a binary flag saying the computation is made for 2.45GHz or 5GHz WiFi mode.  
+Moreover the shift depends on `mode` which is a binary flag saying the computation is made for 2.45GHz or 5GHz WiFi mode.  
 
 The point is the exact value of the shift does not matter that much as the computation for one single MAC
 address is very cheap and both SSID and WPA2 password generator uses the same mechanism to generate input MAC.
