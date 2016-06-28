@@ -723,13 +723,14 @@ for \\( \pm \\) 10 MAC around BSSID we can then surely find observed SSID in \\(
  WPA2 password.
  
 From our observation, BSSID for 5GHz = BSSID for 2.4GHz network (MAC is the same).
+Furthermore, BSSID = MTA MAC + 3 on the router label.
 Table below shows how BSSID and input MAC address relates on the example:
 
 | Band | BSSID | Function input MAC | Offset | SSID | Password |
 | ---- | ----- | ------------------ | ------ | ---- | -------- |
 2.4 GHz | 64:7c:34:12:34:56 | 64:7c:34:12:34:53 | -3 | UPC2659797 | IVGDQAMI
 5.0 GHz | 64:7c:34:12:34:56 | 64:7c:34:12:34:55 | -1 | UPC2870546 | PXKRLPCC
-{:.mbtablestyle2}
+{:.mbtablestyle2} 
  
 # Android apps
 
