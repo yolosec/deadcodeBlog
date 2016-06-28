@@ -138,10 +138,10 @@ interface=ath0
 bridge=rndbr1
 dump_file=/tmp/hostapd.dump
 ctrl_interface=/var/run/hostapd
-ssid=UPC2495638
+ssid=UPC2659797
 
 wpa=3
-wpa_passphrase=WWMMVTZS
+wpa_passphrase=IVGDQAMI
 wpa_key_mgmt=WPA-PSK
 ```
 
@@ -225,8 +225,8 @@ You don’t have to be genius to guess that, look at the function `j_increaseMAC
 address by 1. Luckily, this is the only input the function takes to generate WPA2 passwords! It means one can
 generate the exact password, without need to guess the candidate ones (as Blasty found for another model).
 
-We later discovered the MAC address used as function input is not exactly the BSSID of the WiFi interface.
-For 2.4GHz network it is numerically smaller by 3. So if BSSID of WiFi ends on 0xf9, the MAC used for 
+We later discovered the MAC address used as function input is not exactly the BSSID (= MAC of the WiFi interface).
+For 2.4GHz network it is numerically smaller by 3. So if BSSID ends on 0xf9, the MAC used for 
 computation is 0xf6 for 2.4GHz network.
 
 Actually when you do `hexdump -C nvram/1/1` 
@@ -712,15 +712,24 @@ We managed to reverse engineer both the default WiFi WPA2 password generator fun
 functions from router UBEE EBW3226. 
 
 The only input of the functions is MAC address of the device. This MAC address does not exactly
-match WiFi BSSID MAC, but is slightly shifted. The shift is constant for all routers with this firmware.
+match BSSID, but is slightly shifted. The shift is constant for all routers with this firmware.
 Moreover the shift depends on `mode` which is a binary flag saying the computation is made for 2.45GHz or 5GHz WiFi mode.  
 
 The point is the exact value of the shift does not matter that much as the computation for one single MAC
 address is very cheap and both SSID and WPA2 password generator uses the same mechanism to generate input MAC.
 
-Thus if we take WiFi BSSID MAC and compute mapping \\( M = \\{ \\) SSID \\( \rightarrow \\) WPA2 \\( \\} \\) 
+Thus if we take WiFi BSSID and compute mapping \\( M = \\{ \\) SSID \\( \rightarrow \\) WPA2 \\( \\} \\) 
 for \\( \pm \\) 10 MAC around BSSID we can then surely find observed SSID in \\( M \\) and corresponding default
  WPA2 password.
+ 
+From our observation, BSSID for 5GHz = BSSID for 2.4GHz network (MAC is the same).
+Table below shows how BSSID and input MAC address relates on the example:
+
+| Band | BSSID | Function input MAC | Offset | SSID | Password |
+| ---- | ----- | ------------------ | ------ | ---- | -------- |
+2.4 GHz | 64:7c:34:12:34:56 | 64:7c:34:12:34:53 | -3 | UPC2659797 | IVGDQAMI
+5.0 GHz | 64:7c:34:12:34:56 | 64:7c:34:12:34:55 | -1 | UPC2870546 | PXKRLPCC
+{:.mbtablestyle2}
  
 # Android apps
 
