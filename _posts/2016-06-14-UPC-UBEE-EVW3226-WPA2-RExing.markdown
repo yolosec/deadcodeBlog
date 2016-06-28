@@ -9,6 +9,7 @@ excerpt_separator: <!-- more -->
 ---
 
 TL;DR: We reversed default WPA2 password generation routine for UPC UBEE EBW3226 router.  
+This blog contains firmware analysis, reversing writeup, function statistical analysis and proof-of-concept generator.
 
 <!-- more -->
 
@@ -35,35 +36,38 @@ Just a day before I bought my UBEE router for experiments, Firefart [published a
 how to get a root on the router just by inserting a USB drive with simple scripts.
 
 Tl;dr: If USB drive has name `EVW3226`, shell script
-`.auto` on it gets executed with system privileges. With this script you start SSH server, you connect
-to the router and have the root.
+`.auto` on it gets executed with system privileges. With this script you start SSH server, connect
+prepared USB drive to the router and enjoy the root.
 
 # Firmware Extraction
 
 With this I managed to dump the whole firmware on the mounted USB drive.
-The script we use to start SSH daemon and to dump the firmware is below:
+The script we use to start SSH daemon and to dump the firmware is below.
+Note: for detailed instructions on preparing USB drive please refer to the original [article](https://firefart.at/post/upc_ubee_fail/).
 
 ```bash
 #!/bin/bash
 if [ ! -e /etc/passwd.1 ]; then
 	cp /etc/passwd /etc/passwd.1
 
-    # This works!
-    #echo "admin:FvTuBQSax2MqI:0:0:admin,,,:/:/bin/sh" > /etc/passwd
+    # dropbear_rsa_host_key has to be prepared on the USB drive 
+    echo "admin:FvTuBQSax2MqI:0:0:admin,,,:/:/bin/sh" > /etc/passwd
     dropbear -r /var/tmp/disk/dropbear_rsa_host_key -p 192.168.0.1:22
 
-    # Dump router to the drive
+    # Dump router FS to the drive as tar
     WHERE=/var/tmp/disk/HOMEROUTER
     mkdir -p ${WHERE}
     tar -cvpf ${WHERE}/router-image-root.tar -X/var/tmp/disk/tar-exclude /
     sync
 
+    ## dd all mounted file systems
     for i in 0 1 2 3 4 5 6 7 8 9 10; do echo "CurDisk: mtdblock$i"; dd if="/dev/mtdblock${i}"\
            of="${WHERE}/fw-${i}.bin" bs=1 conv=noerror; done
-   for i in 0 1 2 3 4 5 6 7 8 9 10; do echo "CurDisk: mtd$i"; dd if="/dev/mtd${i}" \
+    for i in 0 1 2 3 4 5 6 7 8 9 10; do echo "CurDisk: mtd$i"; dd if="/dev/mtd${i}" \
            of="${WHERE}/fw-${i}b.bin" bs=1 conv=noerror; done
-   sync
+    sync
 
+    # Make simple FS copy
     DDIR=`pwd`
     WHERE=/var/tmp/media/0AAA-0E65/HOMEROUTER
     cd /
@@ -226,8 +230,8 @@ Few instructions later, it reads a file `/nvram/1/1`.
 
 *NVRAM read*
 
-Depending on the mode input parameter (2.4 or 5GHz WiFi flag), it reads _6_ bytes,
-either from offset _0x20_ or _0x32_ from the file. 6 bytes suggests it is _MAC_ address of the device.
+Depending on the mode input parameter (binary flag determining band, 2.4 or 5 GHz), it reads _6_ bytes,
+either from offset _0x20_ or _0x32_ from the beginning of the file `/nvram/1/1`. 6 bytes suggests it is _MAC_ address of the device.
 You don’t have to be genius to guess that, look at the function `j_increaseMACAddress` - which increments MAC
 address by 1. Luckily, this is the only input the function takes to generate WPA2 passwords! It means one can
 generate the exact password, without need to guess the candidate ones (as Blasty found for another model).
@@ -244,7 +248,7 @@ You can spot something that resembles MAC address on positions _0x20_ and  _0x32
 
 *MAC input*
 
-The MAC address is then plug to the weird looking magic string. It does:
+The MAC address is then plugged to the weird looking magic string. It does:
 
 ```c
 sprintf(buff1, "%2X%2X%2X%2X%2X%2X555043444541554C5450415353504852415345",
@@ -345,7 +349,7 @@ or
 ```
 
 Technical note: input bytes come from MD5 cryptographic hash function so basically we can assume the distribution
-on these bytes is uniform if the input is uniform and computed over many inputs.
+on these MD5 output bytes is uniform assuming the MD5 input is non-random/non-repeating.
 
 The choice of addition is very clever because the output distribution on the alphabet is almost uniform.
 The naive approaches of mentioned projections `PAlt1`, `PAlt2` seemingly give non-uniform distribution for
@@ -410,7 +414,7 @@ uniform over characters. The alternative hypothesis is the distribution is not u
 null hypothesis we know there is a bias. If we cannot reject the null hypothesis, we assume it still holds, but it does
 not mean the hypothesis is proven.
 
-Without loss of generality, consider the first character of the password. We want to test whether character `A`
+Without loss of generality, consider the first character position of the password. We want to test whether character `A`
 has expected probability of appearance. Expected probability is \\( {1}/{26} \\). We have \\( 2^{24} \\) samples
 from the distribution on the first character.
 
@@ -421,8 +425,8 @@ For more complex methods please refer to
 to use a simple method, to demonstrate the approach.
 
 Assuming \\( H_0 \\) holds the distribution follows [Binomial Distribution](https://en.wikipedia.org/wiki/Binomial_distribution)
-where number of trials \\(n = 2^{24} \\), probability of success \\( p = 1/26 \\). We define a success if the given
-characters is `A`. The expected number of success events is then \\( np = 2^{24} / 26 = 645277.54 \\). Moreover,
+where number of trials \\(n = 2^{24} \\), probability of success \\( p = 1/26 \\) (success is if characters `A` was generated). 
+The expected number of success events is then \\( np = 2^{24} / 26 = 645277.54 \\). Moreover,
 from the [Central Limit Theorem](https://en.wikipedia.org/wiki/Central_limit_theorem) this distribution
 can be approximated with [Normal distribution](https://en.wikipedia.org/wiki/Normal_distribution) as the number of 
 samples is big enough, thus it is a good approximation.
@@ -430,7 +434,7 @@ samples is big enough, thus it is a good approximation.
 Basic of hypothesis testing is very well explained in this [article](http://20bits.com/article/hypothesis-testing-the-basics).
 We define \\( \alpha = 0.01 \\) so the level of confidence the null hypothesis is false is 99%.
 
-Under assumption of null hypothesis the distribution of A characters on the first character should follow Normal Distribution
+Under assumption of null hypothesis the distribution of `A` characters on the first character should follow Normal Distribution
 with given mean. With 99% confidence level we can reject the null hypothesis if observed probability lies outside 99%
 of the area of the normal curve, it approximately corresponds to distance 2.58 standard deviations from mean:
 
@@ -623,7 +627,7 @@ So I went through the analysis and the next thing completely blew my mind:
 
 [![Profanity check](/static/ubee/profanities02.png)](/static/ubee/profanities02.png)
 
-You cannot miss the “cocks” right in front of you. So there is a profanities_ptr which points to the database of
+You cannot miss the “cocks” right in front of you. So there is a `profanities_ptr` which points to the database of
 rude words…
 
 # Profanity analysis
@@ -639,11 +643,11 @@ calling your help desk complaining the default password on his router is *MILFPI
 
 In case the generated password contains this profanity in it, UBEE engineers added a special, non-insulting alphabet
 for help. The alphabet is visible on the beginning of the analyzed function: `BBCDFFGHJJKLMNPQRSTVVWXYZZ`, the classic
-one with almost vowels removed. I did a quick search and truly, there cannot be made a rude word from UBEE
+one with almost all vowels removed. I did a quick search and truly, there cannot be made a rude word from UBEE
 profanity database with this alphabet.
 
-The weird thing about profanity database was there were some of them multiple times, with varying case.
-I was wondering why somebody didn’t converted it all to uppercase and removed duplicates at the first place.
+The weird thing about profanity database is there are some of the entries present multiple times, with varying case.
+I was wondering why somebody didn’t convert it all to uppercase and removed duplicates at the first place.
 Instead of that, UBEE router converts it to uppercase and goes through them incrementally when generating a
 random password. Useless CPU cycles... (how many CO emissions could have saved generating it wisely?).
 Another thing, the database contains a word “PROSTITUTE” which is made of 10 characters, but there is no
@@ -652,12 +656,13 @@ chance the password would match this.
 Another optimization would be to remove profanities that are substrings of other profanities.
 E.g., "COCK", "COCKS", "COCKY", "ACOCK"
 
-Basically this is the generation routine. You can find all codes we used, profanity database and more in the repository for the article.
+Basically this is the whole WPA2 password generation routine. 
+You can find all codes we used, profanity database and more in the repository for the article. <!-- //TODO: repo -->
 
 So to have a bit more fun, we generated a SQLite database for all MAC addresses starting on `0x647c34` =
 UBEE vendor prefix, what is \\( 2^{24} \\) = 16777216 passwords. This is quite a number so the profanity detection
 was optimized by building [Aho-Corasick](https://en.wikipedia.org/wiki/Aho%E2%80%93Corasick_algorithm)
-search automaton, initialized with all profanities found
+search automaton, initialized with all profanities from the UBEE database
 (very rude automaton indeed). If the profanity was detected as a substring, we also generated a new password from non-insulting alphabet.
 
 From 16777216 passwords in total, 32105 contained at least one profanity in it, in particular in happened 0.19% cases.
@@ -789,7 +794,7 @@ To enable users to test their default UPC WiFi keys from their Android phones, w
 - _27. Jan 2016_: Start of the analysis.
 - _04. Feb 2016_: Official disclosure to Liberty Global.
 - _04. May 2016_: Check with Liberty Global on state of the fix.
-- _27. Jun 2016_: Sending this article for approval to Liberty Global.
+- _28. Jun 2016_: Sending this article for approval to Liberty Global.
 - _xx. Jun 2016_: Publication of this article.
 
 
