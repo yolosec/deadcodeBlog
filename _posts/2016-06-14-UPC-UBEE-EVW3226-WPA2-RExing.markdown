@@ -28,6 +28,8 @@ Our modem is UBEE EVW3226. As I don’t want to experiment on my own home router
 exactly the same model. There are guys who managed to get root access to the router by connecting to the UART
 interface of the router. I recommend going through this article: <https://www.freeture.ch/?p=766>
 
+[![UBEE top](/static/ubee/ubee_front.jpg)](/static/ubee/ubee_front.jpg)
+
 Lucky for us, we didn’t have to mess with the UART interface of the router even though I was looking forward to it.
 Just a day before I bought my UBEE router for experiments, Firefart [published an article](https://firefart.at/post/upc_ubee_fail/)
 how to get a root on the router just by inserting a USB drive with simple scripts.
@@ -736,6 +738,10 @@ Table below shows how BSSID and input MAC address relates on the example:
 2.4 GHz | 64:7c:34:12:34:56 | 64:7c:34:12:34:53 | -3 | UPC2659797 | IVGDQAMI
 5.0 GHz | 64:7c:34:12:34:56 | 64:7c:34:12:34:55 | -1 | UPC2870546 | PXKRLPCC
 {:.mbtablestyle2} 
+ 
+ 
+ This is how router label looks like for our example:
+ [![UBEE label](/static/ubee/ubee_label.jpg)](/static/ubee/ubee_label.jpg)
  
 # Android apps
 
