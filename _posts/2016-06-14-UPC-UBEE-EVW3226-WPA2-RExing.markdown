@@ -4,8 +4,13 @@ title:  "UPC UBEE EBW3226 WPA2 Password RExing"
 date:   2016-06-14 19:11:48 +0200
 categories: blog
 tags: hacking router reversing hacking
+excerpt_separator: <!-- more -->
 
 ---
+
+TL;DR: We reversed default WPA2 password generation routine for UPC UBEE EBW3226 router.  
+
+<!-- more -->
 
 # Introduction
 
