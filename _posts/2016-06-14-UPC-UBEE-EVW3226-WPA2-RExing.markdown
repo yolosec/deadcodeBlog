@@ -659,7 +659,7 @@ E.g., "COCK", "COCKS", "COCKY", "ACOCK"
 Basically this is the whole WPA2 password generation routine. 
 You can find all codes we used, profanity database and more in the repository for the article. <!-- //TODO: repo -->
 
-So to have a bit more fun, we generated a SQLite database for all MAC addresses starting on `0x647c34` =
+So to have a bit more fun, we generated a SQLite database for all MAC addresses starting on `64:7c:34` =
 UBEE vendor prefix, what is \\( 2^{24} \\) = 16777216 passwords. This is quite a number so the profanity detection
 was optimized by building [Aho-Corasick](https://en.wikipedia.org/wiki/Aho%E2%80%93Corasick_algorithm)
 search automaton, initialized with all profanities from the UBEE database
@@ -781,7 +781,7 @@ To face our results with the reality, we did a small [wardriving](https://en.wik
 
 We are based in [Brno](https://en.wikipedia.org/wiki/Brno), which is the second largest city of the Czech Republic. It has population about 400 000 people, lots of them concentrated in city blocks where people are living in tower buildings known as "panelaky". This proved to be a good target since there are plenty of WiFis to be catched.
 
-Our setup was simple - Linux laptop having external WiFi card (TP-LINK TL-WN722N) with [Kismet](https://en.wikipedia.org/wiki/Kismet_(software)) and Motorola Moto G Android phone with TO-BE-ADDED software. Long story short - suprisingly the Android phone did a better job and found as twice as much networks as the complicated PC setup. Therefore the further data is mostly from the Android device.
+Our setup was simple - Linux laptop having external WiFi card (TP-LINK TL-WN722N) with [Kismet](https://en.wikipedia.org/wiki/Kismet_(software)) and Motorola Moto G Android phone with [WiGLE Wifi](https://play.google.com/store/apps/details?id=net.wigle.wigleandroid) application. Long story short - suprisingly the Android phone did a better job and found as twice as much networks as the complicated PC setup. Therefore the further data is mostly from the Android device.
 
 We did a 3 hours long drive from which the main results are:
 
