@@ -425,7 +425,7 @@ For more complex methods please refer to
 to use a simple method, to demonstrate the approach.
 
 Assuming \\( H_0 \\) holds the distribution follows [Binomial Distribution](https://en.wikipedia.org/wiki/Binomial_distribution)
-where number of trials \\(n = 2^{24} \\), probability of success \\( p = 1/26 \\) (success is if characters `A` was generated). 
+where number of trials \\(n = 2^{24} \\), probability of success \\( p = 1/26 \\) (success is if character `A` is generated). 
 The expected number of success events is then \\( np = 2^{24} / 26 = 645277.54 \\). Moreover,
 from the [Central Limit Theorem](https://en.wikipedia.org/wiki/Central_limit_theorem) this distribution
 can be approximated with [Normal distribution](https://en.wikipedia.org/wiki/Normal_distribution) as the number of 
