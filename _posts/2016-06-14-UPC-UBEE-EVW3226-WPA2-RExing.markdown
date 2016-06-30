@@ -774,7 +774,22 @@ by ph4r05, miroc
   near-BSSID: 647C34123459, SSID: UPC7482035, PASS: CQTJPRCB 
   near-BSSID: 647C3412345A, SSID: UPC3856093, PASS: TUXFTTLL 
 ```
- 
+
+# Wardriving
+And now the funny part.
+To face our results with the reality, we did a small [wardriving](https://en.wikipedia.org/wiki/Wardriving) test. To those who do not the term, it is an act of searching for available WiFi networks in a specific area, usually from a car. 
+
+We are based in [Brno](https://en.wikipedia.org/wiki/Brno), which is the second largest city of the Czech Republic. It has population about 400 000 people, lots of them concentrated in city blocks where people are living in tower buildings known as "panelaky". This proved to be a good target since there are plenty of WiFis to be catched.
+
+Our setup was simple - Linux laptop having external WiFi card (TP-LINK TL-WN722N) with [Kismet](https://en.wikipedia.org/wiki/Kismet_(software)) and Motorola Moto G Android phone with TO-BE-ADDED software. Long story short - suprisingly the Android phone did a better job and found as twice as much networks as the complicated PC setup. Therefore the further data is mostly from the Android device.
+
+We did a 3 hours long drive from which the main results are:
+
+- We catched **17 516** unique networks (unique BSSIDs). 
+- **2834** were networks with SSID matching `'^UPC[0-9]{6,9}$'`, these are WLANs possibly vulnerable to the both attacks combined.
+- **443** of them are having BSSID `64:7c:34` prefix, these are UPC UBEE devices possibly vulnerable to our new attack. Estimately **15.6%** of all UPC routers are the new UPC UBEE routers.
+- In summary, UPC is fairly widespread here in Brno, having an estimated market share about **16.17%**. This means we are possibly able to crack every 6th WiFI network, considering users do not change their default passwords very often.
+
 # Android apps
 
 **RouterKeygen**
