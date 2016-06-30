@@ -811,8 +811,8 @@ Both applications are available at the Google Play Store [here](https://play.goo
 - _27. Jan 2016_: Start of the analysis.
 - _04. Feb 2016_: Official disclosure to Liberty Global.
 - _04. May 2016_: Check with Liberty Global on state of the fix.
-- _28. Jun 2016_: Sending this article for approval to Liberty Global.
-- _xx. Jun 2016_: Publication of this article.
+- _28. Jun 2016_: Sending this article for review to Liberty Global.
+- _04. Jul 2016_: Publication of this article.
 
 
 
