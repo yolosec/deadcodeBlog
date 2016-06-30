@@ -789,6 +789,8 @@ To enable users to test their default UPC WiFi keys from their Android phones, w
 
 [![RouterKeygen Yolosec](/static/ubee/upckeygen_screen.jpg)](/static/ubee/upckeygen_screen.jpg)
 
+Both applications are available at the Google Play Store [here](https://play.google.com/store/apps/details?id=net.yolosec.routerkeygen2) and [here](https://play.google.com/store/apps/details?id=net.yolosec.upckeygen).
+
 # Responsible disclosure
 
 - _27. Jan 2016_: Start of the analysis.
