@@ -779,16 +779,21 @@ Or try our online service [ubee.deadcode.me](https://ubee.deadcode.me)
 And now the funny part.
 To face our results with the reality, we did a small [wardriving](https://en.wikipedia.org/wiki/Wardriving) test. To those who do not know the term, it is an act of searching for available WiFi networks in a specific area, usually from a car. 
 
-We are based in [Brno](https://en.wikipedia.org/wiki/Brno), which is the second largest city of the Czech Republic. It has population about 400 000 people, lots of them concentrated in city blocks where people are living in tower buildings known as "panelaky". This proved to be a good target since there are plenty of WiFis to be caught.
+We are based in [Brno](https://en.wikipedia.org/wiki/Brno), which is the second largest city of the Czech Republic. It has population about 400 000 people, lots of them concentrated in city blocks where people are living in tower buildings built during the communist era (known as "panelaky"). This proved to be a good target since there are plenty of WiFis to be caught.
 
 Our setup was simple - Linux laptop having external WiFi card (TP-LINK TL-WN722N) with [Kismet](https://en.wikipedia.org/wiki/Kismet_(software)) and Motorola Moto G Android phone with [WiGLE Wifi](https://play.google.com/store/apps/details?id=net.wigle.wigleandroid) application. Long story short - suprisingly the Android phone did a better job and found twice as many networks as the complicated PC setup. Therefore the further data is mostly from the Android device.
+
+[![Wardriving setup](/static/ubee/wardriving_setup.jpg)](/static/ubee/wardriving_setup.jpg)
 
 We did a 3 hours long drive from which the main results are:
 
 - We caught **17 516** unique networks (unique BSSIDs). 
-- **2834** were networks with SSID matching `'^UPC[0-9]{6,9}$'`, these are WLANs possibly vulnerable to the both attacks combined.
+- **2834** were networks with SSID matching `^UPC[0-9]{6,9}$` regular expression, these are WLANs possibly vulnerable to the both attacks combined.
 - **443** of them are having BSSID `64:7c:34` prefix, these are UPC UBEE devices possibly vulnerable to our new attack. Estimately **15.6%** of all UPC routers are the new UPC UBEE routers.
-- In summary, UPC is fairly widespread here in Brno, having an estimated market share about **16.17%**. This means we are possibly able to crack every 6th WiFI network, considering users do not change their default passwords very often.
+- There were additional 97 networks having BSSID `64:7c:34` prefix, but not matching UPC SSID naming convention. Administrators of these WLANs had changed SSID and most likely also default passwords. It's about **18%** of all UBC UBEE routers.
+- In summary, UPC is fairly widespread here in Brno, having an estimated market share about **16.73%**. We are possibly able to crack every 6th WiFI network, considering users do not change their default passwords very often.
+
+The test was done in February 2016, but we still expect a lot of UPC routers with default credentials to be out there.
 
 # Android apps
 
