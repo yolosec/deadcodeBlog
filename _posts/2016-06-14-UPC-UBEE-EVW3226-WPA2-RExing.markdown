@@ -13,7 +13,20 @@ This blog contains firmware analysis, reversing writeup, function statistical an
 
 <!-- more -->
 
-# Introduction
+**Parts:**
+
+1. [Introduction](#introduction)
+1. [Firmware Extraction](#firmware-extraction)
+1. [Firmware Analysis](#firmware-analysis)
+1. [Reversing part 2 (Profanity Analysis)](#reversing-part-2)
+1. [Conclusion](#conclusion)
+1. [Wardriving](#wardriving)
+1. [Android Apps](#android-apps)
+1. [Sources](#sources)
+1. [Responsible Disclosure](#responsible-disclosure)
+
+
+## Introduction {#introduction}
 
 This work was motivated by the work of [Blasty](https://twitter.com/bl4sty).
 Several months ago he published the algorithm ( [upc_keys.c](https://haxx.in/upc-wifi/) ) generating candidate default
@@ -39,7 +52,7 @@ Tl;dr: If USB drive has name `EVW3226`, shell script
 `.auto` on it gets executed with system privileges. With this script you start SSH server, connect
 prepared USB drive to the router and enjoy the root.
 
-# Firmware Extraction
+## Firmware Extraction {#firmware-extraction}
 
 With this I managed to dump the whole firmware on the mounted USB drive.
 The script we use to start SSH daemon and to dump the firmware is below.
@@ -158,7 +171,7 @@ wpa_key_mgmt=WPA-PSK
 
 Great, we have *SSID* and *PASSPHRASE* stored here. Something must have generated this configuration file.
 
-# Firmware analysis
+## Firmware Analysis
 
 For more experiments, we use `router-image-root.tar`, extract it on local file system to look around. With this
  we find interesting binaries that have something to do with `secath0` file.
@@ -216,7 +229,7 @@ The file `libUtility.so` also has symbols in it. Finding the generation function
 I had quite funny moments when reversing the function so I recommend to go through it.
 I minimize the level of boring details. Attached assembly snippets are just for illustrative purposes, no need to study it in depth...
 
-# GenUPCDefaultPassPhrase 
+#### GenUPCDefaultPassPhrase 
 The `GenUPCDefaultPassPhrase` function intro looks like this:
 
 [![Intro](/static/ubee/genIntro.png)](/static/ubee/genIntro.png)
@@ -621,7 +634,7 @@ make it hard to guess derivation function or relation of MAC address to default 
 If this is the case, it is implemented in the wrong way and pretty much without 
 desired effect. Unless authors had some other design goals that we are not aware of.
 
-## Reversing part 2
+## Reversing part 2 {#reversing-part-2}
 
 So I went through the analysis and the next thing completely blew my mind:
 
@@ -630,7 +643,7 @@ So I went through the analysis and the next thing completely blew my mind:
 You cannot miss the “cocks” right in front of you. So there is a `profanities_ptr` which points to the database of
 rude words…
 
-# Profanity analysis
+### Profanity analysis {#profanity-analysis}
 
 From curiosity I went through the database. Here is the small sample:
 
@@ -717,7 +730,7 @@ WOADS|17 | ERECT|15
 
 [![Profanity size 5](/static/ubee/profanities_c5.png)](/static/ubee/profanities_c5.png)
 
-# Conclusion
+## Conclusion {#conclusion}
 We managed to reverse engineer both the default WiFi WPA2 password generator function and default SSID generator
 functions from router UBEE EBW3226. 
 
@@ -775,7 +788,7 @@ by ph4r05, miroc
 
 Or try our online service [ubee.deadcode.me](https://ubee.deadcode.me)
 
-# Wardriving
+## Wardriving {#wardriving}
 And now the funny part.
 To face our results with the reality, we did a small [wardriving](https://en.wikipedia.org/wiki/Wardriving) test. To those who do not know the term, it is an act of searching for available WiFi networks in a specific area, usually from a car. 
 
@@ -797,15 +810,15 @@ We did a 3 hours long drive from which the main results are:
 
 The test was done in February 2016, but we still expect a lot of UPC routers with default credentials to be out there.
 
-# Android apps
+## Android Apps {#android-apps}
 
-**RouterKeygen**
+### RouterKeygen
 
 To enable users to test their default UPC WiFi keys from their Android phones, we added support to [RouterKeygen](https://github.com/routerkeygen/routerkeygenAndroid) application for our algorithm (and to Blasty's algorithm as well). RouterKeygen scans nearby WiFi networks, detects any UPC routers and automatically generates and tests candidate keys.
 
 [![RouterKeygen Yolosec](/static/ubee/routerkeygen_screen.jpg)](/static/ubee/routerkeygen_screen.jpg)
 
-**UPC Keygen**
+### UPC Keygen
 
 [UPC Keygen](https://github.com/yolosec/upcKeygen) is a lightweight alternative for RouterKeygen that requires no Android permissions. It allows users to manually enter UPC SSID and calculate candidate keys using Blasty's original algorithm. UBEE algorithm is computed for manual BSSID entry. For now we do not support generating UBEE from SSID as it would require  \\( 2^{24} \\) MD5 evaluations (slow).
 
@@ -813,7 +826,7 @@ To enable users to test their default UPC WiFi keys from their Android phones, w
 
 Both applications are available at the Google Play Store [here](https://play.google.com/store/apps/details?id=net.yolosec.routerkeygen2) and [here](https://play.google.com/store/apps/details?id=net.yolosec.upckeygen).
 
-# Sources
+## Sources {#sources}
 
 * {% include icon-github.html username="yolosec/upcgen" %} Proof-of-concept
 * [ubee.deadcode.me](https://ubee.deadcode.me) SSID \\( \rightarrow \\) Password recovery web service
@@ -823,7 +836,7 @@ Both applications are available at the Google Play Store [here](https://play.goo
 * {% include icon-github.html username="yolosec/upcKeygen" %} UPC keygen sources
 
 
-# Responsible disclosure
+## Responsible Disclosure {#responsible-disclosure}
 
 - _27. Jan 2016_: Start of the analysis.
 - _04. Feb 2016_: Official disclosure to Liberty Global.
