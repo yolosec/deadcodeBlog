@@ -15,7 +15,7 @@ We are security analysts and enthusiasts poking around interesting stuff.
 
 ### Miroslav Svítok (Miroc)
 - {% include icon-github.html username="miroc" %}
-- {% include icon-twitter.html username="miroc" %}
+- {% include icon-twitter.html username="mirocslav" %}
 
 
 ## Projects
