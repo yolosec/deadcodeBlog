@@ -654,10 +654,8 @@ Another thing, the database contains a word “PROSTITUTE” which is made of 10
 chance the password would match this.
 
 Another optimization would be to remove profanities that are substrings of other profanities.
-E.g., "COCK", "COCKS", "COCKY", "ACOCK"
-
-Basically this is the whole WPA2 password generation routine. 
-You can find all codes we used, profanity database and more in the repository for the article. <!-- //TODO: repo -->
+E.g., "COCK", "COCKS", "COCKY", "ACOCK". Basically this is the whole WPA2 password generation routine. 
+<!-- You can find all codes we used, profanity database and more in the repository for the article.--> <!-- //TODO: repo -->
 
 So to have a bit more fun, we generated a SQLite database for all MAC addresses starting on `64:7c:34` =
 UBEE vendor prefix, what is \\( 2^{24} \\) = 16777216 passwords. This is quite a number so the profanity detection
@@ -748,7 +746,7 @@ Table below shows how BSSID and input MAC address relates on the example:
  This is how router label looks like for our example:
  [![UBEE label](/static/ubee/ubee_label.jpg)](/static/ubee/ubee_label.jpg)
  
-Our [proof-of-concept](https://github.com/yolosec/TODO) generates the following output
+Our [proof-of-concept](https://github.com/yolosec/upcgen/blob/master/ubee_keys.c) generates the following output
 after entering the last 3 bytes of BSSID.
 
 ```
@@ -810,7 +808,7 @@ Both applications are available at the Google Play Store [here](https://play.goo
 
 # Sources
 
-* {% include icon-github.html username="yolosec/TODO" %} Proof-of-concept
+* {% include icon-github.html username="yolosec/upcgen" %} Proof-of-concept
 * [ubee.deadcode.me](https://ubee.deadcode.me) SSID \\( \rightarrow \\) Password recovery web service
 * [Router Keygen](https://play.google.com/store/apps/details?id=net.yolosec.routerkeygen2) Android app
 * {% include icon-github.html username="yolosec/routerkeygenAndroid" %} Router Keygen sources
