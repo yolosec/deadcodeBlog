@@ -775,6 +775,8 @@ by ph4r05, miroc
   near-BSSID: 647C3412345A, SSID: UPC3856093, PASS: TUXFTTLL 
 ```
 
+Or try our online service [ubee.deadcode.me](https://ubee.deadcode.me)
+
 # Wardriving
 And now the funny part.
 To face our results with the reality, we did a small [wardriving](https://en.wikipedia.org/wiki/Wardriving) test. To those who do not know the term, it is an act of searching for available WiFi networks in a specific area, usually from a car. 
@@ -805,6 +807,16 @@ To enable users to test their default UPC WiFi keys from their Android phones, w
 [![RouterKeygen Yolosec](/static/ubee/upckeygen_screen.jpg)](/static/ubee/upckeygen_screen.jpg)
 
 Both applications are available at the Google Play Store [here](https://play.google.com/store/apps/details?id=net.yolosec.routerkeygen2) and [here](https://play.google.com/store/apps/details?id=net.yolosec.upckeygen).
+
+# Sources
+
+* {% include icon-github.html username="yolosec/TODO" %} Proof-of-concept
+* [ubee.deadcode.me](https://ubee.deadcode.me) SSID \\( \rightarrow \\) Password recovery web service
+* [Router Keygen](https://play.google.com/store/apps/details?id=net.yolosec.routerkeygen2) Android app
+* {% include icon-github.html username="yolosec/routerkeygenAndroid" %} Router Keygen sources
+* [UPC Keygen](https://play.google.com/store/apps/details?id=net.yolosec.upckeygen) Android app
+* {% include icon-github.html username="yolosec/upcKeygen" %} UPC keygen sources
+
 
 # Responsible disclosure
 
