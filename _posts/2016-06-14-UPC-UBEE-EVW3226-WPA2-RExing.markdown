@@ -800,7 +800,7 @@ To enable users to test their default UPC WiFi keys from their Android phones, w
 
 **UPC Keygen**
 
-[UPC Keygen](https://github.com/yolosec/upcKeygen) is a lightweight alternative for RouterKeygen that requires no Android permissions. It allows users to manually enter UPC SSID and calculate candidate keys using Blasty's original algorithm. UBEE algorithm is computed for manual BSSID entry.
+[UPC Keygen](https://github.com/yolosec/upcKeygen) is a lightweight alternative for RouterKeygen that requires no Android permissions. It allows users to manually enter UPC SSID and calculate candidate keys using Blasty's original algorithm. UBEE algorithm is computed for manual BSSID entry. For now we do not support generating UBEE from SSID as it would require  \\( 2^{24} \\) MD5 evaluations (slow).
 
 [![RouterKeygen Yolosec](/static/ubee/upckeygen_screen.jpg)](/static/ubee/upckeygen_screen.jpg)
 
