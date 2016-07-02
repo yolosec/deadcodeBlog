@@ -19,7 +19,7 @@ This work was motivated by the work of [Blasty](https://twitter.com/bl4sty).
 Several months ago he published the algorithm ( [upc_keys.c](https://haxx.in/upc-wifi/) ) generating candidate default
 WPA2 passwords for UPC WiFi routers using just SSID of the router. Vulnerable routers used just router ID to generate
 default WiFi password and WiFi SSID. Algorithm goes through all possible router serial IDs and if SSID matches,
-it prints out candidate WiFi password (cca 20).
+it prints out candidate WiFi passwords (cca 20).
 
 To our surprise it worked pretty well in our city, where 6 out of 10 UPC WiFi around were vulnerable. But it didn’t
 work for newer router models and for my own. So we decide to look at this particular model if we were lucky to find
@@ -33,7 +33,7 @@ interface of the router. I recommend going through this article: <https://www.fr
 
 Lucky for us, we didn’t have to mess with the UART interface of the router even though I was looking forward to it.
 Just a day before I bought my UBEE router for experiments, Firefart [published an article](https://firefart.at/post/upc_ubee_fail/)
-how to get a root on the router just by inserting a USB drive with simple scripts.
+on how to get a root on the router just by inserting a USB drive with simple scripts.
 
 Tl;dr: If USB drive has name `EVW3226`, shell script
 `.auto` on it gets executed with system privileges. With this script you start SSH server, connect
@@ -87,7 +87,7 @@ This is actually very powerful and convenient attack vector. One comes with USB 
 plugs it in and has a WPA2 password in seconds (all system configuration).
 
 I’ve created a TAR of the whole filesystem plus raw binary images of the mounted file system.
-With SSH I could start mess around the router firmware.
+With SSH I could start to mess around with the router firmware.
 
 Firstly, the quick review of mounted file systems:
 
@@ -174,7 +174,7 @@ find . -type f -exec grep -il 'secath0' {} \;
 ./var/tmp/www/cgi-bin/setup.cgi
 ```
 
-There are obviously 3 nice looking candidates to inspect further. `libUtility.so`, `aimDaemon`, `setup.cgi`.
+There are obviously 3 nice looking candidates to inspect further: `libUtility.so`, `aimDaemon`, `setup.cgi`.
 You can also find those attached to the article. Running strings at those files reveals a lot of interesting stuff.
 Even bizarre - more on that later.
 
@@ -190,7 +190,7 @@ Symbols were not removed, which makes analysis substantially easier (child play 
 
 So `sub_17CF0` could be some kind of factory reset / apply settings routine. Which indeed is, as function
 inspection shown. I recommend going through the whole routine to get impression how that works in detail.
-Basically, it sets MAC addresses, generate SSIDs, passwords, sets up the firewall and parental control,
+Basically, it sets MAC addresses, generates SSIDs, passwords, sets up the firewall and parental control,
 some settings are stored to `/nvram/*`.
 
 [![sub_17CF0 intro](/static/ubee/sub17CF0Intro.png)](/static/ubee/sub17CF0Intro.png)
@@ -199,7 +199,7 @@ These chunks are particularly interesting to me:
 
 ![Default Passphrase set](/static/ubee/defaultPassphraseSet.png)  |  ![Default SSID set](/static/ubee/defaultSSIDSet.png)
 
-BTW just a side note, programmer of this router is probably kind of guy which presses CTRL+C multiple times when
+BTW just a side note, the programmer of this router is probably the kind of guy who presses CTRL+C multiple times when
 copying something, just to be sure it really did copy to clipboard:
 
 [![Sync Sync Sync](/static/ubee/syncSyncSync.png)](/static/ubee/syncSyncSync.png)
@@ -224,7 +224,7 @@ The `GenUPCDefaultPassPhrase` function intro looks like this:
 *Function intro*
 
 The function does some initialization in the beginning, local variable setting and so on.
-Few instructions later, it reads a file `/nvram/1/1`.
+A few instructions later, it reads a file `/nvram/1/1`.
 
 [![NVRAM read](/static/ubee/nvramRead.png)](/static/ubee/nvramRead.png)
 
@@ -240,8 +240,8 @@ We later discovered the MAC address used as function input is not exactly the BS
 For 2.4GHz network it is numerically smaller by 3. So if BSSID ends on 0xf9, the MAC used for 
 computation is 0xf6 for 2.4GHz network.
 
-Actually when you do `hexdump -C nvram/1/1` 
-You can spot something that resembles MAC address on positions _0x20_ and  _0x32_ . Actually the first 3-5
+Actually when you do `hexdump -C nvram/1/1`,  
+you can spot something that resembles a MAC address on positions _0x20_ and  _0x32_ . Actually the first 3-5
  bytes are same as MACs printed on the label on the router.
 
 [![Increase MAC](/static/ubee/modIncreaseMac.png)](/static/ubee/modIncreaseMac.png)
@@ -258,7 +258,7 @@ sprintf(buff1, "%2X%2X%2X%2X%2X%2X555043444541554C5450415353504852415345",
 ```
 
 It seems like there is a MAC used to derive multiple different outputs (SSID, PASSPHRASE) in the code, so
-the differentiate it for different uses, a different suffix is added to it. In fact, converted to ASCII
+to differentiate it for different uses, a different suffix is added to it. In fact, converted to ASCII
 it says `UPCDEAULTPASSPHRASE`.
 
 [![sprintf Magic string](/static/ubee/sprintfMagicString.png)](/static/ubee/sprintfMagicString.png)
@@ -335,8 +335,8 @@ sprintf(passwd, "%c%c%c%c%c%c%c%c",
 
 ## Statistical analysis
 
-A way the projection to 26 character alphabet ( last `sprintf` ) is made is interesting, let's stop here a bit.
-Programmer does byte addition here, modulo 26. On the first reading this might seem weird, why he just not did
+The way the projection to 26 character alphabet ( last `sprintf` ) is made is interesting, let's stop here a bit.
+The programmer does byte addition here, modulo 26. On the first reading this might seem weird, why didn't he just do
 
 ```c
 0x41u + (hash_buff[0] % 0x1Au) // PAlt1
@@ -359,9 +359,9 @@ The naive approaches of mentioned projections `PAlt1`, `PAlt2` seemingly give no
 
 [![A xor B mod 26](/static/ubee/distribAxBmod26.png)](/static/ubee/distribAxBmod26.png)
 
-For sake of this statistical analysis we analyzed \\( 2^{24} \\) passwords generated by going through all MAC addresses
+For the sake of this statistical analysis we analyzed \\( 2^{24} \\) passwords generated by going through all MAC addresses
 with 3B static prefix `0x647c34` = UBEE vendor prefix.
-The measured distribution of `[A-Z]` characters on generated passwords is depicted on the following histogram.
+The measured distribution of `[A-Z]` characters on generated passwords is depicted in the following histogram.
 
 [![Alphabet distribution](/static/ubee/alphabetDistribution.png)](/static/ubee/alphabetDistribution.png)
 
@@ -372,7 +372,7 @@ In order to check how good the function is (i.e., how random)
 
 The following table shows the alphabet character counts on computed password sample. Each 
 character is counted with respect to particular position of occurrence
-in password and it _total_ (summed over all positions).
+in password and in _total_ (summed over all positions).
 
 | Char |  1 pos |  2 pos |  3 pos |  4 pos |  5 pos |  6 pos |  7 pos |  8 pos |  Total |
 | ---- | -----: | -----: | -----: | -----: | -----: | -----: | -----: | -----: | -----: |
@@ -418,7 +418,7 @@ Without loss of generality, consider the first character position of the passwor
 has expected probability of appearance. Expected probability is \\( {1}/{26} \\). We have \\( 2^{24} \\) samples
 from the distribution on the first character.
 
-There are several ways for testing uniformity of a random number generator. 
+There are several ways of testing the uniformity of a random number generator. 
 For more complex methods please refer to 
 [\[1\]](http://www.cse.wustl.edu/~jain/cse567-08/ftp/k_27trg.pdf) or 
 [\[2\]](http://www.fi.muni.cz/~xkrhovj/lectures/2005_PA168_Statistical_Testing_slides.pdf). We are going 
@@ -479,7 +479,7 @@ Z|-|-|-|-|-|-|x|-|-
 {:.mbtablestyle2}
 
 From the table above we see there are biases on both particular positions and in total. For example,
-character `W` is biased on positions password positions 4 and 5 and in overall statistics (pos 1-8). On contrary
+character `W` is biased on password positions 4 and 5 and in overall statistics (pos 1-8). On contrary
 we cannot reject null hypothesis for character `A`.
 
 It would not be fair to test uniformity hypothesis as the output transformation on the password (last `sprintf`, step 5)
@@ -577,9 +577,9 @@ Z|-|-|-|-|-|-|-|-|-
 {:.mbtablestyle2}
 
 We see this function has better statistical properties. But note it is still
-not optimal as we are throwing out majority of MD5 result. We can do it even better. 
+not optimal as we are throwing out the majority of the MD5 output. We can do it even better. 
 
-The last we analyze function that completely skips step 3 & 4, so it performs only one
+Last we analyze the function that completely skips steps 3 & 4, so it performs only one
 MD5 hashing.
 
 | Char |  1 pos |  2 pos |  3 pos |  4 pos |  5 pos |  6 pos |  7 pos |  8 pos |  total |
@@ -612,7 +612,7 @@ Y|-|-|-|-|-|-|-|-|-
 Z|-|-|-|-|-|-|-|-|-
 {:.mbtablestyle2}
 
-From results we conclude that from mathematical/statistical point of view the simpler function has 
+From the results we conclude that from mathematical/statistical point of view the simpler function has 
 significantly better statistical properties compared to function with some "obfuscation" steps.
 MD5 itself is quite good crypto hash function thus I cannot see any benefit 
 from step 3, 4 in the original password function. Authors maybe tried to 
@@ -642,14 +642,14 @@ generated password. Of course, this is a production problem, who wants to deal w
 calling your help desk complaining the default password on his router is *MILFPIMP* or *ANALBLOW*, right?
 
 In case the generated password contains this profanity in it, UBEE engineers added a special, non-insulting alphabet
-for help. The alphabet is visible on the beginning of the analyzed function: `BBCDFFGHJJKLMNPQRSTVVWXYZZ`, the classic
+for help. The alphabet is visible in the beginning of the analyzed function: `BBCDFFGHJJKLMNPQRSTVVWXYZZ`, the classic
 one with almost all vowels removed. I did a quick search and truly, there cannot be made a rude word from UBEE
 profanity database with this alphabet.
 
 The weird thing about profanity database is there are some of the entries present multiple times, with varying case.
 I was wondering why somebody didn’t convert it all to uppercase and removed duplicates at the first place.
 Instead of that, UBEE router converts it to uppercase and goes through them incrementally when generating a
-random password. Useless CPU cycles... (how many CO emissions could have saved generating it wisely?).
+random password. Useless CPU cycles... (how many CO emissions could have been saved generating it wisely?).
 Another thing, the database contains a word “PROSTITUTE” which is made of 10 characters, but there is no
 chance the password would match this.
 
@@ -665,7 +665,7 @@ was optimized by building [Aho-Corasick](https://en.wikipedia.org/wiki/Aho%E2%80
 search automaton, initialized with all profanities from the UBEE database
 (very rude automaton indeed). If the profanity was detected as a substring, we also generated a new password from non-insulting alphabet.
 
-From 16777216 passwords in total, 32105 contained at least one profanity in it, in particular in happened 0.19% cases.
+From 16777216 passwords in total, 32105 contained at least one profanity in it, in particular it happened in 0.19% cases.
 Thus in 1000 generated password there are almost 2 containing a profanity. It is more than I intuitively expected. 
 
 Table of profanity occurrences with respect to length: 
@@ -706,7 +706,7 @@ TITS   |192         | TURD |177         | PIMP |154
 
 [![Profanity size 4](/static/ubee/profanities_c4.png)](/static/ubee/profanities_c4.png)
 
-5 character profanity distribution (including only most popular ones, total 517 distinct):
+5 character profanity distribution (including only the most popular ones, in total 517 distinct):
 
 | Word | Occurences | Word | Occurences |
 | ---- |:----------:| ---- |:----------:|
@@ -723,7 +723,7 @@ WOADS|17 | ERECT|15
 We managed to reverse engineer both the default WiFi WPA2 password generator function and default SSID generator
 functions from router UBEE EBW3226. 
 
-The only input of the functions is MAC address of the device. This MAC address does not exactly
+The only input of the functions is the MAC address of the device. This MAC address does not exactly
 match BSSID, but is slightly shifted. The shift is constant for all routers with this firmware.
 Moreover the shift depends on `mode` which is a binary flag saying the computation is made for 2.45GHz or 5GHz WiFi mode.  
 
@@ -749,7 +749,7 @@ Table below shows how BSSID and input MAC address relates on the example:
  [![UBEE label](/static/ubee/ubee_label.jpg)](/static/ubee/ubee_label.jpg)
  
 Our [proof-of-concept](https://github.com/yolosec/TODO) generates the following output
-after entering last 3 bytes of BSSID.
+after entering the last 3 bytes of BSSID.
 
 ```
 ./ubee_keys 123456
@@ -777,15 +777,15 @@ by ph4r05, miroc
 
 # Wardriving
 And now the funny part.
-To face our results with the reality, we did a small [wardriving](https://en.wikipedia.org/wiki/Wardriving) test. To those who do not the term, it is an act of searching for available WiFi networks in a specific area, usually from a car. 
+To face our results with the reality, we did a small [wardriving](https://en.wikipedia.org/wiki/Wardriving) test. To those who do not know the term, it is an act of searching for available WiFi networks in a specific area, usually from a car. 
 
-We are based in [Brno](https://en.wikipedia.org/wiki/Brno), which is the second largest city of the Czech Republic. It has population about 400 000 people, lots of them concentrated in city blocks where people are living in tower buildings known as "panelaky". This proved to be a good target since there are plenty of WiFis to be catched.
+We are based in [Brno](https://en.wikipedia.org/wiki/Brno), which is the second largest city of the Czech Republic. It has population about 400 000 people, lots of them concentrated in city blocks where people are living in tower buildings known as "panelaky". This proved to be a good target since there are plenty of WiFis to be caught.
 
-Our setup was simple - Linux laptop having external WiFi card (TP-LINK TL-WN722N) with [Kismet](https://en.wikipedia.org/wiki/Kismet_(software)) and Motorola Moto G Android phone with [WiGLE Wifi](https://play.google.com/store/apps/details?id=net.wigle.wigleandroid) application. Long story short - suprisingly the Android phone did a better job and found as twice as much networks as the complicated PC setup. Therefore the further data is mostly from the Android device.
+Our setup was simple - Linux laptop having external WiFi card (TP-LINK TL-WN722N) with [Kismet](https://en.wikipedia.org/wiki/Kismet_(software)) and Motorola Moto G Android phone with [WiGLE Wifi](https://play.google.com/store/apps/details?id=net.wigle.wigleandroid) application. Long story short - suprisingly the Android phone did a better job and found twice as many networks as the complicated PC setup. Therefore the further data is mostly from the Android device.
 
 We did a 3 hours long drive from which the main results are:
 
-- We catched **17 516** unique networks (unique BSSIDs). 
+- We caught **17 516** unique networks (unique BSSIDs). 
 - **2834** were networks with SSID matching `'^UPC[0-9]{6,9}$'`, these are WLANs possibly vulnerable to the both attacks combined.
 - **443** of them are having BSSID `64:7c:34` prefix, these are UPC UBEE devices possibly vulnerable to our new attack. Estimately **15.6%** of all UPC routers are the new UPC UBEE routers.
 - In summary, UPC is fairly widespread here in Brno, having an estimated market share about **16.17%**. This means we are possibly able to crack every 6th WiFI network, considering users do not change their default passwords very often.
@@ -800,7 +800,7 @@ To enable users to test their default UPC WiFi keys from their Android phones, w
 
 **UPC Keygen**
 
-[UPC Keygen](https://github.com/yolosec/upcKeygen) is a lightweight alternative for RouterKeygen that requires no Android permissions. It allows user manually enter UPC SSID and calculate candidate keys using Blasty's original algorithm (our algorithm is not supported).
+[UPC Keygen](https://github.com/yolosec/upcKeygen) is a lightweight alternative for RouterKeygen that requires no Android permissions. It allows users to manually enter UPC SSID and calculate candidate keys using Blasty's original algorithm (our algorithm is not supported).
 
 [![RouterKeygen Yolosec](/static/ubee/upckeygen_screen.jpg)](/static/ubee/upckeygen_screen.jpg)
 
