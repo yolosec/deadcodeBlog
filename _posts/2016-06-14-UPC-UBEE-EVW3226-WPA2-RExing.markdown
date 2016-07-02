@@ -785,6 +785,8 @@ Our setup was simple - Linux laptop having external WiFi card (TP-LINK TL-WN722N
 
 [![Wardriving setup](/static/ubee/wardriving_setup.jpg)](/static/ubee/wardriving_setup.jpg)
 
+[![Wardriving map](/static/ubee/wardriving_map.png)](/static/ubee/wardriving_map.png)
+
 We did a 3 hours long drive from which the main results are:
 
 - We caught **17 516** unique networks (unique BSSIDs). 
