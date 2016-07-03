@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "UPC UBEE EBW3226 WPA2 Password Reverse Engineering"
+title:  "UPC UBEE EVW3226 WPA2 Password Reverse Engineering"
 date:   2016-07-01 08:00:00 +0200
 categories: blog
 tags: hacking router reversing hacking
@@ -8,7 +8,7 @@ excerpt_separator: <!-- more -->
 
 ---
 
-TL;DR: We reversed default WPA2 password generation routine for UPC UBEE EBW3226 router.  
+TL;DR: We reversed default WPA2 password generation routine for UPC UBEE EVW3226 router.  
 This blog contains firmware analysis, reversing writeup, function statistical analysis and proof-of-concept generator.
 
 <!-- more -->
@@ -732,7 +732,7 @@ WOADS|17 | ERECT|15
 
 ## Conclusion {#conclusion}
 We managed to reverse engineer both the default WiFi WPA2 password generator function and default SSID generator
-functions from router UBEE EBW3226. 
+functions from router UBEE EVW3226. 
 
 The only input of the functions is the MAC address of the device. This MAC address does not exactly
 match BSSID, but is slightly shifted. The shift is constant for all routers with this firmware.
