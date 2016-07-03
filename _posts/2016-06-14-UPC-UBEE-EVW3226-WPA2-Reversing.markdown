@@ -804,7 +804,7 @@ We did a 3 hours long drive from which the main results are:
 
 - We caught **17 516** unique networks (unique BSSIDs). 
 - **2834** were networks with SSID matching `^UPC[0-9]{6,9}$` regular expression, these are WLANs possibly vulnerable to the both attacks combined.
-- **443** of them are having BSSID `64:7c:34` prefix, these are UPC UBEE devices possibly vulnerable to our new attack. Estimately **15.6%** of all UPC routers are the new UPC UBEE routers.
+- **443** of them are having BSSID `64:7c:34` prefix, these are UPC UBEE devices possibly vulnerable to our new attack (to confirm that, we generated SSIDs from the BSSIDs using our method and compared them with the real SSIDs - all of them matched). Estimately **15.6%** of all UPC routers are the new UPC UBEE routers.
 - There were additional 97 networks having BSSID `64:7c:34` prefix, but not matching UPC SSID naming convention. Administrators of these WLANs had changed SSID and most likely also default passwords. It's about **18%** of all UBC UBEE routers.
 - In summary, UPC is fairly widespread here in Brno, having an estimated market share about **16.73%**. We are possibly able to crack every 6th WiFI network, considering users do not change their default passwords very often.
 
