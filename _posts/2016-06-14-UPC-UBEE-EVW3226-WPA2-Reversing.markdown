@@ -40,7 +40,7 @@ the same vulnerability in it.
 
 Our modem is UBEE EVW3226. As I don’t want to experiment on my own home router I bought one from the guy selling
 exactly the same model. There are guys who managed to get root access to the router by connecting to the UART
-interface of the router. I recommend going through this article: <https://www.freeture.ch/?p=766>
+interface of the router. I recommend going through this article: <https://www.freeture.ch/?p=766> or <http://jcjc-dev.com/2016/06/08/reversing-huawei-4-dumping-flash/>.
 
 [![UBEE top](/static/ubee/ubee_front.jpg)](/static/ubee/ubee_front.jpg)
 
