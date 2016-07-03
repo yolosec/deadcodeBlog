@@ -814,7 +814,7 @@ The test was done in February 2016, but we still expect a lot of UPC routers wit
 
 ### RouterKeygen
 
-To enable users to test their default UPC WiFi keys from their Android phones, we added support to [RouterKeygen](https://github.com/routerkeygen/routerkeygenAndroid) application for our algorithm (and to Blasty's algorithm as well). RouterKeygen scans nearby WiFi networks, detects any UPC routers and automatically generates and tests candidate keys.
+To enable users to test their default UPC WiFi keys from their Android phones, we added support to [RouterKeygen](https://github.com/yolosec/routerkeygenAndroid) application for our algorithm (and to Blasty's algorithm as well). RouterKeygen scans nearby WiFi networks, detects any UPC routers and automatically generates and tests candidate keys.
 
 [![RouterKeygen Yolosec](/static/ubee/routerkeygen_screen.jpg)](/static/ubee/routerkeygen_screen.jpg)
 
