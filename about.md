@@ -12,10 +12,12 @@ We are security analysts and enthusiasts poking around interesting stuff.
 ### Dušan Klinec (Ph4r05)
 - {% include icon-github.html username="ph4r05" %}
 - {% include icon-twitter.html username="ph4r05" %}
+- [LinkedIn](https://www.linkedin.com/in/dklinec)
 
 ### Miroslav Svítok (Miroc)
 - {% include icon-github.html username="miroc" %}
 - {% include icon-twitter.html username="mirocslav" %}
+- [LinkedIn](https://cz.linkedin.com/in/msvitok)
 
 
 ## Projects
