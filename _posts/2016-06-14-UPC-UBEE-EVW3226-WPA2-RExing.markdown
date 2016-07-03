@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "UPC UBEE EBW3226 WPA2 Password RExing"
+title:  "UPC UBEE EBW3226 WPA2 Password Reverse Engineering"
 date:   2016-07-01 08:00:00 +0200
 categories: blog
 tags: hacking router reversing hacking
