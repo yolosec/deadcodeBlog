@@ -738,8 +738,9 @@ The only input of the functions is the MAC address of the device. This MAC addre
 match BSSID, but is slightly shifted. The shift is constant for all routers with this firmware.
 Moreover the shift depends on `mode` which is a binary flag saying the computation is made for 2.45GHz or 5GHz WiFi mode.  
 
-The point is the exact value of the shift does not matter that much as the computation for one single MAC
-address is very cheap and both SSID and WPA2 password generator uses the same mechanism to generate input MAC.
+The exact value of the shift does not matter that much as the computation for one single MAC
+address is very fast and both SSID and WPA2 password generator uses the same mechanism to generate input MAC used in computation
+(same function inputs).
 
 Thus if we take WiFi BSSID and compute mapping \\( M = \\{ \\) SSID \\( \rightarrow \\) WPA2 \\( \\} \\) 
 for \\( \pm \\) 10 MAC around BSSID we can then surely find observed SSID in \\( M \\) and corresponding default
