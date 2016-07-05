@@ -788,6 +788,10 @@ by ph4r05, miroc
 
 Or try our online service [ubee.deadcode.me](https://ubee.deadcode.me)
 
+Concluding this attack, any user of UBEE EVW3226 with affected router version should stop using this modem, change 
+it for different one or configure properly. Our attack combined with this [Security Advisory](http://www.securityfocus.com/archive/1/538560)
+can lead to complete take over.
+
 ## Wardriving {#wardriving}
 And now the funny part.
 To face our results with the reality, we did a small [wardriving](https://en.wikipedia.org/wiki/Wardriving) test. To those who do not know the term, it is an act of searching for available WiFi networks in a specific area, usually from a car. 
