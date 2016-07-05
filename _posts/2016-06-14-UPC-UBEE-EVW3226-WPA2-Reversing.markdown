@@ -815,6 +815,57 @@ We did a 3 hours long drive from which the main results are:
 
 The test was done in February 2016, but we still expect a lot of UPC routers with default credentials to be out there.
 
+### [wifileaks.cz]
+There is a great project, [wifileaks.cz] mapping WiFi networks in the Czech Republic. Author of the project
+was so kind to provide current WiFi database for testing.
+
+With help of [wifileaks.cz] we were able to make more accurate statistics on vulnerable networks in Czech Republic.
+
+| Statistic (col)   | 1970-2016        |      2014-2016  | 2015-2016       | 2016            |
+| :---------------  | :--------------  | :-------------- | :-------------- | :-------------- |
+| # of records      | 2 198 086        |      1 058 797  | 763 430         | 340 409         |
+| `^UPC[0-9]{6-8}`  | 82 658 (3.76%)   | 62 247 (5.88%)  |  49 010 (6.42%) | 22 324 (6.56%)  |
+| UBEE prefix       | 9 271            | 9 268           |  9 036          | 4 809           |
+| UBEE changed SSID | 1 572 (16.97%)   | 1 571 (16.95%)  | 1 479 (16.37%)  | 743 (15.45%)    |
+| UBEE affected     | *7 689*          | *7 687*         | *7 549*         | *4 061*         |
+| UBEE 2.4GHz       | 7 675            | 7 673           | 7 535           | 4 056           |
+| UBEE 5.0GHz       | 14               | 14              | 14              | 5               |
+| UBEE no-match SSID| 10               | 10              | 8               | 5               |
+{:.mbtablestyle2} 
+
+
+We took different time periods from the [wifileaks.cz] database because the affected router appeared on the market
+mainly in 2015 and to demonstrate how situation progressed over time. For example in 2016:
+
+- There are 22 324 (6.56%) UPC WiFi networks.
+- In total, there are 4 809 UBEE devices (both with UPC name and with changed SSID).
+- 743 UBEE devices have different SSID - user probably changed it (15.45%)
+- Our algorithm worked for 4 061 UBEE devices with UPC SSID (99.88%)
+- 5 UBEE devices with UPC SSID did not match our SSID prediction (0.12%)
+- 5 UBEE devices with UPC SSID that matched had MAC offset -1, thus it was working in 5GHz band
+
+### Other prefixes
+Using [wifileaks.cz] database we tested this hypothesis: *is SSID generator working also for other MAC addresses, besides
+those starting with UBEE prefix `64:7c:34`* ?
+
+The answer is *NO*. We re-implemented SSID generation routine in
+[Python](https://github.com/yolosec/upcgen/blob/master/pytools/ubee_wifileaks.py), run it for all UPC WiFi records in
+the database and only MAC addresses starting with `64:7c:34` prefix are vulnerable to this attack.
+
+Here is the table of other interesting MAC prefixes + counts from 2016 records.
+Note that for some of them attack of Blasty can work.
+
+| MAC prefix | Occurences | Blasty works |
+| ---------- | ---------- | ------------ |
+| `88:f7:c7` | 4684       |  ?           |
+| `e8:40:f2` | 2541       |  ?           |
+| `c4:27:95` | 2244       |  ?           |
+| `58:23:8c` | 1995       |  Worked on 2 tested           |
+{:.mbtablestyle2}
+
+If you happen to try Blasty attack on devices with these prefixes please report us the state to our e-mail (page footer), we will update statistics.
+ Thanks a lot!
+
 ## Android Apps {#android-apps}
 
 ### RouterKeygen
@@ -849,5 +900,4 @@ Both applications are available at the Google Play Store [here](https://play.goo
 - _28. Jun 2016_: Sending this article for review to Liberty Global.
 - _04. Jul 2016_: Publication of this article.
 
-
-
+[wifileaks.cz]: http://wifileaks.cz
