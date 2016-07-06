@@ -852,15 +852,16 @@ The answer is *NO*. We re-implemented SSID generation routine in
 [Python](https://github.com/yolosec/upcgen/blob/master/pytools/ubee_wifileaks.py), run it for all UPC WiFi records in
 the database and only MAC addresses starting with `64:7c:34` prefix are vulnerable to this attack.
 
-Here is the table of other interesting MAC prefixes + counts from 2016 records.
+Here is the table of top 5 most used MAC prefixes for UPC WiFi SSIDs from 2016 records.
 Note that for some of them attack of Blasty can work.
 
-| MAC prefix | Occurences | Blasty works |
-| ---------- | ---------- | ------------ |
-| `88:f7:c7` | 4684       |  ?           |
-| `e8:40:f2` | 2541       |  ?           |
-| `c4:27:95` | 2244       |  ?           |
-| `58:23:8c` | 1995       |  Worked on 2 tested           |
+| MAC prefix | Occurrences | Blasty works | UBEE works |
+| ---------- | ----------  | ------------ | ---------- |
+| `88:f7:c7` | 4684        |  ?           | No |
+| `64:7c:34` | 4066        |  No          | Yes |
+| `e8:40:f2` | 2541        |  ?           | No |
+| `c4:27:95` | 2244        |  ?           | No |
+| `58:23:8c` | 1995        |  Worked on 2 tested | No |
 {:.mbtablestyle2}
 
 If you happen to try Blasty attack on devices with these prefixes please report us the state to our e-mail (page footer), we will update statistics.
