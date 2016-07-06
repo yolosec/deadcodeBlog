@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "UPC UBEE EVW3226 WPA2 Password Reverse Engineering"
+title:  "UPC UBEE EVW3226 WPA2 Password Reverse Engineering, rev2"
 date:   2016-07-01 08:00:00 +0200
 categories: blog
 tags: hacking router reversing hacking
@@ -24,6 +24,11 @@ This blog contains firmware analysis, reversing writeup, function statistical an
 1. [Android Apps](#android-apps)
 1. [Sources](#sources)
 1. [Responsible Disclosure](#responsible-disclosure)
+
+**Updates:**
+
+
+* _05-07-2015_: [wifileaks.cz](#wifileaks) data set analyzed
 
 
 ## Introduction {#introduction}
@@ -815,7 +820,7 @@ We did a 3 hours long drive from which the main results are:
 
 The test was done in February 2016, but we still expect a lot of UPC routers with default credentials to be out there.
 
-### [wifileaks.cz]
+### [wifileaks.cz] {#wifileaks}
 There is a great project, [wifileaks.cz] mapping WiFi networks in the Czech Republic. Author of the project
 was so kind to provide current WiFi database for testing.
 
