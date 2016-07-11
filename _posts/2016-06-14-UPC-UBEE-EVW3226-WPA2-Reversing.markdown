@@ -737,7 +737,7 @@ WOADS|17 | ERECT|15
 
 ## Conclusion {#conclusion}
 We managed to reverse engineer both the default WiFi WPA2 password generator function and default SSID generator
-functions from router UBEE EVW3226. 
+functions from router UBEE EVW3226.
 
 The only input of the functions is the MAC address of the device. This MAC address does not exactly
 match BSSID, but is slightly shifted. The shift is constant for all routers with this firmware.
@@ -766,7 +766,8 @@ Table below shows how BSSID and input MAC address relates on the example:
  [![UBEE label](/static/ubee/ubee_label.jpg)](/static/ubee/ubee_label.jpg)
  
 Our [proof-of-concept](https://github.com/yolosec/upcgen/blob/master/ubee_keys.c) generates the following output
-after entering the last 3 bytes of BSSID.
+after entering the last 3 bytes of BSSID. Password for 2.4GHz and 5.0GHz network is highlighted, others are printed
+just for illustration.
 
 ```
 ./ubee_keys 123456
@@ -797,6 +798,8 @@ Or try our online service [ubee.deadcode.me](https://ubee.deadcode.me)
 Concluding this attack, any user of UBEE EVW3226 with affected router version should stop using this modem, change 
 it for different one or configure properly. Our attack combined with this [Security Advisory](http://www.securityfocus.com/archive/1/538560)
 can lead to complete take over.
+
+Our UBEE password generator combined with generator from Blasty can crack majority of UPC networks with SSID UPCxxxxxxx (7 digits).
 
 ## Wardriving {#wardriving}
 And now the funny part.
@@ -829,12 +832,16 @@ With help of [wifileaks.cz] we were able to make more accurate statistics on vul
 | Statistic (col)   | 1970-2016        |      2014-2016  | 2015-2016       | 2016            |
 | :---------------  | :--------------  | :-------------- | :-------------- | :-------------- |
 | # of records      | 2 198 086        |      1 058 797  | 763 430         | 340 409         |
-| `^UPC[0-9]{6-8}`  | 82 658 (3.76%)   | 62 247 (5.88%)  |  49 010 (6.42%) | 22 324 (6.56%)  |
+| `^UPC[0-9]{6,9}`  | 82 658 (3.76%)   | 62 247 (5.88%)  |  49 010 (6.42%) | 22 324 (6.56%)  |
+| `^UPC[0-9]{6}`    | 35 895           | 17 221          |  11 480         | 4 707           |
+| `^UPC[0-9]{7}`    | 43 147           | 41 422          |  33 965         | 14 856          |
+| `^UPC[0-9]{8}`    | 8                | 8               |  5              | 2               |
+| `^UPC[0-9]{9}`    | 3 608            | 3 596           |  3 560          | 2 759           |
 | UBEE prefix       | 9 271            | 9 268           |  9 036          | 4 809           |
 | UBEE changed SSID | 1 572 (16.97%)   | 1 571 (16.95%)  | 1 479 (16.37%)  | 743 (15.45%)    |
-| UBEE affected     | *7 689*          | *7 687*         | *7 549*         | *4 061*         |
-| UBEE 2.4GHz       | 7 675            | 7 673           | 7 535           | 4 056           |
-| UBEE 5.0GHz       | 14               | 14              | 14              | 5               |
+| UBEE vulnerable   | *7 689*          | *7 687*         | *7 549*         | *4 061*         |
+| UBEE 2.4 GHz      | 7 675            | 7 673           | 7 535           | 4 056           |
+| UBEE 5.0 GHz      | 14               | 14              | 14              | 5               |
 | UBEE no-match SSID| 10               | 10              | 8               | 5               |
 {:.mbtablestyle2} 
 
@@ -848,6 +855,7 @@ mainly in 2015 and to demonstrate how situation progressed over time. For exampl
 - Our algorithm worked for 4 061 UBEE devices with UPC SSID (99.88%)
 - 5 UBEE devices with UPC SSID did not match our SSID prediction (0.12%)
 - 5 UBEE devices with UPC SSID that matched had MAC offset -1, thus it was working in 5GHz band
+- 2 759 UPC devices had UPCxxxxxxxxx (9 digits) SSID. As far as we know, Blasty's and UBEE generator does not work for these (same for 6 and 8 digits)
 
 ### Other prefixes
 Using [wifileaks.cz] database we tested this hypothesis: *is SSID generator working also for other MAC addresses, besides
@@ -857,16 +865,18 @@ The answer is *NO*. We re-implemented SSID generation routine in
 [Python](https://github.com/yolosec/upcgen/blob/master/pytools/ubee_wifileaks.py), run it for all UPC WiFi records in
 the database and only MAC addresses starting with `64:7c:34` prefix are vulnerable to this attack.
 
-Here is the table of top 5 most used MAC prefixes for UPC WiFi SSIDs from 2016 records.
-Note that for some of them attack of Blasty can work.
+Here is the table of top 5 most used MAC prefixes for UPC WiFi SSIDs in [wifileaks.cz] dataset for 2016 group.
+In our manual testing we haven't found WiFi that would resist attack of Blasty and our algorithm combined. We
+thus assume the combined approach works on majority of UPC WiFis matching regex `^UPC[0-9]{7}` (7 digits). This support
+also our Android apps users reviews.
 
-| MAC prefix | Occurrences | Blasty works | UBEE works |
-| ---------- | ----------  | ------------ | ---------- |
-| `88:f7:c7` | 4684        |  ?           | No |
-| `64:7c:34` | 4066        |  No          | Yes |
-| `e8:40:f2` | 2541        |  ?           | No |
-| `c4:27:95` | 2244        |  ?           | No |
-| `58:23:8c` | 1995        |  Worked on 2 tested | No |
+| MAC prefix | Occurrences | Blasty works   | UBEE works |
+| ---------- | ----------  | -------------- | ---------- |
+| `88:f7:c7` | 4684        |  Maybe         | No         |
+| `64:7c:34` | 4066        |  No            | Yes        |
+| `e8:40:f2` | 2541        |  Maybe         | No         |
+| `c4:27:95` | 2244        |  Maybe         | No         |
+| `58:23:8c` | 1995        |  Probably yes  | No         |
 {:.mbtablestyle2}
 
 If you happen to try Blasty attack on devices with these prefixes please report us the state to our e-mail (page footer), we will update statistics.
