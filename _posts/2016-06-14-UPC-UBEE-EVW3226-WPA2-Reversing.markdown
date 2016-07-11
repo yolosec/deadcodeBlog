@@ -884,15 +884,16 @@ If you happen to try Blasty attack on devices with these prefixes please report 
 
 ## Android Apps {#android-apps}
 
-### RouterKeygen
+### [RouterKeygen](https://play.google.com/store/apps/details?id=net.yolosec.routerkeygen2)
 
-To enable users to test their default UPC WiFi keys from their Android phones, we added support to [RouterKeygen](https://github.com/yolosec/routerkeygenAndroid) application for our algorithm (and to Blasty's algorithm as well). RouterKeygen scans nearby WiFi networks, detects any UPC routers and automatically generates and tests candidate keys.
+To enable users to test their default UPC WiFi keys from their Android phones, we added support to
+[RouterKeygen](https://play.google.com/store/apps/details?id=net.yolosec.routerkeygen2) ([sources](https://github.com/yolosec/routerkeygenAndroid)) application for our algorithm (and to Blasty's algorithm as well). RouterKeygen scans nearby WiFi networks, detects any UPC routers and automatically generates and tests candidate keys.
 
 [![RouterKeygen Yolosec](/static/ubee/routerkeygen_screen.jpg)](/static/ubee/routerkeygen_screen.jpg)
 
-### UPC Keygen
+### [UPC Keygen](https://play.google.com/store/apps/details?id=net.yolosec.upckeygen)
 
-[UPC Keygen](https://github.com/yolosec/upcKeygen) is a lightweight alternative for RouterKeygen that requires no Android permissions. It allows users to manually enter UPC SSID and calculate candidate keys using Blasty's original algorithm. UBEE algorithm is computed for manual BSSID entry. For now we do not support generating UBEE from SSID as it would require  \\( 2^{24} \\) MD5 evaluations (slow).
+[UPC Keygen](https://play.google.com/store/apps/details?id=net.yolosec.upckeygen) ([sources](https://github.com/yolosec/upcKeygen)) is a lightweight alternative for RouterKeygen that requires no Android permissions. It allows users to manually enter UPC SSID and calculate candidate keys using Blasty's original algorithm. UBEE algorithm is computed for manual BSSID entry. For now we do not support generating UBEE from SSID as it would require  \\( 2 \times 2^{24} \\) MD5 evaluations (slow).
 
 [![RouterKeygen Yolosec](/static/ubee/upckeygen_screen.jpg)](/static/ubee/upckeygen_screen.jpg)
 
