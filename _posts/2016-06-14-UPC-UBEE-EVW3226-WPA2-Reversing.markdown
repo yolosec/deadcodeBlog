@@ -735,6 +735,10 @@ WOADS|17 | ERECT|15
 
 [![Profanity size 5](/static/ubee/profanities_c5.png)](/static/ubee/profanities_c5.png)
 
+Thats all from the profanity analysis of the password function. We also wanted to test hypothesis whether this particular function
+generates more profanities (from UBEE database) than random function would. In that case it would be rude-password-function.
+But due to time constraints we leave this to our readers.
+
 ## Conclusion {#conclusion}
 We managed to reverse engineer both the default WiFi WPA2 password generator function and default SSID generator
 functions from router UBEE EVW3226.
