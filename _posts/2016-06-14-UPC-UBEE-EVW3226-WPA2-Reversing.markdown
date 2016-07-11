@@ -9,7 +9,7 @@ excerpt_separator: <!-- more -->
 ---
 
 TL;DR: We reversed default WPA2 password generation routine for UPC UBEE EVW3226 router.  
-This blog contains firmware analysis, reversing writeup, function statistical analysis and proof-of-concept generator.
+This blog contains firmware analysis, reversing writeup, function statistical analysis and proof-of-concept password generator.
 
 <!-- more -->
 
