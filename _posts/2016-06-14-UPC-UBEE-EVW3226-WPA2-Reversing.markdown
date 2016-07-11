@@ -855,11 +855,11 @@ mainly in 2015 and to demonstrate how situation progressed over time. For exampl
 
 - There are 22 324 (6.56%) UPC WiFi networks.
 - In total, there are 4 809 UBEE devices (both with UPC name and with changed SSID).
-- 743 UBEE devices have different SSID - user probably changed it (15.45%)
-- Our algorithm worked for 4 061 UBEE devices with UPC SSID (99.88%)
-- 5 UBEE devices with UPC SSID did not match our SSID prediction (0.12%)
-- 5 UBEE devices with UPC SSID that matched had MAC offset -1, thus it was working in 5GHz band
-- 2 759 UPC devices had UPCxxxxxxxxx (9 digits) SSID. As far as we know, Blasty's and UBEE generator does not work for these (same for 6 and 8 digits)
+- 743 UBEE devices have different SSID - user probably changed it (15.45%).
+- Our algorithm worked for 4 061 UBEE devices with UPC SSID (99.88%).
+- 5 UBEE devices with UPC SSID did not match our SSID prediction (0.12%). The reason: 4 of them have 6 digits and 1 have 8 digits in SSID.
+- 5 UBEE devices with UPC SSID that matched had MAC offset -1, thus it was working in 5GHz band.
+- 2 759 UPC devices had UPCxxxxxxxxx (9 digits) SSID. As far as we know, Blasty's and UBEE generator does not work for these (same for 6 and 8 digits).
 
 ### Other prefixes
 Using [wifileaks.cz] database we tested this hypothesis: *is SSID generator working also for other MAC addresses, besides
@@ -871,17 +871,32 @@ the database and only MAC addresses starting with `64:7c:34` prefix are vulnerab
 
 Here is the table of top 5 most used MAC prefixes for UPC WiFi SSIDs in [wifileaks.cz] dataset for 2016 group.
 In our manual testing we haven't found WiFi that would resist attack of Blasty and our algorithm combined. We
-thus assume the combined approach works on majority of UPC WiFis matching regex `^UPC[0-9]{7}` (7 digits). This support
-also our Android apps users reviews.
+thus assume the combined approach works on majority of UPC WiFis matching regex `^UPC[0-9]{7}` (7 digits). This assumption
+is supported also by our Android apps users reviews.
 
 | MAC prefix | Occurrences | Blasty works   | UBEE works |
 | ---------- | ----------  | -------------- | ---------- |
-| `88:f7:c7` | 4684        |  Maybe         | No         |
+| `88:f7:c7` | 4684        |  Probably yes  | No         |
 | `64:7c:34` | 4066        |  No            | Yes        |
-| `e8:40:f2` | 2541        |  Maybe         | No         |
-| `c4:27:95` | 2244        |  Maybe         | No         |
+| `e8:40:f2` | 2541        |  Probably no   | No         |
+| `c4:27:95` | 2244        |  Probably yes  | No         |
 | `58:23:8c` | 1995        |  Probably yes  | No         |
 {:.mbtablestyle2}
+Top 5 MAC prefixes for UPC SSIDs
+
+
+| MAC prefix | 6 digits    | 7 digits   | 8 digits | 9 digits |
+| ---------- | ---: | ---: | -: | -: |
+| `88:f7:c7` | 2    | 4682 | 0  | 0  |
+| `64:7c:34` | 2    | 4063 | 1  | 0  |
+| `e8:40:f2` | 2541 | 0    | 0  | 0  |
+| `c4:27:95` | 0    | 2244 | 0  | 0  |
+| `58:23:8c` | 0    | 1995 | 0  | 0  |
+{:.mbtablestyle2}
+MAC prefix with respect to the number of digits in the UPC SSID.
+
+As you can see, prefix `e8:40:f2` is used only with 6 digits SSIDs, these router types are probably not affected nor by
+Blasty generator, neither by UBEE generator.
 
 If you happen to try Blasty attack on devices with these prefixes please report us the state to our e-mail (page footer), we will update statistics.
  Thanks a lot!
