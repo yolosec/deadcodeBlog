@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "UPC UBEE EVW3226 WPA2 Password Reverse Engineering, rev2"
+title:  "UPC UBEE EVW3226 WPA2 Password Reverse Engineering, rev 3"
 date:   2016-07-01 08:00:00 +0200
 categories: blog
 tags: hacking router reversing hacking
@@ -29,6 +29,7 @@ This blog contains firmware analysis, reversing writeup, function statistical an
 
 
 * _05-07-2015_: [wifileaks.cz](#wifileaks) data set analyzed
+* _11-07-2015_: [wardrive statistics extended](#wifileaks), [UPC solution mentioned](#upc-solution).
 
 
 ## Introduction {#introduction}
@@ -937,8 +938,10 @@ Both applications are available at the Google Play Store [here](https://play.goo
 - _28. Jun 2016_: Sending this article for review to Liberty Global.
 - _04. Jul 2016_: Publication of this article.
 
+### UPC solution {#upc-solution}
 Currently, devices are still vulnerable (11-Jul-2016).
-Liberty Global (UPC) is working on the fix. Allegedly, it will be in a form of a firmware upgrade pushed to all routers automatically.
+Liberty Global (UPC) confirmed they are working on the fix.
+Allegedly, it will be in a form of a firmware upgrade pushed to all routers automatically.
 After upgrade, router will redirect user to the "captive portal" (behaviour similar to hotel/airport WiFis on the first connect)
 asking user to change the default password.
 
