@@ -742,7 +742,7 @@ But due to time constraints we leave this to our readers.
 
 ## Conclusion {#conclusion}
 We managed to reverse engineer both the default WiFi WPA2 password generator function and default SSID generator
-functions from router UBEE EVW3226.
+functions from router UBEE EVW3226. It works for WiFi networks with SSID of the form `UPC1234567` (7 digits).
 
 The only input of the functions is the MAC address of the device. This MAC address does not exactly
 match BSSID, but is slightly shifted. The shift is constant for all routers with this firmware.
@@ -798,13 +798,15 @@ by ph4r05, miroc
   near-BSSID: 647C3412345A, SSID: UPC3856093, PASS: TUXFTTLL 
 ```
 
-Or try our online service [ubee.deadcode.me](https://ubee.deadcode.me)
+Or try our online service [ubee.deadcode.me](https://ubee.deadcode.me) which uses pre-generated password database
+to lookup passwords matching given SSID.
 
 Concluding this attack, any user of UBEE EVW3226 with affected router version should stop using this modem, change 
 it for different one or configure properly. Our attack combined with this [Security Advisory](http://www.securityfocus.com/archive/1/538560)
-can lead to complete take over.
+can lead to complete take over of the router. Attacker can install malware to the router, spy on your traffic, attack
+another nodes in network or build botnet from the routers.
 
-Our UBEE password generator combined with generator from Blasty can crack majority of UPC networks with SSID UPCxxxxxxx (7 digits).
+Our UBEE password generator combined with generator from Blasty can crack majority of UPC networks with SSID `UPC1234567` (7 digits).
 
 ## Wardriving {#wardriving}
 And now the funny part.
@@ -860,7 +862,7 @@ mainly in 2015 and to demonstrate how situation progressed over time. For exampl
 - Our algorithm worked for 4 061 UBEE devices with UPC SSID (99.88%).
 - 5 UBEE devices with UPC SSID did not match our SSID prediction (0.12%). The reason: 4 of them have 6 digits and 1 have 8 digits in SSID.
 - 5 UBEE devices with UPC SSID that matched had MAC offset -1, thus it was working in 5GHz band.
-- 2 759 UPC devices had UPCxxxxxxxxx (9 digits) SSID. As far as we know, Blasty's and UBEE generator does not work for these (same for 6 and 8 digits).
+- 2 759 UPC devices had `UPC123456789` (9 digits) SSID. As far as we know, Blasty's and UBEE generator does not work for these (same for 6 and 8 digits).
 
 ### Other prefixes
 Using [wifileaks.cz] database we tested this hypothesis: *is SSID generator working also for other MAC addresses, besides
