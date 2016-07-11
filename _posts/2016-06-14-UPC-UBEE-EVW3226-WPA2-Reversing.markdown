@@ -899,7 +899,8 @@ Top 5 MAC prefixes for UPC SSIDs. [macvendors.com](http://www.macvendors.com/) w
 MAC prefix with respect to the number of digits in the UPC SSID.
 
 As you can see, prefix `e8:40:f2` is used only with 6 digits SSIDs, these router types are probably not affected nor by
-Blasty generator, neither by UBEE generator.
+Blasty generator, neither by UBEE generator (Pegatron router). On the other hand others in TOP 5 list (UBEE, Technicolor)
+are affected with high probability.
 
 If you happen to try Blasty attack on devices with these prefixes please report us the state to our e-mail (page footer), we will update statistics.
  Thanks a lot!
