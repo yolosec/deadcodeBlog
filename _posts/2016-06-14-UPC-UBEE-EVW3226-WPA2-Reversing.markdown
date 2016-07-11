@@ -900,12 +900,13 @@ Both applications are available at the Google Play Store [here](https://play.goo
 
 ## Sources {#sources}
 
-* {% include icon-github.html username="yolosec/upcgen" %} Proof-of-concept
+* {% include icon-github.html username="yolosec/upcgen" %} Proof-of-concept WPA2 password generator repo (C, python)
 * [ubee.deadcode.me](https://ubee.deadcode.me) SSID \\( \rightarrow \\) Password recovery web service
 * [Router Keygen](https://play.google.com/store/apps/details?id=net.yolosec.routerkeygen2) Android app
 * {% include icon-github.html username="yolosec/routerkeygenAndroid" %} Router Keygen sources
 * [UPC Keygen](https://play.google.com/store/apps/details?id=net.yolosec.upckeygen) Android app
 * {% include icon-github.html username="yolosec/upcKeygen" %} UPC keygen sources
+* [UBEE Security Advisory](http://www.securityfocus.com/archive/1/538560) - interesting UBEE vulnerabilities (discovered by others).
 
 
 ## Responsible Disclosure {#responsible-disclosure}
@@ -915,5 +916,10 @@ Both applications are available at the Google Play Store [here](https://play.goo
 - _04. May 2016_: Check with Liberty Global on state of the fix.
 - _28. Jun 2016_: Sending this article for review to Liberty Global.
 - _04. Jul 2016_: Publication of this article.
+
+Currently, devices are still vulnerable (11-Jul-2016).
+Liberty Global (UPC) is working on the fix. Allegedly, it will be in a form of a firmware upgrade pushed to all routers automatically.
+After upgrade, router will redirect user to the "captive portal" (behaviour similar to hotel/airport WiFis on the first connect)
+asking user to change the default password.
 
 [wifileaks.cz]: http://wifileaks.cz
