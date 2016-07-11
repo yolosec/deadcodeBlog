@@ -29,7 +29,7 @@ This blog contains firmware analysis, reversing writeup, function statistical an
 
 
 * _05-07-2015_: [wifileaks.cz](#wifileaks) data set analyzed
-* _11-07-2015_: [wardrive statistics extended](#wifileaks), [UPC solution mentioned](#upc-solution).
+* _11-07-2015_: [wardrive statistics extended, vendors added](#wifileaks), [UPC solution mentioned](#upc-solution).
 
 
 ## Introduction {#introduction}
