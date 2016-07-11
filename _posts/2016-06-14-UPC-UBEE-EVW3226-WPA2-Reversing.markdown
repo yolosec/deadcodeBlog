@@ -860,7 +860,7 @@ mainly in 2015 and to demonstrate how situation progressed over time. For exampl
 - In total, there are 4 809 UBEE devices (both with UPC name and with changed SSID).
 - 743 UBEE devices have different SSID - user probably changed it (15.45%).
 - Our algorithm worked for 4 061 UBEE devices with UPC SSID (99.88%).
-- 5 UBEE devices with UPC SSID did not match our SSID prediction (0.12%). The reason: 4 of them have 6 digits and 1 have 8 digits in SSID.
+- 5 UBEE devices with UPC SSID did not match our SSID prediction (0.12%). The reason: 4 of them have 6 digits and 1 has 8 digits in SSID.
 - 5 UBEE devices with UPC SSID that matched had MAC offset -1, thus it was working in 5GHz band.
 - 2 759 UPC devices had `UPC123456789` (9 digits) SSID. As far as we know, Blasty's and UBEE generator does not work for these (same for 6 and 8 digits).
 
@@ -877,15 +877,15 @@ In our manual testing we haven't found WiFi that would resist attack of Blasty a
 thus assume the combined approach works on majority of UPC WiFis matching regex `^UPC[0-9]{7}` (7 digits). This assumption
 is supported also by our Android apps users reviews.
 
-| MAC prefix | Occurrences | Blasty works   | UBEE works |
-| ---------- | ----------  | -------------- | ---------- |
-| `88:f7:c7` | 4684        |  Probably yes  | No         |
-| `64:7c:34` | 4066        |  No            | Yes        |
-| `e8:40:f2` | 2541        |  Probably no   | No         |
-| `c4:27:95` | 2244        |  Probably yes  | No         |
-| `58:23:8c` | 1995        |  Probably yes  | No         |
+| MAC prefix | Vendor      | Occurrences | Blasty works   | UBEE works |
+| ---------- | ----------- | ----------  | -------------- | ---------- |
+| `88:f7:c7` | Technicolor | 4684        |  Probably yes  | No         |
+| `64:7c:34` | Ubee        | 4066        |  No            | Yes        |
+| `e8:40:f2` | Pegatron    | 2541        |  Probably no   | No         |
+| `c4:27:95` | Technicolor | 2244        |  Probably yes  | No         |
+| `58:23:8c` | Technicolor | 1995        |  Probably yes  | No         |
 {:.mbtablestyle2}
-Top 5 MAC prefixes for UPC SSIDs
+Top 5 MAC prefixes for UPC SSIDs. [macvendors.com](http://www.macvendors.com/) was used to resolve MAC prefix to the vendor name.
 
 
 | MAC prefix | 6 digits    | 7 digits   | 8 digits | 9 digits |
@@ -923,7 +923,7 @@ Both applications are available at the Google Play Store [here](https://play.goo
 
 ## Sources {#sources}
 
-* {% include icon-github.html username="yolosec/upcgen" %} Proof-of-concept WPA2 password generator repo (C, python)
+* {% include icon-github.html username="yolosec/upcgen" %} Proof-of-concept WPA2 password generator repo (C, Python)
 * [ubee.deadcode.me](https://ubee.deadcode.me) SSID \\( \rightarrow \\) Password recovery web service
 * [Router Keygen](https://play.google.com/store/apps/details?id=net.yolosec.routerkeygen2) Android app
 * {% include icon-github.html username="yolosec/routerkeygenAndroid" %} Router Keygen sources
