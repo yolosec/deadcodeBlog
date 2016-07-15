@@ -886,7 +886,7 @@ is supported also by our Android apps users reviews.
 | `a0:c5:62` | Arsis       | 587         |  Probably no   | No         |
 | Rest       | -           | 3073        |  Unknown       | No         |
 {:.mbtablestyle2}
-Top 5 MAC prefixes for UPC SSIDs. [macvendors.com](http://www.macvendors.com/) was used to resolve MAC prefix to the vendor name.
+Top 10 MAC prefixes for UPC SSIDs. [macvendors.com](http://www.macvendors.com/) was used to resolve MAC prefix to the vendor name.
 
 
 | MAC prefix | 6 digits    | 7 digits   | 8 digits | 9 digits |
