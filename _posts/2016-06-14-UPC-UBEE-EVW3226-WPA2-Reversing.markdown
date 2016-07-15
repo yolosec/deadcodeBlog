@@ -756,9 +756,10 @@ Thus if we take WiFi BSSID and compute mapping \\( M = \\{ \\) SSID \\( \rightar
 for \\( \pm \\) 10 MAC around BSSID we can then surely find observed SSID in \\( M \\) and corresponding default
  WPA2 password.
  
-From our observation, BSSID for 5GHz = BSSID for 2.4GHz network (MAC is the same).
-Furthermore, BSSID = MTA MAC + 3 on the router label.
-Table below shows how BSSID and input MAC address relates on the example:
+We experimentally determined the shifts used. We observed BSSID is same for 2.4 GHz and 5 GHz networks,
+ it does not get changed by changing the frequency.
+Furthermore, WiFi BSSID corresponds to MTA MAC address (printed on the router label) + 3.
+Table below illustrates how BSSID and function input MAC address relates:
 
 | Band | BSSID | Function input MAC | Offset | SSID | Password |
 | ---- | ----- | ------------------ | ------ | ---- | -------- |
