@@ -872,7 +872,7 @@ The answer is *NO*. We re-implemented SSID generation routine in
 [Python](https://github.com/yolosec/upcgen/blob/master/pytools/ubee_wifileaks.py), run it for all UPC WiFi records in
 the database and only MAC addresses starting with `64:7c:34` prefix are vulnerable to this attack.
 
-Here is the table of top 5 most used MAC prefixes for UPC WiFi SSIDs in [wifileaks.cz] dataset for 2016 group.
+Here is the table of top 10 most used MAC prefixes for UPC WiFi SSIDs in [wifileaks.cz] dataset for 2016 group.
 In our manual testing we haven't found WiFi that would resist attack of Blasty and our algorithm combined. We
 thus assume the combined approach works on majority of UPC WiFis matching regex `^UPC[0-9]{7}` (7 digits). This assumption
 is supported also by our Android apps users reviews.
@@ -884,23 +884,34 @@ is supported also by our Android apps users reviews.
 | `e8:40:f2` | Pegatron    | 2541        |  Probably no   | No         |
 | `c4:27:95` | Technicolor | 2244        |  Probably yes  | No         |
 | `58:23:8c` | Technicolor | 1995        |  Probably yes  | No         |
+| `44:32:c8` | Technicolor | 904         |  Probably yes  | No         |
+| `70:54:d2` | Pegatron    | 834         |  Probably no   | No         |
+| `34:7a:60` | Arsis       | 732         |  Probably no   | No         |
+| `38:60:77` | Pegatron    | 664         |  Probably no   | No         |
+| `a0:c5:62` | Arsis       | 587         |  Probably no   | No         |
+| Rest       | -           | 3073        |  Unknown       | No         |
 {:.mbtablestyle2}
 Top 5 MAC prefixes for UPC SSIDs. [macvendors.com](http://www.macvendors.com/) was used to resolve MAC prefix to the vendor name.
 
 
 | MAC prefix | 6 digits    | 7 digits   | 8 digits | 9 digits |
-| ---------- | ---: | ---: | -: | -: |
-| `88:f7:c7` | 2    | 4682 | 0  | 0  |
-| `64:7c:34` | 2    | 4063 | 1  | 0  |
-| `e8:40:f2` | 2541 | 0    | 0  | 0  |
-| `c4:27:95` | 0    | 2244 | 0  | 0  |
-| `58:23:8c` | 0    | 1995 | 0  | 0  |
+| ---------- | ---: | ---: | -: | -:  |
+| `88:f7:c7` | 2    | 4682 | 0  | 0   |
+| `64:7c:34` | 2    | 4063 | 1  | 0   |
+| `e8:40:f2` | 2541 | 0    | 0  | 0   |
+| `c4:27:95` | 0    | 2244 | 0  | 0   |
+| `58:23:8c` | 0    | 1995 | 0  | 0   |
+| `44:32:c8` | 0    | 904  | 0  | 0   |
+| `70:54:d2` | 834  | 0    | 0  | 0   |
+| `34:7a:60` | 0    | 0    | 0  | 732 |
+| `38:60:77` | 664  | 0    | 0  | 0   |
+| `a0:c5:62` | 0    | 0    | 0  | 587 |
 {:.mbtablestyle2}
 MAC prefix with respect to the number of digits in the UPC SSID.
 
 As you can see, prefix `e8:40:f2` is used only with 6 digits SSIDs, these router types are probably not affected nor by
-Blasty generator, neither by UBEE generator (Pegatron router). On the other hand others in TOP 5 list (UBEE, Technicolor)
-are affected with high probability.
+Blasty generator, neither by UBEE generator (Pegatron router). On the other hand others in TOP 10 list (UBEE, Technicolor)
+with 7 digits SSID are affected with high probability.
 
 If you happen to try Blasty attack on devices with these prefixes please report us the state to our e-mail (page footer), we will update statistics.
  Thanks a lot!
