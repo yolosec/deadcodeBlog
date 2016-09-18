@@ -31,37 +31,37 @@ if the running Java is version 8, a binary search of the character. Such sleep l
 this approach to extract the whole strings and files from the vulnerable systems.
 
 This approach is useful if normal RCE from [ysoserial] toolchain does not work from some reason (firewall, policy, selinux, IDS).
-We can extract precious informations using this technique which help us with further attacks, e.g.,
+We can extract precious pieces of information using this technique, which help us with further attacks, e.g.,
 database connection strings, passwords, private keys, machine configuration.
 
 ## Testing {#testingserver}
 
-In order to test deserialization vulnerability payloads in real environment we made a simple REST server than accepts an input
+In order to test deserialization vulnerability payloads in real environment, we made a simple REST server than accepts an input
 parameter in BASE64, deserializes it and prints the result (if applicable). Our payloads are tested against this test server.
 
 Apache Commons-collection 3.1 is included as dependency so the CommonsCollections exploit class works.
-Server uses Spring Boot framework and can be started from command line (has embedded Tomcat server).
-It is easy to test if generated payload works as expected (sleep / exception).
+The server uses the Spring Boot framework and can be started from command line (has embedded Tomcat server).
+It is easy to test if the generated payload works as expected (sleep / exception).
 
 [Deserialize test server] can be found on the GitHub. You can test against it with our attack tool.
 
 ## Building the payloads dynamically {#building}
 
-[ysoserial] is a good place to start with Java Deserialization. It has a simple CLI one can use to build a simple payloads.
+[ysoserial] is a good place to start with Java Deserialization. It has a simple CLI one can use to build a simple payload.
 In the [Part 1] we extended the possibilities of the payload generation.
 
-Our target is mainly to automate binary search and string extraction from the vulnerable system.
-For each guess we need to construct a new payload on the fly. There is a plenty of options
-how to construct such payload dynamically so we decided to build the payload from the JSON specification.
+Our goal is mainly to automate binary search and string extraction from the vulnerable system.
+For each guess we need to construct a new payload on the fly. There is plenty of options
+to construct such payload dynamically so we decided to build the payload from the JSON specification.
 
 ## JSON spec {#json}
 
 JSON specification determines how the resulting payload is constructed.
 [Generator.java] then parses the JSON and returns the binary payload.
 
-Here are few examples of payload construction:
+Here are a few examples of payload construction:
 
-Very simple payload - sleeps for a 5 seconds.
+Very simple payload - sleeps for 5 seconds.
 
 ```json
 {"exec":[
@@ -82,7 +82,7 @@ Moreover the payload is valid (default option) = it does not throw an exception 
 This payload has 2 consequent commands. `java` command is a macro we defined in the [Generator.java] which detects
 whether the running Java version is 8. It does that by Classloading a class that was added in Java 8. Thus
 if Java 8 is there, class load succeeds and sleep is invoked. If lower java version is there, class loading fails with
-exception and sleep is not invoked
+exception and sleep is not invoked.
 
 ```json
 {"exec":[
@@ -104,7 +104,7 @@ predicate returning true if the given file exists. In this example the applicati
 ```
 
 This payload reads the `/etc/passwd` file from the file system, converts all characters to lowercase
- and tests if the result contains a string `nbusr123`. If does the app sleeps for 5 seconds.
+ and tests if the result contains a string `nbusr123`. If it does, the app sleeps for 5 seconds.
 
 ```json
 {"exec":[
@@ -117,7 +117,7 @@ This payload reads the `/etc/passwd` file from the file system, converts all cha
 ```
 
 This one demonstrated how to do a binary search on the input string - in this case the `/etc/passwd` file.
-The page sleeps for 5 seconds if the 15th character of the file is in the regex range `[a-z]`.
+The page sleeps for 5 seconds if the 16th character of the file is in the regex range `[a-z]`.
 
 ```json
 {"exec":[
@@ -145,8 +145,8 @@ To learn more on gadget construction consult the [Generator.java] sources.
 
 ## String extraction {#strings}
 
-In order to extract the string we first check if the string is null or empty.
-If it's not we proceed to the step 2 - length extraction.
+In order to extract the string, we first check if the string is null or empty.
+If it's not, we proceed to the step 2 - length extraction.
 
 We choose the simple algorithm to determine the string length: String.substr().
 If the index is out of bounds (i.e., string does not contain it) the exception is thrown.
@@ -203,7 +203,7 @@ Length is between 7 and 16
 The approach can be optimized so the algorithm waits a minimum time during the binary search.
 This can be done simply by a frequency analysis. In the particular step the algorithm
 asks whether the character being found is located in the range `[BCDEFG]` or `[HIJKLM]`.
-For us is better to wait the minimum time, thus check the group which is less probable to occur (thus we don't sleep).
+For us it is better to wait the minimum time, thus check the group which is less probable to occur (thus we don't sleep).
 
 Also the previous guesses can be used to further optimize the search, e.g., with more
 complex frequency analysis (digrams, trigrams), autocomplete engines or AI.
@@ -215,15 +215,15 @@ The exploitation example is in [Attack.java] which demonstrates:
 - extraction of `os.name` property
 - extraction of `PATH` environment variable
 - extraction of `/etc/hosts` from the system
-- simple victim fingerprinting (java version, OS, security manager access, few interesting properties)
+- simple victim fingerprinting (java version, OS, security manager access, a few interesting properties)
 
 ## Demo {#demo}
 
 1. Start the [Deserialize test server]
 2. Test whether it is listening on port 8022 - in the readme of the server you find how to compile it and test it.
-3. Run the [GeneratorTest.java] test class. It constructs payloads from JSON specifications and run them against the deserialize server.
+3. Run the [GeneratorTest.java] test class. It constructs payloads from JSON specifications and runs them against the deserialize server.
 4. Run the [AttackTest.java] test class. It contains the exploitation technique demonstration described above.
-5. Have a fun.
+5. Have fun.
 
 ### os.name
 
