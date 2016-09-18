@@ -835,8 +835,7 @@ is ignored. The key part here is [ClosureTransformer](#ClosureTransformer)
 <Transformer>    -> <Predicate>
 <Transformer>    -> <Closure>
 <Closure>        -> ;
-<Closure>        -> <Closure> | <Closure-Tail>
-<Closure-Tail>   -> <Closure> <Closure-Tail> | \eps
+<Closure>        -> <Closure> <Closure>
 <Closure>        -> for(int i=0; i < <Int>; i++) { <Closure> }
 <Closure>        -> while( <Predicate> ) { <Closure> }
 <Closure>        -> do { <Closure> } while( <Predicate> )
