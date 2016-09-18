@@ -3,7 +3,7 @@ layout: post
 title:  "Blind Java Deserialization Vulnerability - Commons Gadgets"
 date:   2016-09-02 08:00:00 +0200
 categories: blog
-tags: hacking java deserialization commons blind
+tags: hacking java deserialization commons blind ysoserial
 excerpt_separator: <!-- more -->
 
 ---
