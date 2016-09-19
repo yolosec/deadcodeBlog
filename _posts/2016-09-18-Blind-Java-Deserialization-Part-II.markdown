@@ -26,11 +26,18 @@ Practical demonstration of the victim fingerprinting and information extraction 
 ## Introduction {#introduction}
 
 In the [Part 1] of our article we introduced a concept of blind Java Deserialization using Apache CommonsCollections
-exploit classes. In short: with crafting a payload we can make a vulnerable application sleep on certain conditions, e.g.,
+exploit classes.
+
+Apache CommonsCollections is a popular Java library that can get into the project also via transitive dependencies.
+Vulnerable application can run on arbitrary Servlet container (Tomcat, JBoss, WebSphere). Application is vulnerable if contains
+CommonsCollections <= v3.2.1 or <= v4 and deserializes data provided by user (e.g., web page input, RMI, JMX).
+The serialized Java object starts with `rO0` in base64 and `ac ed 00 05` in hex.
+
+Summary of Part 1: with crafting a payload we can make a vulnerable application sleep on certain conditions, e.g.,
 if the running Java is version 8, a binary search of the character. Such sleep leaks one bit of information. We automate
 this approach to extract the whole strings and files from the vulnerable systems.
 
-This approach is useful if normal RCE from [ysoserial] toolchain does not work from some reason (firewall, policy, selinux, IDS).
+This approach is useful if normal RCE from [ysoserial] toolchain does not work from some reason (firewall, policy, SecurityManager, selinux, IDS).
 We can extract precious pieces of information using this technique, which help us with further attacks, e.g.,
 database connection strings, passwords, private keys, machine configuration.
 
