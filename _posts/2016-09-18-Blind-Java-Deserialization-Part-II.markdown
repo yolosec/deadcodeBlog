@@ -29,11 +29,11 @@ In the [Part 1] of our article we introduced a concept of blind Java Deserializa
 exploit classes.
 
 Apache CommonsCollections is a popular Java library that can get into the project also via transitive dependencies.
-Vulnerable application can run on arbitrary Servlet container (Tomcat, JBoss, WebSphere). Application is vulnerable if contains
-CommonsCollections <= v3.2.1 or <= v4 and deserializes data provided by user (e.g., web page input, RMI, JMX).
+Vulnerable application can run on arbitrary Servlet container (Tomcat, JBoss, WebSphere). Application is vulnerable if it contains
+CommonsCollections <= v3.2.1 or <= v4 on the Classpath and deserializes data provided by user (e.g., web page input, RMI, JMX).
 The serialized Java object starts with `rO0` in base64 and `ac ed 00 05` in hex.
 
-Summary of Part 1: with crafting a payload we can make a vulnerable application sleep on certain conditions, e.g.,
+Summary of the Part 1: with crafting a payload we can make a vulnerable application sleep on certain conditions, e.g.,
 if the running Java is version 8, a binary search of the character. Such sleep leaks one bit of information. We automate
 this approach to extract the whole strings and files from the vulnerable systems.
 
