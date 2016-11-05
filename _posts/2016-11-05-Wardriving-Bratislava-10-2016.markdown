@@ -40,7 +40,7 @@ protected networks and performed the password check - for UBEE it matched in 100
 
 The fun thing on 2 guys in the car going 10 kmph in the middle of the night in the dark streets is that you either look
 as a drug dealer or looking for one. At one dark street two weird hooded guys started approaching us,
-maybe thinking one of the two above so we decided to another place. We did encounter a police car whatsoever
+maybe thinking one of the two above so we decided to move another place. We did encounter a police car whatsoever
 during the experiment.
 
 ## Results
