@@ -73,6 +73,18 @@ We were testing this in our home network, the plugin worked quite well. We were 
 WPA2 handshakes with this. Unfortunately after some time the driver for deauth card broke. Drivers were not stable
 enough to support this approach for longer than 30 minutes.
 
+## Use-case
+
+As some commenter on Reddit pointed out, this approach is not new. That's correct, deauth is pretty old stuff. Our contrinution
+is a demonstration of an automatic deauth + handshake collection without manual intervention, with Kismet and simple plugin.
+You drive the car, the plugin tries to deauth interesting clients and collect handshakes. Without even touching a keyboard.
+I was not able to find such stuff (we also needed some filtering, priority, ...) so I implemented it.
+
+After the experiment you can run some dictionary attack for all collected data and typically crack some default passwords,
+routers with default ones (e.g., admin, tplink, airlive), routers with flaws in default password generation - UPC. This
+may come handy also for hacking IoT in a large scale. This approach is good for mass attacks in a large area, not for
+targeted attack against one particular victim.
+
 ## Disclaimer
 
 Actively deauthenticating client is illegal, you should do this only in your own network. We declare we didn't
