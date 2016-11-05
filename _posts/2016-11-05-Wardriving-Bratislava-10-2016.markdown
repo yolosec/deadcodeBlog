@@ -8,7 +8,7 @@ excerpt_separator: <!-- more -->
 
 ---
 
-TL;DR: Wardriving in Bratislava, Slovak Republic capital city 8 months after contacting UPC about
+TL;DR: Wardriving in Bratislava, Slovak Republic capital city, 8 months after contacting UPC about
  the flaw in their insecure default password generation.
 
 <!-- more -->
@@ -19,9 +19,9 @@ In the previous article, [UPC UBEE EVW3226 WPA2 Password Reverse Engineering], w
 flaws in generating a default password for the WiFi.
 People using the default password were in potential danger, attackers could tamper with the router or their LAN.
 
-The part of the article was also Wardriving in Brno, Czech Republic. We discovered there were vulnerable routers
-out there. After 8 months we found interesting to repeat the wardriving experiment in a different city to see
-whether pattern changed.
+A part of the article was also Wardriving in Brno, Czech Republic. We discovered there were vulnerable routers
+out there. After 8 months we found it interesting to repeat the wardriving experiment in a different city to see
+whether the pattern changed.
 
 ## Setup
 
@@ -31,16 +31,16 @@ running with the [Kismet](https://en.wikipedia.org/wiki/Kismet_(software))
 
 ## Methodology
 
-We carried out only the passive Wardriving with 2 measurement devices on board of the car. The cruise speed was kept low
- around 10 kmph in dense residential urban areas of the Bratislava (mainly Petrzalka) in the middle of the night. At some more interesting
+We carried out only the passive Wardriving with 2 measurement devices on board of the car. The cruise speed was kept low,
+ around 10 kmph in dense residential urban areas of Bratislava (mainly Petrzalka) in the middle of the night. At some more interesting
  places we stayed for a longer time.
 
 Then for a random sample verification we passively captured WPA2 handshake for 20 WPA2
 protected networks and performed the password check - for UBEE it matched in 100% cases.
 
-The fun thing on 2 guys in the car going 10 kmph in the middle of the night in the dark streets is that you either look
+The fun thing about 2 guys in the car going 10 kmph in the middle of the night in the dark streets is that you either look
 as a drug dealer or looking for one. At one dark street two weird hooded guys started approaching us,
-maybe thinking one of the two above so we decided to move to another place. We did encounter a police car whatsoever
+maybe thinking one of the two above so we decided to move to another place. We did not encounter any police car whatsoever
 during the experiment.
 
 ## Results
@@ -58,7 +58,7 @@ The original KML map data are available for download, for older
 
 By plugging KML files to the [GPS Visualizer](http://www.gpsvisualizer.com/) you can browse
 the map interactively. Here is [the online interactive map](/static/wdriving/ba-live-map.html) for Bratislava
-wardriving (2 or 3 WiFis are obviously mis-localized as we never been to Cunovo). If the map is not working
+wardriving (2 or 3 WiFis are obviously mis-localized as we have never been to Cunovo). If the map is not working
 for you in the browser try downloading and opening it locally or upload KML to the [GPS Visualizer](http://www.gpsvisualizer.com/).
 
 Below are the results from the Wardriving experiment, combining both data sets - Wiggle and Kismet.
@@ -102,7 +102,7 @@ router that we detected to respond to the [Blasty attack](https://haxx.in/upc-wi
 
 Interestingly the amount of UBEE routers with changed password is about the same 18%. This may represent
 sample of users changing the default settings more globally. This pattern moreover holds also in the
-[Wifileaks] analysis from the previous article. The ratio of people leaving router in default settings
+[Wifileaks] analysis from the previous article. The ratio of people leaving the router in default settings
 is disturbingly high.
 
 Technicolor routers ratio dramatically dropped in Bratislava compared to Brno (48.54 % to 16.33 %).
@@ -116,7 +116,7 @@ It would be interesting to test how many vulnerabilities were fixed...
 
 Another new interesting observation is a new router type detected in the data. It is
 [Compal CH7465LG](https://www.upc.cz/pdf/manualy_inet/15258_UPC_Mercury_modem_uzivatelsky_manual_v5.pdf)
-also called a Mercury modem by UPC. The typical SSID matches the regex pattern `UPC[0-9A-F]{7}`, it
+also called a Mercury modem by UPC. The typical SSID matches the regex pattern `^UPC[0-9A-F]{7}`, it
 contains also hex digits. The example password (from the linked user manual is): `x*Hz6mh4ppdcx`
 which looks quite complicated. But if the same pattern is followed the brute-force search space can be
 reduced.
@@ -131,8 +131,8 @@ The router looks like this:
 [![Compal CH7465LG](/static/wdriving/compal.png)](/static/wdriving/compal.png)
 
 To conclude the dataset results it seems that UPC decided not to deal with UBEE and Technicolor vulnerabilities in
-any direct manner. It is maybe much more easier and economical to let those routers go out of the market
-by making users upgrading to a new Compal routers.
+any direct manner. It is maybe much easier and economical to let those routers go out of the market
+by making users upgrade to new Compal routers.
 
 On a side note: after I searched this router a bit when analysing wardriving results I started seeing adds like this:
 
