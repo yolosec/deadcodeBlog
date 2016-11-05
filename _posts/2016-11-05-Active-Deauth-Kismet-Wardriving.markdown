@@ -15,7 +15,7 @@ TL;DR: Actively sniffing WPA2 handshakes during the wardriving with sending deau
 ## Kismet active deauth
 During our wardriving experiments we were flirting with an idea of active wardriving to validate our results
 on vulnerability of the routers. We had to abandon this idea due to legality issues. But it initiated our
-curiosity on how's complicated to build such setup.
+curiosity on how complicated it is to build such setup.
 
 In order to test the WPA2 password, the first thing you need is to capture
 [WPA2 handshake](https://www.aircrack-ng.org/doku.php?id=cracking_wpa), this you can
@@ -23,12 +23,12 @@ do by sniffing WiFi transmission (in monitor mode) by `airodump-ng` utility.
 
 Once you have that you can try the dictionary/bruteforce attack offline on the handshake. Handshake occurs only
 when a client connects to the network. This event is quite rare as many devices keep persistent WiFi connection.
-You would have to wait somebody walks in/out from the range of the WiFi access point with the smartphone in the pocket or
+You would have to wait until somebody walks in/out from the range of the WiFi access point with the smartphone in the pocket or
 something like that.
 
 To get the handshake you can actively deauthenticate the client from the network by sending a special deauth
  packet to the client. For this you obviously need an existing client in the network and antenna & transmitter strong
- enough so you packet hits the client.
+ enough so your packet hits the client.
 
 This causes client to drop the connection to AP and reconnect again. Here you can capture the new handshake and then attack offline,
 out of the AP WiFi reach.
