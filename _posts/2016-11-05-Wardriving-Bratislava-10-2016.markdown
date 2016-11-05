@@ -3,7 +3,7 @@ layout: post
 title:  "Wardriving Bratislava 10/2016"
 date:   2016-11-05 08:00:00 +0200
 categories: blog
-tags: wardriving bratislava UPC router wifi
+tags: wardriving bratislava UPC router wifi kismet wiggle ubee compal mercury
 excerpt_separator: <!-- more -->
 
 ---
@@ -128,17 +128,6 @@ On a side note: after I searched this router a bit when analysing wardriving res
 [![Compal CH7465LG ad](/static/wdriving/compal_ad.png)](/static/wdriving/compal_ad.png)
 
 Yep, that's the router I am talking about. UPC is asking me to upgrade to mega-strong UPC WiFi router (security swiss cheese).
-
-TODO: maps, kml, data sources...
-
-## Kismet deauth
-Initially we were flirting with an idea of active wardriving to validate our results on vulnerability of the passwords.
-For this we needed to capture WPA2 handshake
-
- - motivation
- - plugin
- - ....
-TODO
 
 [UPC hack]: https://deadcode.me/blog/2016/07/01/UPC-UBEE-EVW3226-WPA2-Reversing.html
 [Wifileaks]: https://deadcode.me/blog/2016/07/01/UPC-UBEE-EVW3226-WPA2-Reversing.html#wifileaks
