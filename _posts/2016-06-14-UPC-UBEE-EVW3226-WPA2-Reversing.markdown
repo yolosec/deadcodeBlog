@@ -28,9 +28,9 @@ This blog contains firmware analysis, reversing writeup, function statistical an
 **Updates:**
 
 
-* _05-07-2015_: [wifileaks.cz](#wifileaks) data set analyzed
-* _11-07-2015_: [wardrive statistics extended, vendors added](#wifileaks), [UPC solution mentioned](#upc-solution).
-
+* _05-07-2016_: [wifileaks.cz](#wifileaks) data set analyzed
+* _11-07-2016_: [wardrive statistics extended, vendors added](#wifileaks), [UPC solution mentioned](#upc-solution).
+* _05-11-2016_: Hypothesis rejection diagrams improved, link to presentation added.
 
 ## Introduction {#introduction}
 
@@ -961,7 +961,7 @@ Both applications are available at the Google Play Store [here](https://play.goo
 * [UPC Keygen](https://play.google.com/store/apps/details?id=net.yolosec.upckeygen) Android app
 * {% include icon-github.html username="yolosec/upcKeygen" %} UPC keygen sources
 * [UBEE Security Advisory](http://www.securityfocus.com/archive/1/538560) - interesting UBEE vulnerabilities (discovered by others).
-
+* [Our PDF presentation](http://www.slideshare.net/DusanKlinec/upc-router-reverse-engineering-case-study) on the UPC hack + wardriving
 
 ## Responsible Disclosure {#responsible-disclosure}
 
