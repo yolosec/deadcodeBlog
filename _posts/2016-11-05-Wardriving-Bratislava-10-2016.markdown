@@ -15,7 +15,7 @@ TL;DR: Wardriving in Bratislava, Slovak Republic capital city 8 months after con
 
 ## Intro
 
-In the article [UPC hack] we analyzed UPC UBEE router and found serious flaws in generating a default password for the WiFi.
+In the previous article, [UPC hack], we analyzed UPC UBEE router and found serious flaws in generating a default password for the WiFi.
 People using the default password were in potential danger, attackers could tamper with the router or their LAN.
 
 The part of the article was also Wardriving in Brno, Czech Republic. We discovered there were vulnerable routers
@@ -31,7 +31,7 @@ running with the [Kismet](https://en.wikipedia.org/wiki/Kismet_(software))
 ## Methodology
 
 We carried out only the passive Wardriving with 2 measurement devices on board of the car. The cruise speed was kept low
- around 10 kmph in dense residential urban areas of the Bratislava (Petrzalka) in the middle of the night. At some more interesting
+ around 10 kmph in dense residential urban areas of the Bratislava (mainly Petrzalka) in the middle of the night. At some more interesting
  places we stayed for a longer time.
 
 Then for a random sample verification we captured WPA2 handshake for 20 WPA2
@@ -48,6 +48,13 @@ maybe thinking one of the two above so we decided to another place.
 * Dark dots represent non-categorized WiFi
 * Blue marker corresponds to `^UPC` SSID pattern (excluding UPC WiFree)
 * Green markers are UBEE routers with `^UPC` SSID
+
+The map data can be downloaded here, for older
+[Brno experiment](/static/wdriving/wdriving1.kml) and this new
+[Bratislava experiment](/static/wdriving/wdriving1.kml).
+
+By plugging KML files to the [GPS Visualizer](http://www.gpsvisualizer.com/) you can browse
+the map live with zoom. Here is [the online interactive map](/static/wdriving/ba-live-map.html).
 
 Here are the results from the Wardriving experiment, combining both data sets - Wiggle and Kismet.
 
@@ -80,7 +87,7 @@ For the comparison here is the similar table from the previous wardriving in Brn
 
 <br/>
 The Technicolor vulnerable data count is based on the known MAC addresses of the
-router that we detected to respond to the [Blasty attack](https://haxx.in/upc-wifi/)
+router that we detected to respond to the [Blasty attack](https://haxx.in/upc-wifi/).
 
 Interestingly the amount of UBEE routers with changed password is about the same 18%. This may represent
 sample of users changing the default settings more globally. This pattern moreover holds also in the
@@ -104,15 +111,15 @@ which looks quite complicated. But if the same pattern is followed the brute-for
 reduced.
 
 The router was extensively analysed by other researchers, here is the 100 pages long [Compal CH7465LG evaluation report].
-They found 35 vulnerabilities in this router (11 found in UBEE). So it looks much worse in many aspects. _Allegedly_
-the password generation routine is implemented in a secure way. We would like to verify this so if somebody has
+They found 35 vulnerabilities in this router (11 found in UBEE). So it looks much worse in many aspects compared to UBEE.
+ _Allegedly_ the password generation routine is implemented in a secure way. We would like to verify this so if somebody has
 firmware dumps or the hardware itself we are interested in buying the piece for analysis. Let us know at `yolosec.team@gmail.com`.
 
 The router looks like this:
 
 [![Compal CH7465LG](/static/wdriving/compal.png)](/static/wdriving/compal.png)
 
-To conclude the dataset results it seems that UPC decided not to deal with UBEE and Technicolor vulnerabilites in
+To conclude the dataset results it seems that UPC decided not to deal with UBEE and Technicolor vulnerabilities in
 any direct manner. It is maybe much more easier and economical to let those routers go out of the market
 by making users upgrading to a new Compal routers.
 
@@ -120,12 +127,17 @@ On a side note: after I searched this router a bit when analysing wardriving res
 
 [![Compal CH7465LG ad](/static/wdriving/compal_ad.png)](/static/wdriving/compal_ad.png)
 
-Yep, thats the router I am talking about. 
+Yep, that's the router I am talking about. UPC is asking me to upgrade to mega-strong UPC WiFi router (security swiss cheese).
+
+TODO: maps, kml, data sources...
 
 ## Kismet deauth
+Initially we were flirting with an idea of active wardriving to validate our results on vulnerability of the passwords.
+For this we needed to capture WPA2 handshake
+
  - motivation
  - plugin
- -
+ - ....
 TODO
 
 [UPC hack]: https://deadcode.me/blog/2016/07/01/UPC-UBEE-EVW3226-WPA2-Reversing.html
