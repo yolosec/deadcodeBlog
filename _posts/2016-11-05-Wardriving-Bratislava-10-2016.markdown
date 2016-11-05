@@ -40,12 +40,14 @@ protected networks and performed the password check - for UBEE it matched in 100
 
 The fun thing on 2 guys in the car going 10 kmph in the middle of the night in the dark streets is that you either look
 as a drug dealer or looking for one. At one dark street two weird hooded guys started approaching us,
-maybe thinking one of the two above so we decided to another place.
+maybe thinking one of the two above so we decided to another place. We did encounter a police car whatsoever
+during the experiment.
 
 ## Results
 
 [![Wardriving map](/static/wdriving/map_ba.png)](/static/wdriving/map_ba.png)
 
+* Wardriving experiment took place 01/10/2016.
 * Dark dots represent non-categorized WiFi
 * Blue markers correspond to `^UPC` SSID pattern (excluding UPC WiFree)
 * Green markers are UBEE routers with `^UPC[0-9]{7}` SSID
