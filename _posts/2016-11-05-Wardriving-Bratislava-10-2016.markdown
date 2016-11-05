@@ -51,7 +51,7 @@ maybe thinking one of the two above so we decided to another place.
 
 The map data can be downloaded here, for older
 [Brno experiment](/static/wdriving/wdriving1.kml) and this new
-[Bratislava experiment](/static/wdriving/wdriving1.kml).
+[Bratislava experiment](/static/wdriving/wdriving2.kml).
 
 By plugging KML files to the [GPS Visualizer](http://www.gpsvisualizer.com/) you can browse
 the map live with zoom. Here is [the online interactive map](/static/wdriving/ba-live-map.html).
@@ -86,6 +86,10 @@ For the comparison here is the similar table from the previous wardriving in Brn
 {:.mbtablestyle3}
 
 <br/>
+The more detailed analysis of the datasets you can find here:
+[Brno dataset results](/static/wdriving/analysis_brno.txt) and this new
+[Bratislava dataset results](/static/wdriving/analysis_bratislava.txt).
+
 The Technicolor vulnerable data count is based on the known MAC addresses of the
 router that we detected to respond to the [Blasty attack](https://haxx.in/upc-wifi/).
 
