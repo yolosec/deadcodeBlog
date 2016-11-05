@@ -46,7 +46,7 @@ We were thinking about automating this deauth & handshake collection during the 
 [Kismet](https://en.wikipedia.org/wiki/Kismet_(software)) is an ideal candidate. It is quite good tool for wardriving and
 moreover it provides a nice API for plugins via sockets.
 
-So we created a *[kismet-deauth-plugin]*.
+So we created a *[kismet-deauth-plugin]* in python. For more detailed information on using the plugin please see the GitHub repo readme.
 
 For this you need 2 WiFi interfaces to work smoothly:
 
