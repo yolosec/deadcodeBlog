@@ -1,0 +1,211 @@
+UPC mac prefixes:
+  88F7C7: 683
+  647C34: 443
+  E840F2: 375
+  C42795: 294
+  58238C: 289
+  4432C8: 118
+  7054D2: 113
+  386077: 111
+  A0C562: 62
+  347A60: 60
+  28C87A: 58
+  4C72B9: 54
+  CC3540: 51
+  8C04FF: 47
+  E06995: 26
+  80F503: 15
+  08952A: 8
+  DC537C: 6
+  E0885D: 3
+  003676: 3
+  60E327: 3
+  7071BC: 3
+  FC6FB7: 3
+  CC03FA: 2
+  0022CE: 2
+  E8DE27: 2
+  001E8C: 2
+  14CC20: 1
+  84E058: 1
+  74DA38: 1
+  A0F3C1: 1
+  FCB4E6: 1
+  E894F6: 1
+  54E2E0: 1
+  382C4A: 1
+  30B5C2: 1
+Top 10 UPC mac prefixes:
+  88F7C7: 683
+  647C34: 443
+  E840F2: 375
+  C42795: 294
+  58238C: 289
+  4432C8: 118
+  7054D2: 113
+  386077: 111
+  A0C562: 62
+  347A60: 60
+  rest: 297
+
+UPC[0-9]{6} mac prefixes:
+  E840F2: 375
+  7054D2: 113
+  386077: 111
+  4C72B9: 54
+  E06995: 26
+  7071BC: 3
+  001E8C: 2
+  60E327: 2
+  0022CE: 2
+  74DA38: 1
+  A0F3C1: 1
+  14CC20: 1
+  382C4A: 1
+Top 10 UPC[0-9]{6} mac prefixes:
+  E840F2: 375
+  7054D2: 113
+  386077: 111
+  4C72B9: 54
+  E06995: 26
+  7071BC: 3
+  001E8C: 2
+  60E327: 2
+  0022CE: 2
+  74DA38: 1
+  rest: 3
+
+UPC[0-9]{7} mac prefixes:
+  88F7C7: 680
+  647C34: 443
+  C42795: 294
+  58238C: 289
+  4432C8: 118
+  CC3540: 51
+  8C04FF: 46
+  08952A: 7
+  E0885D: 3
+  E8DE27: 2
+  CC03FA: 2
+  E894F6: 1
+  60E327: 1
+  FCB4E6: 1
+Top 10 UPC[0-9]{7} mac prefixes:
+  88F7C7: 680
+  647C34: 443
+  C42795: 294
+  58238C: 289
+  4432C8: 118
+  CC3540: 51
+  8C04FF: 46
+  08952A: 7
+  E0885D: 3
+  E8DE27: 2
+  rest: 5
+
+UPC[0-9]{8} mac prefixes:
+  88F7C7: 1
+
+UPC[0-9]{9} mac prefixes:
+  A0C562: 62
+  347A60: 60
+  28C87A: 58
+  80F503: 14
+  FC6FB7: 3
+  003676: 3
+  30B5C2: 1
+  84E058: 1
+  54E2E0: 1
+
+UPC weird prefixes:
+  DC537C: 6
+  88F7C7: 2
+  8C04FF: 1
+  80F503: 1
+  08952A: 1
+
+UPC changed prefixes:
+  88F7C7: 144
+  647C34: 98
+  C42795: 69
+  58238C: 49
+  4432C8: 36
+  E0885D: 2
+  08952A: 1
+  DC537C: 1
+
+UPC non-vuln prefixes:
+  E840F2: 375
+  7054D2: 113
+  386077: 111
+  A0C562: 62
+  347A60: 60
+  28C87A: 58
+  4C72B9: 54
+  CC3540: 51
+  8C04FF: 47
+  E06995: 26
+  80F503: 15
+  DC537C: 6
+  003676: 3
+  60E327: 3
+  7071BC: 3
+  FC6FB7: 3
+  0022CE: 2
+  E8DE27: 2
+  CC03FA: 2
+  001E8C: 2
+  14CC20: 1
+  84E058: 1
+  74DA38: 1
+  A0F3C1: 1
+  FCB4E6: 1
+  E894F6: 1
+  54E2E0: 1
+  382C4A: 1
+  30B5C2: 1
+Top 10 UPC non-vuln prefixes:
+  E840F2: 375
+  7054D2: 113
+  386077: 111
+  A0C562: 62
+  347A60: 60
+  28C87A: 58
+  4C72B9: 54
+  CC3540: 51
+  8C04FF: 47
+  E06995: 26
+  rest: 50
+
+
+* Statistics:
+Total count:  17516
+UPC any: 2868 (16.373601 %)
+UPC[0-9]{6,9} count: 2834 (16.179493 %) (98.814505 % UPC)
+UPC Free count: 2052 (11.715003 %)
+UPC weird count: 11 (0.383543 % UPC)
+UPC vulnerable: 1835 (63.981869 % UPC)
+UPC vulnerable changed: 402 (14.016736 % UPC)
+UPC changed: 400 (13.947001 % UPC)
+UPC technicolor: 1392 (48.535565 % UPC)
+UPC technicolor changed: 304 (10.599721 % UPC)
+Huawei count: 30 (0.171272 %)
+UBEE count:  541
+UBEE changed count: 98 (18.114603 %)
+UBEE matches: 443 (100.000000 %), (15.446304 % UPC)
+UBEE 2.4:  443
+UBEE 5.0:  0
+UBEE unknown:  0
+UBEE no-match:  0
+UBEE match:  443
+UPC no-match:  2391
+UPC 6:  692
+UPC 7:  1938
+UPC 8:  1
+UPC 9:  203
+UPCubee 6:  0
+UPCubee 7:  443
+UPCubee 8:  0
+UPCubee 9:  0
+Wiggle added to kismet DB: 17516
+KismetDB rec: 0, WigleDB rec: 17516, total db size: 17516
