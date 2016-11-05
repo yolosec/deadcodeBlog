@@ -826,7 +826,7 @@ To face our results with the reality, we did a small [wardriving](https://en.wik
 
 We are based in [Brno](https://en.wikipedia.org/wiki/Brno), which is the second largest city of the Czech Republic. It has population about 400 000 people, lots of them concentrated in city blocks where people are living in tower buildings built during the communist era (known as "panelaky"). This proved to be a good target since there are plenty of WiFis to be caught.
 
-Our setup was simple - Linux laptop having external WiFi card (TP-LINK TL-WN722N) with [Kismet](https://en.wikipedia.org/wiki/Kismet_(software)) and Motorola Moto G Android phone with [WiGLE Wifi](https://play.google.com/store/apps/details?id=net.wigle.wigleandroid) application. Long story short - suprisingly the Android phone did a better job and found twice as many networks as the elaborate PC setup. Therefore the further data is mostly from the Android device.
+Our setup was simple - Linux laptop having external WiFi card (TP-LINK TL-WN722N) with [Kismet](https://en.wikipedia.org/wiki/Kismet_(software)) and Motorola Moto G Android phone with [WiGLE Wifi](https://play.google.com/store/apps/details?id=net.wigle.wigleandroid) application. Long story short - surprisingly the Android phone did a better job and found twice as many networks as the elaborate PC setup. Therefore the further data is mostly from the Android device.
 
 [![Wardriving setup](/static/ubee/wardriving_setup.jpg)](/static/ubee/wardriving_setup.jpg)
 
