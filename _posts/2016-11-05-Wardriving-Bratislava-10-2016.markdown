@@ -110,7 +110,7 @@ UBEE routers also had a slight drop (19.96 % to 15.45 %) but we have to conclude
 reporting vulnerabilities to UPC the situation does not look much different...
 
 UPC drafted a solution with captive portal making users change their default passwords. Apparently this
-feature was not present in the UBEE firmware update which was rolled out in 09/2016. My own router
+feature was not present in the UBEE firmware update which was rolled out in 20.9.2016. My own router
 has a new firmware with version `EVW3226_2.07b`, in the time of writing the first article it was `EVW3226_1.0.20`.
 It would be interesting to test how many vulnerabilities were fixed...
 
