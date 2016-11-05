@@ -106,7 +106,7 @@ sample of users changing the default settings more globally. This pattern moreov
 is disturbingly high.
 
 Technicolor routers ratio dramatically dropped in Bratislava compared to Brno (48.54 % to 16.33 %).
-UBEE routers also had a slight drop (19.96 % to 15.45 %) but we have to conclude after 8 months after
+UBEE routers also had a slight drop (19.96 % to 15.45 %) but we have to conclude that 8 months after
 reporting vulnerabilities to UPC the situation does not look much different...
 
 UPC drafted a solution with captive portal making users change their default passwords. Apparently this
