@@ -862,7 +862,7 @@ With help of [wifileaks.cz] we were able to make more accurate statistics on vul
 | UBEE 2.4 GHz      | 7 675            | 7 673           | 7 535           | 4 056           |
 | UBEE 5.0 GHz      | 14               | 14              | 14              | 5               |
 | UBEE no-match SSID| 10               | 10              | 8               | 5               |
-{:.mbtablestyle2} 
+{:.mbtablestyle3}
 
 
 We took different time periods from the [wifileaks.cz] database because the affected router appeared on the market
@@ -902,7 +902,7 @@ is supported also by our Android apps users reviews.
 | `38:60:77` | Pegatron    | 664         |  Probably no   | No         |
 | `a0:c5:62` | Arsis       | 587         |  Probably no   | No         |
 | Rest       | -           | 3073        |  Unknown       | No         |
-{:.mbtablestyle2}
+{:.mbtablestyle3}
 Top 10 MAC prefixes for UPC SSIDs. [macvendors.com](http://www.macvendors.com/) was used to resolve MAC prefix to the vendor name.
 
 
@@ -918,7 +918,7 @@ Top 10 MAC prefixes for UPC SSIDs. [macvendors.com](http://www.macvendors.com/) 
 | `34:7a:60` | 0    | 0    | 0  | 732 |
 | `38:60:77` | 664  | 0    | 0  | 0   |
 | `a0:c5:62` | 0    | 0    | 0  | 587 |
-{:.mbtablestyle2}
+{:.mbtablestyle3}
 MAC prefix with respect to the number of digits in the UPC SSID.
 
 The UPC SSID digit distribution:

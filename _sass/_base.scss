@@ -222,3 +222,19 @@ pre {
         padding: 5px;
     }
 }
+
+.mbtablestyle3 {
+    border-collapse: collapse;
+    width: 100%;
+
+    > table, td, th {
+        padding: 7px;
+        border: 1px solid #a2a2a2;
+    }
+
+}
+
+.mbtablestyle3 tr:nth-child(even) {background: #eaedf5}
+//.mbtablestyle3 tr:nth-child(even) {background: #D8DEED}
+//.mbtablestyle3 tr:nth-child(odd) {background: #EDF1F6}
+
