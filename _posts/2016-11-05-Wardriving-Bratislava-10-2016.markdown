@@ -15,7 +15,8 @@ TL;DR: Wardriving in Bratislava, Slovak Republic capital city 8 months after con
 
 ## Intro
 
-In the previous article, [UPC hack], we analyzed UPC UBEE router and found serious flaws in generating a default password for the WiFi.
+In the previous article, [UPC UBEE EVW3226 WPA2 Password Reverse Engineering], we analyzed UPC UBEE router and found serious
+flaws in generating a default password for the WiFi.
 People using the default password were in potential danger, attackers could tamper with the router or their LAN.
 
 The part of the article was also Wardriving in Brno, Czech Republic. We discovered there were vulnerable routers
@@ -34,7 +35,7 @@ We carried out only the passive Wardriving with 2 measurement devices on board o
  around 10 kmph in dense residential urban areas of the Bratislava (mainly Petrzalka) in the middle of the night. At some more interesting
  places we stayed for a longer time.
 
-Then for a random sample verification we captured WPA2 handshake for 20 WPA2
+Then for a random sample verification we passively captured WPA2 handshake for 20 WPA2
 protected networks and performed the password check - for UBEE it matched in 100% cases.
 
 The fun thing on 2 guys in the car going 10 kmph in the middle of the night in the dark streets is that you either look
@@ -46,17 +47,18 @@ maybe thinking one of the two above so we decided to another place.
 [![Wardriving map](/static/wdriving/map_ba.png)](/static/wdriving/map_ba.png)
 
 * Dark dots represent non-categorized WiFi
-* Blue marker corresponds to `^UPC` SSID pattern (excluding UPC WiFree)
-* Green markers are UBEE routers with `^UPC` SSID
+* Blue markers correspond to `^UPC` SSID pattern (excluding UPC WiFree)
+* Green markers are UBEE routers with `^UPC[0-9]{7}` SSID
 
-The map data can be downloaded here, for older
+The original KML map data are available for download, for older
 [Brno experiment](/static/wdriving/wdriving1.kml) and this new
 [Bratislava experiment](/static/wdriving/wdriving2.kml).
 
 By plugging KML files to the [GPS Visualizer](http://www.gpsvisualizer.com/) you can browse
-the map live with zoom. Here is [the online interactive map](/static/wdriving/ba-live-map.html).
+the map interactively. Here is [the online interactive map](/static/wdriving/ba-live-map.html) for Bratislava
+wardriving (2 or 3 WiFis are obviously mis-localized as we never been to Cunovo).
 
-Here are the results from the Wardriving experiment, combining both data sets - Wiggle and Kismet.
+Below are the results from the Wardriving experiment, combining both data sets - Wiggle and Kismet.
 
 | Statistic (col)               | Count         | Ratio           |
 | :---------------------------- | :------------ | :-------------- |
@@ -71,7 +73,7 @@ Here are the results from the Wardriving experiment, combining both data sets - 
 {:.mbtablestyle3}
 
 <br/>
-For the comparison here is the similar table from the previous wardriving in Brno:
+For the comparison we state the similar table from the previous wardriving in Brno:
 
 | Statistic (col)               | Count         | Ratio           |
 | :---------------------------- | :------------ | :-------------- |
@@ -86,9 +88,11 @@ For the comparison here is the similar table from the previous wardriving in Brn
 {:.mbtablestyle3}
 
 <br/>
-The more detailed analysis of the datasets you can find here:
-[Brno dataset results](/static/wdriving/analysis_brno.txt) and this new
+The more detailed analysis of the datasets are available:
+[Brno dataset results](/static/wdriving/analysis_brno.txt) and new
 [Bratislava dataset results](/static/wdriving/analysis_bratislava.txt).
+
+## Discussion
 
 The Technicolor vulnerable data count is based on the known MAC addresses of the
 router that we detected to respond to the [Blasty attack](https://haxx.in/upc-wifi/).
@@ -133,7 +137,7 @@ On a side note: after I searched this router a bit when analysing wardriving res
 
 Yep, that's the router I am talking about. UPC is asking me to upgrade to mega-strong UPC WiFi router (security swiss cheese).
 
-[UPC hack]: https://deadcode.me/blog/2016/07/01/UPC-UBEE-EVW3226-WPA2-Reversing.html
+[UPC UBEE EVW3226 WPA2 Password Reverse Engineering]: https://deadcode.me/blog/2016/07/01/UPC-UBEE-EVW3226-WPA2-Reversing.html
 [Wifileaks]: https://deadcode.me/blog/2016/07/01/UPC-UBEE-EVW3226-WPA2-Reversing.html#wifileaks
 [Compal CH7465LG evaluation report]: http://www.search-lab.hu/media/Compal_CH7465LG_Evaluation_Report_1.1.pdf
 
