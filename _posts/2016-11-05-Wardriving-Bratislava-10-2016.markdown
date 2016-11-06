@@ -45,7 +45,7 @@ during the experiment.
 
 ## Results
 
-[![Wardriving map](/static/wdriving/map_ba.png)](/static/wdriving/map_ba.png)
+[![Wardriving map](/static/wdriving/map_ba.png)](/static/wdriving/ba-live-map.html)
 
 * Wardriving experiment took place 01/10/2016.
 * Dark dots represent non-categorized WiFi
