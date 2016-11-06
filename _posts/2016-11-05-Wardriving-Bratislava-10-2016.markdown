@@ -57,9 +57,9 @@ The original KML map data are available for download, for older
 [Bratislava experiment](/static/wdriving/wdriving2.kml).
 
 By plugging KML files to the [GPS Visualizer](http://www.gpsvisualizer.com/) you can browse
-the map interactively. Here is [the online interactive map](/static/wdriving/ba-live-map.html) for Bratislava
-wardriving (2 or 3 WiFis are obviously mis-localized as we have never been to Cunovo). If the map is not working
-for you in the browser try downloading and opening it locally or upload KML to the [GPS Visualizer](http://www.gpsvisualizer.com/).
+the map interactively. Here is [the online interactive wardriving map for Bratislava](/static/wdriving/ba-live-map.html)
+(2 or 3 WiFis are obviously mis-localized as we have never been to Cunovo). For completeness
+we provide also the [online interactive wardriving map for Brno](/static/ubee/brno-live-map.html).
 
 Below are the results from the Wardriving experiment, combining both data sets - Wiggle and Kismet.
 
