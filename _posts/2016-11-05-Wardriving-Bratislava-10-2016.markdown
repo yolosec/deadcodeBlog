@@ -54,12 +54,17 @@ during the experiment.
 
 The original KML map data are available for download, for older
 [Brno experiment](/static/wdriving/wdriving1.kml) and this new
-[Bratislava experiment](/static/wdriving/wdriving2.kml).
+[Bratislava experiment](/static/wdriving/wdriving2.kml). To get the idea on
+how wifileaks dataset is geo distributed we sampled 20k UPC networks from 2015-2016
+from the wifileaks dataset to the [wifileaks KML](/static/wdriving/wdriving_wifileaks_20k.kml.gz)
+(sampling was necessary as the original dataset is too large to plot on GoogleMaps, all non-UPC networks
+were excluded from the dataset).
 
 By plugging KML files to the [GPS Visualizer](http://www.gpsvisualizer.com/) you can browse
 the map interactively. Here is [the online interactive wardriving map for Bratislava](/static/wdriving/ba-live-map.html)
 (2 or 3 WiFis are obviously mis-localized as we have never been to Cunovo). For completeness
-we provide also the [online interactive wardriving map for Brno](/static/ubee/brno-live-map.html).
+we provide also the [online interactive wardriving map for Brno](/static/ubee/brno-live-map.html)
+and sample of the [wifileaks interactive map](/static/wdriving/wifileaks-live-map-20ksample.html).
 
 Below are the results from the Wardriving experiment, combining both data sets - Wiggle and Kismet.
 
