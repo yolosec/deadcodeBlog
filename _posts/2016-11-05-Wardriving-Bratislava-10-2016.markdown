@@ -140,6 +140,15 @@ On a side note: after I searched this router a bit when analysing wardriving res
 
 Yep, that's the router I am talking about. UPC is asking me to upgrade to mega-strong UPC WiFi router (security swiss cheese).
 
+## Bonus: photos
+Due to popular demand, here are some photos from the wardriving action. We rode streets of Bratislava in the evening and early morning hours and went to bunch of interesting places and "landmarks" such as Grassalkovich Palace (seat of Slovak president), UPC headquarters and Bonaparte complex (infamous residence of Slovak prime minister). It seems that neither our president or prime minister is using UPC UBEE router, luckily for them.
+
+[![Grassalkovich Palace](/static/wdriving/president.jpg)](/static/wdriving/president.jpg)
+
+[![UPC headquarters](/static/wdriving/upc_headquaters.jpg)](/static/wdriving/upc_headquaters.jpg)
+
+[![Bonaparte](/static/wdriving/bonaparte.jpg)](/static/wdriving/bonaparte.jpg)
+
 [UPC UBEE EVW3226 WPA2 Password Reverse Engineering]: https://deadcode.me/blog/2016/07/01/UPC-UBEE-EVW3226-WPA2-Reversing.html
 [Wifileaks]: https://deadcode.me/blog/2016/07/01/UPC-UBEE-EVW3226-WPA2-Reversing.html#wifileaks
 [Compal CH7465LG evaluation report]: http://www.search-lab.hu/media/Compal_CH7465LG_Evaluation_Report_1.1.pdf
