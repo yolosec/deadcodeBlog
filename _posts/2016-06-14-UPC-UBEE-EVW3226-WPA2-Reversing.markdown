@@ -830,7 +830,7 @@ Our setup was simple - Linux laptop having external WiFi card (TP-LINK TL-WN722N
 
 [![Wardriving setup](/static/ubee/wardriving_setup.jpg)](/static/ubee/wardriving_setup.jpg)
 
-[![Wardriving map](/static/ubee/wardriving_map.png)](/static/ubee/wardriving_map.png)
+[![Wardriving map](/static/ubee/wardriving_map.png)](/static/ubee/brno-live-map.html)
 
 We did a 3 hours long drive from which the main results are:
 
