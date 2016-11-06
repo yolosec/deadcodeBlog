@@ -63,22 +63,22 @@ we provide also the [online interactive wardriving map for Brno](/static/ubee/br
 
 Below are the results from the Wardriving experiment, combining both data sets - Wiggle and Kismet.
 
-| Statistic (col)               | Count         | Ratio           |
-| :---------------------------- | :------------ | :-------------- |
-| Total networks                | 22 172        |                 |
-| UPC networks                  | 3 092         | 13.95 %         |
-| UPC vulnerable                | 1 327         | 42.92 % UPC     |
-| UPC UBEE vulnerable           | 822           | 26.58 % UPC     |
-| UPC Technicolor vulnerable    | 505           | 16.33 % UPC     |
-| UBEE changed                  | 205           | 19.96 % UBEE    |
-| Technicolor changed           | 96            | 03.10 % Tech.   |
-| Compal CH7465LG               | 930           | 30.08 % UPC     |
+| Statistic - Bratislava 1.10.2016 | Count         | Ratio           |
+| :------------------------------- | :------------ | :-------------- |
+| Total networks                   | 22 172        |                 |
+| UPC networks                     | 3 092         | 13.95 %         |
+| UPC vulnerable                   | 1 327         | 42.92 % UPC     |
+| UPC UBEE vulnerable              | 822           | 26.58 % UPC     |
+| UPC Technicolor vulnerable       | 505           | 16.33 % UPC     |
+| UBEE changed                     | 205           | 19.96 % UBEE    |
+| Technicolor changed              | 96            | 03.10 % Tech.   |
+| Compal CH7465LG                  | 930           | 30.08 % UPC     |
 {:.mbtablestyle3}
 
 <br/>
 For the comparison we state the similar table from the previous wardriving in Brno:
 
-| Statistic (col)               | Count         | Ratio           |
+| Statistic - Brno 10.2.2016    | Count         | Ratio           |
 | :---------------------------- | :------------ | :-------------- |
 | Total networks                | 17 516        |                 |
 | UPC networks                  | 2 868         | 16.37 %         |
