@@ -76,7 +76,7 @@ Below are the results from the Wardriving experiment, combining both data sets -
 | UPC UBEE vulnerable              | 822           | 26.58 % UPC     |
 | UPC Technicolor vulnerable       | 505           | 16.33 % UPC     |
 | UBEE changed                     | 205           | 19.96 % UBEE    |
-| Technicolor changed              | 96            | 03.10 % Tech.   |
+| Technicolor changed              | 96            | 19.00 % Tech.   |
 | Compal CH7465LG                  | 930           | 30.08 % UPC     |
 {:.mbtablestyle3}
 
