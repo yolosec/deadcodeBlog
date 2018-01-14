@@ -13,6 +13,7 @@ We are security analysts and enthusiasts poking around interesting stuff.
 - {% include icon-github.html username="ph4r05" %}
 - {% include icon-twitter.html username="ph4r05" %}
 - [LinkedIn](https://www.linkedin.com/in/dklinec)
+- [ph4r05.deadcode.me](https://ph4r05.deadcode.me)
 
 ### Miroslav Svítok (Miroc)
 - {% include icon-github.html username="miroc" %}
