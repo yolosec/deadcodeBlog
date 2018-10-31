@@ -10,10 +10,10 @@ We are security analysts and enthusiasts poking around interesting stuff.
 ## Team
 
 ### Dušan Klinec (Ph4r05)
-- {% include icon-github.html username="ph4r05" %}
-- {% include icon-twitter.html username="ph4r05" %}
-- [LinkedIn](https://www.linkedin.com/in/dklinec)
-- [ph4r05.deadcode.me](https://ph4r05.deadcode.me)
+- {% include icon-github.html username="ph4r05" %} GitHub profile
+- {% include icon-twitter.html username="ph4r05" %} Twitter profile
+- [LinkedIn](https://www.linkedin.com/in/dklinec) profile
+- [ph4r05.deadcode.me](https://ph4r05.deadcode.me) Personal development / security blog
 
 ### Miroslav Svítok (Miroc)
 - {% include icon-github.html username="miroc" %}
