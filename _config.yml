@@ -11,8 +11,10 @@ email: yolosec.team@gmail.com
 description: > # this means to ignore newlines until "baseurl:"
   Deadcode security blog.
   Authors:
-  Dusan Klinec (ph4r05),
-  Miroslav Svitok (Miroc).
+  <a href="https://ph4r05.deadcode.me">Dusan Klinec (ph4r05)</a>,
+  Miroslav Svitok (Miroc). 
+  <a href="/about">About</a>
+
 
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://deadcode.me" # the base hostname & protocol for your site
