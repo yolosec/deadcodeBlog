@@ -22,3 +22,7 @@ github_username:  yolosec
 
 # Build settings
 markdown: kramdown
+
+plugins:
+ - jekyll-image-size 
+
