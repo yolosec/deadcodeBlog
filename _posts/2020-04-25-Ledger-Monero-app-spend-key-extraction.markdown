@@ -107,6 +107,47 @@ If we could just pass \\(k^s = \\) `b` to the `decrypt_oracle` we won. But there
 
 ### Spend key extraction
 
+There are few operations which enable work with stored spend and view keys. If such operations find
+32 B placeholders `C_FAKE_SEC_VIEW_KEY`, `C_FAKE_SEC_SPEND_KEY` in the input, the real values are substituted to the input buffer so the operation works with the real values. The palceholders are known to the software wallet once transaction signing started, so the signing protocol can work with these secret values. Function taking care of the substitution is: [`monero_io_fetch_decrypt_key`](https://github.com/ph4r05/blue-app-monero/blob/7d6c5f5573c4c83fe74dcbb3fe6591489bae7828/src/monero_io.c#L258). The `mlsag_sign` operation does not support the placeholders so we need to find another function suitable for the spend key extraction.
+
+Observe the [`derive_secret_key`](https://github.com/ph4r05/blue-app-monero/blob/7d6c5f5573c4c83fe74dcbb3fe6591489bae7828/src/monero_key.c#L574):
+
+```python
+def derive_secret_key(
+        derivation: SealedPoint, 
+        index: int, 
+        secret: SealedScalar
+    ) -> SealedScalar:
+    D = hmac_and_decrypt(derivation)
+    s = monero_io_fetch_decrypt_key(secret)  # Placeholder
+    r = Hs(D || varint(index)) + s   
+    res = encrypt_and_hmac(r, spk, hk)
+    return res
+```
+
+The function computes \\(r=\mathcal{H}\_s(D \; \|\| \; \text{index}) + s\\), where \\(\mathcal{H}\_s: \\{0,1\\}^* \rightarrow \mathbb{Z}^{\*}\_{l} \\) is a hash function to scalars and `||` is a binary concatenation.
+
+As you noticed, there is no difference between point and scalar encryption, thus we can use them interchangeably.
+If we know the value of the \\(D\\) (one known value is encryption of zero) we also known the value of \\(\mathcal{H}\_s(D \; \|\| \; \text{index})\\). Thus we can compute \\(s = r - \mathcal{H}\_s(D \; \|\| \; \text{index})\\).
+
+Spend key extraction is thus:
+
+```python
+def poc1():
+    C_FAKE_SEC_SPEND_KEY = monero_apdu_open_tx()
+    x, X = generate_keypair()  # enc scalar, clear point
+    zero = sc_sub(x, x)
+    r = derive_secret_key(zero, 0, C_FAKE_SEC_SPEND_KEY)
+    rr = mlsag_sign(r, zero)
+    b = r - H_s("\x00"*32 + "\x00")
+    return b
+```
+
+The spend key `b` is extracted from the Monero app with just 5 API calls. No user interaction is needed, Ledger does not change any state or change the display so the attack is unobservable by a normal user.  
+
+The PoC demonstrating the vulnerability is [here](https://github.com/ph4r05/ledger-app-monero-1.42-vuln/blob/3e615bbfe4c4112ddc9e4099a1ba8378f37ab90b/poc.py#L114).
+
+
 
 
 [Ledger]: https://www.ledger.com
