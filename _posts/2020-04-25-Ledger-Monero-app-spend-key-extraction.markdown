@@ -24,7 +24,7 @@ we were able to extract master Monero spending key.
 [Monero] is a privacy-centric cryptocurrency protecting identity of participants and amounts being transacted.
 Monero support has been added to [Ledger], cryptocurrency hardware wallet, in [November 2018][monero-ledger-support].  
 
-<video controls="" width="660" autoplay="" muted="" loop="">
+<video controls="" width="660" height="465" autoplay="" muted="" loop="">
     <source src="/static/monero/monero.mp4" type="video/mp4" />
     Sorry, your browser doesn't support embedded videos.
 </video>
