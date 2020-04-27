@@ -9,7 +9,7 @@ excerpt_separator: <!-- more -->
 ---
 
 CVE-2020-6861: Due to a bug in the Monero transaction signing protocol in the Ledger Monero app 
-we were able to extract master Monero spending key. 
+v1.4.2 we were able to extract master Monero spending key. The vulnerability is now fixed.
 
 <!-- more -->
 
@@ -44,13 +44,13 @@ Monero is based on an elliptic curve [Ed25519].
 Public keys are points on the Ed25519 curve \\(\mathbb{G}\\), denoted as upper-case letters. 
 Point \\(G\\) is a known parameter called the *base point*. Points form a finite [cyclic group](https://en.wikipedia.org/wiki/Cyclic_group), 
 so operations of addition and subtraction are defined over points. Operation over two
-points results in another point on the curve. Points are encoded to 32 bytes.
+points results in another point on the curve. Points are encoded as 32 bytes.
  
 Scalars are integers modulo \\(l\\), i.e. \\(\mathbb{Z}^{\*}\_{l} \\), where \\(l = 2^{252}\\)+27742317777372353535851937790883648493 is a curve order (number of points on the elliptic curve). 
 Scalars are denoted as lower-case letters. As \\(l\\) is a prime number, \\(\mathbb{Z}^{\*}\_{l}\\) is a [finite field](https://en.wikipedia.org/wiki/Finite_field), i.e., there are addition, subtraction, multiplication and division operations defined over the scalars. 
 
 Moreover, we have an operation called *scalar multiplication*, \\(bP = \overbrace{(P + P + \cdots + P)}^{b} = Q\\), where \\(b \in \mathbb{Z}^{\*}\_{l}, P \in \mathbb{G}, Q \in \mathbb{G}\\). 
-Scalars also work as private keys, by computing \\(bG=B\\) we get public key \\(B\\).
+Scalars also work as private keys, by computing \\(bG=B\\) we get a public key \\(B\\).
 Scalar multiplication in non-invertible, i.e., computation of \\(b\\) from \\(B\\) is not feasible (reduces to solving [discrete logarithm problem](https://en.wikipedia.org/wiki/Discrete_logarithm)). Scalars are encoded as 32 bytes.
 
 ### Monero private keys
@@ -77,7 +77,7 @@ Encryption key `spk` is derived from the spend key and remains the same for the 
 
 ### Decryption oracle
 
-The app is implemented in C, but I will show the core ideas in python for brevity.
+The Ledger Monero app is implemented in C, but I will show the core ideas in python for brevity.
 Take a look at the [`sc_sub`](https://github.com/ph4r05/blue-app-monero/blob/7d6c5f5573c4c83fe74dcbb3fe6591489bae7828/src/monero_key.c#L430) operation that shows how input and outputs are handled:
 
 ```python
@@ -90,7 +90,7 @@ def sc_sub(a: SealedScalar, b: SealedScalar) -> SealedScalar:
     return c
 ```
 
-There are few others operations provided by the HW app. Scalars either as inputs or function outputs are always encrypted, with one exception, function [`mlsag_sign`](https://github.com/ph4r05/blue-app-monero/blob/7d6c5f5573c4c83fe74dcbb3fe6591489bae7828/src/monero_mlsag.c#L96):
+There are few others operations provided by the HW app. Scalars either as inputs or function outputs are always encrypted, with one exception, the function [`mlsag_sign`](https://github.com/ph4r05/blue-app-monero/blob/7d6c5f5573c4c83fe74dcbb3fe6591489bae7828/src/monero_mlsag.c#L96):
 
 ```python
 def mlsag_sign(alpha: SealedScalar, x: SealedScalar) -> Scalar:
@@ -115,7 +115,7 @@ If we could just pass \\(k^s\\) (sometimes denoted also as `b`) to the `decrypt_
 ### Spend key extraction
 
 There are few operations that enable work with stored spend and view keys. If such operations find
-32 B placeholders `C_FAKE_SEC_VIEW_KEY`, `C_FAKE_SEC_SPEND_KEY` in the input, the real values are substituted to the input buffer, so the operation works with the real values. The placeholders are known to the software wallet once transaction signing started, so the signing protocol can work with these secret values. Function taking care of the substitution is: [`monero_io_fetch_decrypt_key`](https://github.com/ph4r05/blue-app-monero/blob/7d6c5f5573c4c83fe74dcbb3fe6591489bae7828/src/monero_io.c#L258). The `mlsag_sign` operation does not support the placeholders, so we need to find another function suitable for the spend key extraction.
+32 B placeholders `C_FAKE_SEC_VIEW_KEY`, `C_FAKE_SEC_SPEND_KEY` in the input, the real values are substituted to the input buffer, so the operation works with the real secret key values. The placeholders are known to the software wallet once transaction signing started, so the signing protocol can work with these secret values. Function taking care of the substitution is: [`monero_io_fetch_decrypt_key`](https://github.com/ph4r05/blue-app-monero/blob/7d6c5f5573c4c83fe74dcbb3fe6591489bae7828/src/monero_io.c#L258). The `mlsag_sign` operation does not support the placeholders, so we need to find another function suitable for the spend key extraction.
 
 Observe the [`derive_secret_key`](https://github.com/ph4r05/blue-app-monero/blob/7d6c5f5573c4c83fe74dcbb3fe6591489bae7828/src/monero_key.c#L574):
 
@@ -134,7 +134,7 @@ def derive_secret_key(
 
 The function computes \\(r=\mathcal{H}\_s(D \; \|\| \; \text{index}) + s\\), where \\(\mathcal{H}\_s: \\{0,1\\}^* \rightarrow \mathbb{Z}^{\*}\_{l} \\) is a hash function to scalars and `||` is a binary concatenation.
 
-As you noticed, Monero app makes no difference between point and scalar encryption, thus we can use them interchangeably.
+As you noticed, Ledger Monero app makes no difference between point and scalar encryption, thus we can use them interchangeably.
 If we know the value of the \\(D\\) (one known value is the encryption of zero) we also known the value of \\(\mathcal{H}\_s(D \; \|\| \; \text{index})\\). Thus we can compute \\(s = r - \mathcal{H}\_s(D \; \|\| \; \text{index})\\).
 
 Spend key extraction is thus:
@@ -244,15 +244,14 @@ on average in 15 steps we find suitable \\(x\\) value. Which corresponds to a fa
 The attack uses an only small set of functions, all function calls besides the last one `mlsag_sign()`
 are legit and could appear in the normal transaction construction process. It is thus hard to prevent
 this from working. Used functions:
-```python
-reset()
-set_mode()
-open_tx()
-gen_derivation()
-derive_secret_key()
-mlsag_hash()
-mlsag_sign()
-```
+
+- reset
+- set_mode
+- open_tx
+- gen_derivation
+- derive_secret_key
+- mlsag_hash
+- mlsag_sign
 
 ## Observations
 
@@ -263,7 +262,7 @@ Knowing the plaintext value is important for the computation of `Hs(P||0)` and `
 
 - When the view key is extracted (for faster blockchain scanning), the leak of a plaintext-ciphertext
 pair cannot be prevented for scalars, as the attacker knows `a` and can use `C_FAKE_SEC_VIEW_KEY` to make
-Ledger computes scalars with `a`. E.g., `monero_apdu_derive_secret_key(deriv, idx, a)` can be 
+Ledger computes scalars with `a`. E.g., `monero_apdu_derive_secret_key(P, 0, C_FAKE_SEC_VIEW_KEY)` can be 
 used to construct scalar plaintext-ciphertext pair. 
  
 - `mlsag_sign` is important for all attacks as it returns an unencrypted scalar value from
@@ -322,10 +321,10 @@ For the sake of simplicity, we will assume just HMAC keys for now and address `s
 - This also prevents the *type confusion*.  
    
 Example:
-- HMAC key for EC points - derivation: `H(hk || "0")`.  
-- HMAC key for scalars: `H(hk || "1")`
-- HMAC key for random scalar masks alpha: `H(hk || "2")`
-- HMAC key for amount key: `H(hk || "3")`
+- `H(hk || "0")` HMAC key for EC points - derivation  
+- `H(hk || "1")` HMAC key for scalars
+- `H(hk || "2")` HMAC key for random scalar masks alpha 
+- `H(hk || "3")` HMAC key for amount key
 
 Other EC points than derivations are not exported in an encrypted form in the protocol. If there are more EC point types later, differentiate them.
 
@@ -348,7 +347,7 @@ restricting to explicitly allowing ones by the protocol designer.
 
 Recall \\(\text{mlsag\_sign}(\alpha, x) = \alpha - cx\\), where:
    - \\(c\\) is parameter known to attacker
-   - \\(\alpha\\) is a random scalar mask
+   - \\(\alpha\\) is a random scalar 
    - \\(x\\) is a secret scalar value
    
 Notice that if \\(\alpha\\) is allowed to be used more than once, we have a decryption oracle: 
@@ -374,15 +373,14 @@ This guarantees that only \\(\alpha\\) generated by the `mlsag_prepare()` can be
 as the first \\(\alpha\\) parameter. Separation of \\(\alpha\\) and \\(x\\) domains via different keys restricts the 
 attack surface.
 
-It is easy to show that if \\(\alpha\\) is a random scalar, then the attacker can derive no information about `xx1`
+It is easy to show that if \\(\alpha\\) is a random scalar, then the attacker can derive no information about \\(x_1\\)
 from \\(\alpha - cx_1\\). The reason is that \\(\alpha\\) can be generated only in `mlsag_prepare()` and 
 used only in `mlsag_sign()` as a first parameter, nowhere else.
 It is essential that \\(\alpha\\) can be used only once as input to the `mlsag_sign()`. 
 Otherwise, the attacker can eliminate it.
  
 Thus the attacker can derive no information about \\(\alpha\\) using other functions than `mlsag_sign()` as it fails
-HMAC check in those. The attacker could learn \\(\alpha\\) if he knows decryption of \\(x_1\\), but such \\(\alpha\\) is just a 
-random scalar, and this knowledge cannot be reused in another `mlsag_sign()` call, making the knowledge useless.   
+HMAC check in those. The attacker could learn \\(\alpha\\) if he knows decryption of \\(x_1\\), but such \\(\alpha\\) is just a random scalar, and this knowledge cannot be reused in another `mlsag_sign()` call, making the knowledge useless.   
 
 
 ### Strict state model checking
@@ -464,11 +462,23 @@ As mentioned in the similarly named section above, the more precise checking can
 the `open_tx()` transaction message contains information about mixin, number of UTXOs, and transaction outputs.
 
 
-## Conclusion
+## Summary
 
 Ledger implemented suggested countermeasures. Follow their site for more details.
 
+Resources recap:
 
+- PoC repository [https://github.com/ph4r05/ledger-app-monero-1.42-vuln](https://github.com/ph4r05/ledger-app-monero-1.42-vuln)
+- Affected Ledger Monero app version [https://github.com/LedgerHQ/ledger-app-monero/tree/7d6c5f5573c4c83fe74dcbb3fe6591489bae7828](https://github.com/LedgerHQ/ledger-app-monero/tree/7d6c5f5573c4c83fe74dcbb3fe6591489bae7828)
+- Protocol documentation: [https://github.com/LedgerHQ/ledger-app-monero/blob/master/doc/developer/blue-app-commands.pdf](https://github.com/LedgerHQ/ledger-app-monero/blob/master/doc/developer/blue-app-commands.pdf)
+- Affected Monero app version with fixes enabling the build on Ledger Nano S with 1.6.0 firmware [https://github.com/ph4r05/blue-app-monero/](https://github.com/ph4r05/blue-app-monero/)
+
+
+I've designed and implemented another Monero transaction signing scheme for Trezor hardware wallet. More on the topic:
+
+ - Our eprint paper [https://eprint.iacr.org/2020/281](https://eprint.iacr.org/2020/281) in an extended version describing transaction signing protocol plus multi-party evaluation of Bulletproofs
+ - Transaction signing implemented in the [Trezor firmware](https://github.com/trezor/trezor-firmware/tree/master/core/src/apps/monero) 
+ - Python implementation and various tools: [https://github.com/ph4r05/monero-agent](https://github.com/ph4r05/monero-agent)
 
 
 [Ledger]: https://www.ledger.com
